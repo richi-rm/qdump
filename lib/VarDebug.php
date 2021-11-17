@@ -55,7 +55,7 @@ class VarDebugger {
 
 
    /**
-    * Times capture() has been called.
+    * Times dump() or dumpByRef() have been called.
     *
     * @var integer
     */
@@ -160,7 +160,7 @@ class VarDebugger {
     *
     * @param $var variable to inspect
     */
-   public function capture($var = null)
+   public function dump($var = null)
    {
       $r = '';
       if ($this->options['verbose']) {
@@ -180,12 +180,12 @@ class VarDebugger {
 
 
    /**
-    * This method is the same as capture(), except that the parameter is passed
-    * by reference in order to inspect recursive arrays.
+    * This method is the same as dump(), except that the parameter is passed by
+    * reference to properly inspect recursive arrays.
     *
     * @param $var variable to inspect
     */
-   public function captureByRef(&$var)
+   public function dumpByRef(&$var)
    {
       $r = '';
       if ($this->options['verbose']) {

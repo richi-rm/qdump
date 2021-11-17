@@ -131,7 +131,7 @@ class Context {
 
 
    /**
-    * Returns where capture() was called from.
+    * Returns where dump() or dumpbyref() was called from.
     *
     * @return string
     */
