@@ -38,6 +38,7 @@ class VarDebugger {
     */
    const OUTPUT_WRITERS = [
       'file'   => 'Cachito\VarDebug\OutputWriter\FileWriter',
+      'null'   => 'Cachito\VarDebug\OutputWriter\NullWriter',
       'stdout' => 'Cachito\VarDebug\OutputWriter\StdoutWriter'
    ];
 
@@ -76,6 +77,14 @@ class VarDebugger {
     * @var Core
     */
    protected $core = null;
+
+
+   /**
+    * First dump() / dumpByRef() done.
+    *
+    * @var boolean
+    */
+   protected $first_dump_done = false;
 
 
    /**
@@ -126,20 +135,6 @@ class VarDebugger {
       $this->core = new Core();
       $this->renderer = new $renderer_class();
       $this->output_writer = new $output_writer_class($output_dir_path, $this->options['render-type']);
-
-      // if render type is HTML we need to dump the CSS styles first
-      //
-      if ($this->options['render-type'] === 'html') {
-         $this->output_writer->write(HtmlRenderer::CSS_STYLES . "\n");
-      }
-
-      if ($this->options['verbose']) {
-         $header_lines = [$this->context->getEnvironmentInfo()];
-         if (!$this->context->sapiIsCli()) {
-            $header_lines[] = $this->context->getRequestInfo();
-         }
-         $this->output_writer->write($this->renderer->renderHeader($header_lines));
-      }
    }
 
 
@@ -160,20 +155,37 @@ class VarDebugger {
     *
     * @param $var variable to inspect
     */
-   public function dump($var = null)
+   public function dump($var = null, &$output = null)
    {
-      $r = '';
-      if ($this->options['verbose']) {
-         $r .= $this->renderer->preRender($this->capture_sequence_number,
-                                          $this->context->getTraceFileLine(),
-                                          $this->context->getElapsedTime());
-      } else {
-         $r .= $this->renderer->preRender($this->capture_sequence_number);
-      }
-      $r .= $this->renderer->renderCoreVar($this->core->inspect($var));
-      $r .= $this->renderer->postRender();
+      $written = '';
 
-      $this->output_writer->write($r);
+      // initial write
+      //
+      if (!$this->first_dump_done) {
+         $written .= $this->initial_write();
+         $this->first_dump_done = true;
+      }
+
+      // capture
+      //
+      $capture = '';
+      if ($this->options['verbose']) {
+         $capture .= $this->renderer->preRender($this->capture_sequence_number,
+                                                $this->context->getTraceFileLine(),
+                                                $this->context->getElapsedTime());
+      } else {
+         $capture .= $this->renderer->preRender($this->capture_sequence_number);
+      }
+      $capture .= $this->renderer->renderCoreVar($this->core->inspect($var));
+      $capture .= $this->renderer->postRender();
+
+      // dump
+      //
+      $written .= $this->output_writer->write($capture);
+
+      // output
+      //
+      $output = $written;
 
       $this->capture_sequence_number++;
    }
@@ -185,20 +197,37 @@ class VarDebugger {
     *
     * @param $var variable to inspect
     */
-   public function dumpByRef(&$var)
+   public function dumpByRef(&$var = null, &$output = null)
    {
-      $r = '';
-      if ($this->options['verbose']) {
-         $r .= $this->renderer->preRender($this->capture_sequence_number,
-                                          $this->context->getTraceFileLine(),
-                                          $this->context->getElapsedTime());
-      } else {
-         $r .= $this->renderer->preRender($this->capture_sequence_number);
-      }
-      $r .= $this->renderer->renderCoreVar($this->core->inspect($var));
-      $r .= $this->renderer->postRender();
+      $written = '';
 
-      $this->output_writer->write($r);
+      // initial write
+      //
+      if (!$this->first_dump_done) {
+         $written .= $this->initial_write();
+         $this->first_dump_done = true;
+      }
+
+      // capture
+      //
+      $capture = '';
+      if ($this->options['verbose']) {
+         $capture .= $this->renderer->preRender($this->capture_sequence_number,
+                                                $this->context->getTraceFileLine(),
+                                                $this->context->getElapsedTime());
+      } else {
+         $capture .= $this->renderer->preRender($this->capture_sequence_number);
+      }
+      $capture .= $this->renderer->renderCoreVar($this->core->inspect($var));
+      $capture .= $this->renderer->postRender();
+
+      // dump
+      //
+      $written .= $this->output_writer->write($capture);
+
+      // output
+      //
+      $output = $written;
 
       $this->capture_sequence_number++;
    }
@@ -235,5 +264,28 @@ class VarDebugger {
       }
 
       return $r;
+   }
+
+
+   /**
+    * Write output (like HTML styles or verbose headers) before doing the first
+    * dump().
+    *
+    * @return string the written string
+    */
+   protected function initial_write(): string
+   {
+      $written = '';
+      if ($this->options['render-type'] === 'html') {
+         $written .= $this->output_writer->write(HtmlRenderer::CSS_STYLES . "\n");
+      }
+      if ($this->options['verbose']) {
+         $header_lines = [$this->context->getEnvironmentInfo()];
+         if (!$this->context->sapiIsCli()) {
+            $header_lines[] = $this->context->getRequestInfo();
+         }
+         $written .= $this->output_writer->write($this->renderer->renderHeader($header_lines));
+      }
+      return $written;
    }
 }

@@ -20,6 +20,6 @@ interface WriterInterface {
     *
     * @param string $string string to write
     */
-   public function write($string);
+   public function write($string): string;
 
 }

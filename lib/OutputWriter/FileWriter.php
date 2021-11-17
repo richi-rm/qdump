@@ -119,16 +119,18 @@ class FileWriter implements WriterInterface {
     * Write $string to the vardebug file.
     *
     * @param string $string string to write
+    * @return string the written output
     */
-   public function write($string)
+   public function write($string): string
    {
       if (!$this->can_write_to_output_dir) {
-         return;
+         return '';
       }
       file_put_contents(
          $this->output_dir_path . $this->output_file_name . self::VARDEBUG_FILE_EXTENSIONS[$this->render_type],
          $string,
          FILE_APPEND | LOCK_EX
       );
+      return $string;
    }
 }

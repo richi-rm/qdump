@@ -4,7 +4,7 @@
 namespace Cachito\VarDebug\OutputWriter;
 
 
-class StdoutWriter implements WriterInterface {
+class NullWriter implements WriterInterface {
 
    /**
     * Constructor.
@@ -12,14 +12,13 @@ class StdoutWriter implements WriterInterface {
    public function __construct($not_used_1, $not_used_2) { }
 
    /**
-    * Write $string to STDOUT.
+    * It does not write $string anywhere, it just returns it.
     *
-    * @param string $string string to write
-    * @return string the written output
+    * @param string $string
+    * @return string
     */
    public function write($string): string
    {
-      echo $string;
       return $string;
    }
 }
