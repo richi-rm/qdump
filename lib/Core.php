@@ -7,11 +7,11 @@ namespace Cachito\VarDebug;
 class Core {
 
    /**
-    * Indicates whether to retrieve the methods of the objects or not.
+    * Indicates whether to retrieve the methods of the classes or not.
     * 
     * @var boolean
     */
-   protected $add_object_methods = false;
+   protected $add_class_methods = false;
 
 
    /**
@@ -33,13 +33,13 @@ class Core {
 
 
    /**
-    * Add object methods to render_core_var() output.
+    * Add class methods to render_core_var() output.
     *
     * @param boolean $add true | false
     */
-   public function addObjectMethods($add = true)
+   public function addClassMethods($add = true)
    {
-      $this->add_object_methods = (boolean)$add;
+      $this->add_class_methods = (boolean)$add;
    }
 
 
@@ -158,7 +158,7 @@ class Core {
          }
          unset($this->ascending_objects_being_inspected[$object_id]);
          ksort($r['properties']);
-         if ($this->add_object_methods) {
+         if ($this->add_class_methods) {
             foreach (get_class_methods($var) as $method_name) {
                $r['methods'][] = $method_name;
             }

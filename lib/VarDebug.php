@@ -144,13 +144,13 @@ class VarDebugger {
 
 
    /**
-    * Add object methods to the output.
+    * Add class methods to the output.
     *
     * @param boolean $add true | false
     */
-   public function addObjectMethods($add = true)
+   public function addClassMethods($add = true)
    {
-      $this->core->addObjectMethods($add);
+      $this->core->addClassMethods($add);
    }
 
 
