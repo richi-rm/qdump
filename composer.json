@@ -1,0 +1,23 @@
+{
+   "name": "cachito/vardebug",
+   "description": "Enhanced var_dump()",
+   "version": "0.4.0-alpha",
+   "type": "library",
+   "keywords": ["debug", "debugging", "var_dump", "var_export", "vardebug"],
+   "homepage": "https://github.com/richiruizmartinez/vardebug",
+   "license": "GPL-3.0-or-later",
+   "authors": [
+      {
+         "name": "Ricardo Ruiz Martínez",
+         "email": "richiruizmartinez@gmail.com"
+      }
+   ],
+   "autoload": {
+      "psr-4": {
+         "Cachito\\VarDebug\\": "lib/"
+      }
+   },   
+   "require": {
+      "php": ">=7.0"
+   }
+}
