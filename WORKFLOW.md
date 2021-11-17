@@ -1,5 +1,6 @@
 # WORKFLOW
 
+
 **Al corregir un bug o hacer un cambio menor:**
 
  - Hacer las modificaciones en develop
@@ -8,6 +9,7 @@
  - Mergear a main
  - Crear la tag de la nueva versión
  - Subir a github: main y la nueva tag
+
 
 **Al añadir una característica nueva:**
 
