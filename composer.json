@@ -1,7 +1,7 @@
 {
    "name": "cachito/vardebug",
    "description": "Enhanced var_dump()",
-   "version": "0.4.0-alpha",
+   "version": "0.4.1-alpha",
    "type": "library",
    "keywords": ["debug", "debugging", "var_dump", "var_export", "vardebug"],
    "homepage": "https://github.com/richiruizmartinez/vardebug",
