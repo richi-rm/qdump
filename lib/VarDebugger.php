@@ -128,13 +128,18 @@ class VarDebugger {
 
       // instantiate objects
       //
-      $renderer_class = self::RENDERERS[$this->options['render-type']];
-      $output_writer_class = self::OUTPUT_WRITERS[$this->options['output-type']];
-
       $this->context = new Context();
       $this->core = new Core();
+
+      $renderer_class = self::RENDERERS[$this->options['render-type']];
       $this->renderer = new $renderer_class();
-      $this->output_writer = new $output_writer_class($output_dir_path, $this->options['render-type']);
+
+      $output_writer_class = self::OUTPUT_WRITERS[$this->options['output-type']];
+      if ($this->options['output-type'] === 'file') {
+         $this->output_writer = new $output_writer_class($output_dir_path, $this->options['render-type']);
+      } else {
+         $this->output_writer = new $output_writer_class();
+      }
    }
 
 
