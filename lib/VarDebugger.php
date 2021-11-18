@@ -11,10 +11,17 @@ class VarDebugger {
 
 
    const DEFAULT_OPTIONS = [
+      'mpriv'       => false,
+      'mprot'       => false,
+      'mpub'        => false,
       'output-type' => 'stdout',
+      'ppriv'       => false,
+      'pprot'       => false,
+      'ppub'        => true,
       'render-type' => 'html-comment',
       'verbose'     => false
    ];
+
 
    /**
     * Default render type.
@@ -244,13 +251,28 @@ class VarDebugger {
 
       foreach (explode(',', $options_string) as $option) {
          $option = trim($option);
-         if (in_array($option, array_keys(self::OUTPUT_WRITERS))) {
+         if (0) { }
+         elseif (in_array($option, array_keys(self::OUTPUT_WRITERS))) {
             $options['output-type'] = $option;
-         } elseif (in_array($option, array_keys(self::RENDERERS))) {
-            $options['render-type'] = $option;
-         } elseif ($option === 'verbose') {
-            $options['verbose'] = true;
          }
+         elseif (in_array($option, array_keys(self::RENDERERS))) {
+            $options['render-type'] = $option;
+         }
+         elseif ($option === '+mpriv' ) { $options['mpriv']   = true;  }
+         elseif ($option === '+mprot' ) { $options['mprot']   = true;  }
+         elseif ($option === '+mpub'  ) { $options['mpub' ]   = true;  }
+         elseif ($option === '-mpriv' ) { $options['mpriv']   = false; }
+         elseif ($option === '-mprot' ) { $options['mprot']   = false; }
+         elseif ($option === '-mpub'  ) { $options['mpub' ]   = false; }
+
+         elseif ($option === '+ppriv' ) { $options['ppriv']   = true;  }
+         elseif ($option === '+pprot' ) { $options['pprot']   = true;  }
+         elseif ($option === '+ppub'  ) { $options['ppub' ]   = true;  }
+         elseif ($option === '-ppriv' ) { $options['ppriv']   = false; }
+         elseif ($option === '-pprot' ) { $options['pprot']   = false; }
+         elseif ($option === '-ppub'  ) { $options['ppub' ]   = false; }
+
+         elseif ($option === 'verbose') { $options['verbose'] = true;  }
       }
 
       return $options;
