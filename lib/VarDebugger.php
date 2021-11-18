@@ -37,9 +37,9 @@ class VarDebugger {
     * Output identifiers and corresponding handler classes.
     */
    const OUTPUT_WRITERS = [
-      'file'   => 'Cachito\VarDebug\OutputWriter\FileWriter',
-      'null'   => 'Cachito\VarDebug\OutputWriter\NullWriter',
-      'stdout' => 'Cachito\VarDebug\OutputWriter\StdoutWriter'
+      'file'    => 'Cachito\VarDebug\OutputWriter\FileWriter',
+      'no-dump' => 'Cachito\VarDebug\OutputWriter\NullWriter',
+      'stdout'  => 'Cachito\VarDebug\OutputWriter\StdoutWriter'
    ];
 
 
