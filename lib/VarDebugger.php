@@ -9,28 +9,17 @@ use Cachito\VarDebug\Renderer\HtmlRenderer;
 
 class VarDebugger {
 
+
+   const DEFAULT_OPTIONS = [
+      'output-type' => 'stdout',
+      'render-type' => 'html-comment',
+      'verbose'     => false
+   ];
+
    /**
     * Default render type.
     */
    const DEFAULT_OUTPUT_DIR_PATH = '/tmp/';
-
-
-   /**
-    * Default render type.
-    */
-   const DEFAULT_OUTPUT_TYPE = 'stdout';
-
-
-   /**
-    * Default render type.
-    */
-   const DEFAULT_RENDER_TYPE = 'html-comment';
-
-
-   /**
-    * Default verbose.
-    */
-   const DEFAULT_VERBOSE = false;
 
 
    /**
@@ -239,36 +228,32 @@ class VarDebugger {
 
 
    /**
-    * Function to parse the first parameter of the constructor.
+    * Function to parse the first parameter of the constructor (VarDebugger
+    * options).
     *
-    * @param string $options
+    * @param string $options_string
     * @return array
     */
-   protected function parse_options($options)
+   protected function parse_options($options_string)
    {
-      $r = [
-         'render-type' => self::DEFAULT_RENDER_TYPE,
-         'output-type' => self::DEFAULT_OUTPUT_TYPE,
-         'verbose'     => self::DEFAULT_VERBOSE
-      ];
+      $options = self::DEFAULT_OPTIONS;
 
-      if (!is_string($options)) {
-         return $r;
+      if (!is_string($options_string)) {
+         return $options;
       }
 
-      $options = explode(',', $options);
-      foreach ($options as $option) {
+      foreach (explode(',', $options_string) as $option) {
          $option = trim($option);
-         if (in_array($option, array_keys(self::RENDERERS))) {
-            $r['render-type'] = $option;
-         } elseif (in_array($option, array_keys(self::OUTPUT_WRITERS))) {
-            $r['output-type'] = $option;
+         if (in_array($option, array_keys(self::OUTPUT_WRITERS))) {
+            $options['output-type'] = $option;
+         } elseif (in_array($option, array_keys(self::RENDERERS))) {
+            $options['render-type'] = $option;
          } elseif ($option === 'verbose') {
-            $r['verbose'] = true;
+            $options['verbose'] = true;
          }
       }
 
-      return $r;
+      return $options;
    }
 
 
