@@ -10,16 +10,21 @@ use Cachito\VarDebug\Renderer\HtmlRenderer;
 class VarDebugger {
 
 
+   /**
+    * Default options.
+    */
    const DEFAULT_OPTIONS = [
-      'output-type' => 'stdout',
-      'render-type' => 'html-comment',
-      'mpriv'       => false,
-      'mprot'       => false,
-      'mpub'        => false,
-      'ppriv'       => false,
-      'pprot'       => false,
-      'ppub'        => true,
-      'verbose'     => false
+      'config-add-object' => [
+         'mpriv'        => false,
+         'mprot'        => false,
+         'mpub'         => false,
+         'ppriv'        => false,
+         'pprot'        => false,
+         'ppub'         => true
+      ],
+      'output-type'     => 'stdout',
+      'render-type'     => 'html-comment',
+      'verbose'         => false
    ];
 
 
@@ -125,7 +130,7 @@ class VarDebugger {
       // instantiate objects
       //
       $this->context = new Context();
-      $this->core = new Core();
+      $this->core = new Core($this->options['config-add-object']);
 
       $renderer_class = self::RENDERERS[$this->options['render-type']];
       $this->renderer = new $renderer_class();
@@ -255,6 +260,19 @@ class VarDebugger {
 
          if (0) { }
 
+         elseif ($option === '+mpriv') { $options['config-add-object']['mpriv'] = true;  }
+         elseif ($option === '+mprot') { $options['config-add-object']['mprot'] = true;  }
+         elseif ($option === '+mpub' ) { $options['config-add-object']['mpub' ] = true;  }
+         elseif ($option === '-mpriv') { $options['config-add-object']['mpriv'] = false; }
+         elseif ($option === '-mprot') { $options['config-add-object']['mprot'] = false; }
+         elseif ($option === '-mpub' ) { $options['config-add-object']['mpub' ] = false; }
+         elseif ($option === '+ppriv') { $options['config-add-object']['ppriv'] = true;  }
+         elseif ($option === '+pprot') { $options['config-add-object']['pprot'] = true;  }
+         elseif ($option === '+ppub' ) { $options['config-add-object']['ppub' ] = true;  }
+         elseif ($option === '-ppriv') { $options['config-add-object']['ppriv'] = false; }
+         elseif ($option === '-pprot') { $options['config-add-object']['pprot'] = false; }
+         elseif ($option === '-ppub' ) { $options['config-add-object']['ppub' ] = false; }
+
          elseif (in_array($option, array_keys(self::OUTPUT_WRITERS))) {
             $options['output-type'] = $option;
          }
@@ -263,20 +281,7 @@ class VarDebugger {
             $options['render-type'] = $option;
          }
 
-         elseif ($option === '+mpriv' ) { $options['mpriv']   = true;  }
-         elseif ($option === '+mprot' ) { $options['mprot']   = true;  }
-         elseif ($option === '+mpub'  ) { $options['mpub' ]   = true;  }
-         elseif ($option === '-mpriv' ) { $options['mpriv']   = false; }
-         elseif ($option === '-mprot' ) { $options['mprot']   = false; }
-         elseif ($option === '-mpub'  ) { $options['mpub' ]   = false; }
-         elseif ($option === '+ppriv' ) { $options['ppriv']   = true;  }
-         elseif ($option === '+pprot' ) { $options['pprot']   = true;  }
-         elseif ($option === '+ppub'  ) { $options['ppub' ]   = true;  }
-         elseif ($option === '-ppriv' ) { $options['ppriv']   = false; }
-         elseif ($option === '-pprot' ) { $options['pprot']   = false; }
-         elseif ($option === '-ppub'  ) { $options['ppub' ]   = false; }
-
-         elseif ($option === 'verbose') { $options['verbose'] = true;  }
+         elseif ($option === 'verbose') { $options['verbose'] = true; }
 
       }
 

@@ -7,20 +7,28 @@ namespace Cachito\VarDebug;
 class Core {
 
    /**
-    * Indicates whether to retrieve the methods of the classes or not.
-    * 
-    * @var boolean
-    */
-   protected $add_class_methods = false;
-
-
-   /**
     * Variable to detect cycles in objects. It is an associative array in which
     * the keys are the ids of the objects being inspected.
     *
     * @var array
     */
    protected $ascending_objects_being_inspected = [];
+
+
+   /**
+    * Configuration of what to add to the output (properties and methods of the
+    * objects)
+    *
+    * @var boolean
+    */
+   protected $config_add_object = [
+      'mpriv' => null, // private methods
+      'mprot' => null, // protected methods
+      'mpub'  => null, // public methods
+      'ppriv' => null, // private properties
+      'pprot' => null, // protected properties
+      'ppub'  => null  // public properties
+   ];
 
 
    /**
@@ -33,13 +41,13 @@ class Core {
 
 
    /**
-    * Add class methods to render_core_var() output.
+    * Constructor.
     *
-    * @param boolean $add true | false
+    * @param array $config_add_object
     */
-   public function addClassMethods($add = true)
+   public function __construct($config_add_object)
    {
-      $this->add_class_methods = (boolean)$add;
+      $this->config_add_object = $config_add_object;
    }
 
 
@@ -152,17 +160,19 @@ class Core {
             $r['cycle'] = true;
             return $r;
          }
-         $this->ascending_objects_being_inspected[$object_id] = true;
-         foreach (get_object_vars($var) as $property_name => &$property_value) {
-            $r['properties'][$property_name] = $this->inspect($property_value, $depth + 1);
-         }
-         unset($this->ascending_objects_being_inspected[$object_id]);
-         ksort($r['properties']);
-         if ($this->add_class_methods) {
+         if ($this->config_add_object['mpub']) {
             foreach (get_class_methods($var) as $method_name) {
                $r['methods'][] = $method_name;
             }
             sort($r['methods']);
+         }
+         if ($this->config_add_object['ppub']) {
+            $this->ascending_objects_being_inspected[$object_id] = true;
+            foreach (get_object_vars($var) as $property_name => &$property_value) {
+               $r['properties'][$property_name] = $this->inspect($property_value, $depth + 1);
+            }
+            unset($this->ascending_objects_being_inspected[$object_id]);
+            ksort($r['properties']);
          }
          return $r;
       }
