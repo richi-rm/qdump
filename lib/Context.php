@@ -131,6 +131,36 @@ class Context {
 
 
    /**
+    * Returns the name of the user who is running the script.
+    *
+    * @return string
+    */
+   function getUserName()
+   {
+      // posix solution
+      //
+      if (extension_loaded('posix')) {
+         return posix_getpwuid(posix_geteuid())['name'];
+      }
+
+      // temporary file solution
+      //
+      $dir = '/tmp';
+      if (is_dir($dir) && is_writable($dir)) {
+         $file = tempnam($dir, 'vardebug.get_user_name.');
+         file_put_contents($file, '<?php $user_name = get_current_user(); ?>', LOCK_EX);
+         include_once $file;
+         unlink($file);
+         return $user_name;
+      }
+
+      // error
+      //
+      return -1;
+   }
+
+
+   /**
     * Returns where dump() or dumpbyref() was called from.
     *
     * @return string
