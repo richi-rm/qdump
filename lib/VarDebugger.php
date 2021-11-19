@@ -1,10 +1,10 @@
 <?php
 
 
-namespace Cachito\VarDebug;
+namespace Cachitos\VarDebug;
 
 
-use Cachito\VarDebug\Renderer\HtmlRenderer;
+use Cachitos\VarDebug\Renderer\HtmlRenderer;
 
 
 class VarDebugger {
@@ -38,9 +38,9 @@ class VarDebugger {
     * Output identifiers and corresponding handler classes.
     */
    const OUTPUT_WRITERS = [
-      'file'    => 'Cachito\VarDebug\OutputWriter\FileWriter',
-      'no-dump' => 'Cachito\VarDebug\OutputWriter\NullWriter',
-      'stdout'  => 'Cachito\VarDebug\OutputWriter\StdoutWriter'
+      'file'    => 'Cachitos\VarDebug\OutputWriter\FileWriter',
+      'no-dump' => 'Cachitos\VarDebug\OutputWriter\NullWriter',
+      'stdout'  => 'Cachitos\VarDebug\OutputWriter\StdoutWriter'
    ];
 
 
@@ -48,11 +48,11 @@ class VarDebugger {
     * Render identifiers and corresponding handler classes.
     */
    const RENDERERS = [
-      'ansi'             => 'Cachito\VarDebug\Renderer\AnsiRenderer',
-      'console-log-json' => 'Cachito\VarDebug\Renderer\ConsoleLogJsonRenderer',
-      'html'             => 'Cachito\VarDebug\Renderer\HtmlRenderer',
-      'html-comment'     => 'Cachito\VarDebug\Renderer\HtmlCommentRenderer',
-      'plain-text'       => 'Cachito\VarDebug\Renderer\PlainTextRenderer'
+      'ansi'             => 'Cachitos\VarDebug\Renderer\AnsiRenderer',
+      'console-log-json' => 'Cachitos\VarDebug\Renderer\ConsoleLogJsonRenderer',
+      'html'             => 'Cachitos\VarDebug\Renderer\HtmlRenderer',
+      'html-comment'     => 'Cachitos\VarDebug\Renderer\HtmlCommentRenderer',
+      'plain-text'       => 'Cachitos\VarDebug\Renderer\PlainTextRenderer'
    ];
 
 

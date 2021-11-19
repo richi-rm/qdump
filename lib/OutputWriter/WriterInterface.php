@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Cachito\VarDebug\OutputWriter;
+namespace Cachitos\VarDebug\OutputWriter;
 
 
 interface WriterInterface {

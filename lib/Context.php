@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Cachito\VarDebug;
+namespace Cachitos\VarDebug;
 
 
 class Context {

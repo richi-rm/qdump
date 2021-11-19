@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Cachito\VarDebug\Renderer;
+namespace Cachitos\VarDebug\Renderer;
 
 
 class AbstractRenderer {

@@ -1,5 +1,5 @@
 {
-   "name": "cachito/vardebug",
+   "name": "cachitos/vardebug",
    "description": "Enhanced var_dump()",
    "version": "0.4.1-alpha",
    "type": "library",
@@ -14,7 +14,7 @@
    ],
    "autoload": {
       "psr-4": {
-         "Cachito\\VarDebug\\": "lib/"
+         "Cachitos\\VarDebug\\": "lib/"
       }
    },   
    "require": {
