@@ -79,19 +79,23 @@ class AbstractRenderer {
       }
 
       if ($core_var['type'] === 'boolean') {
-         return $this->p('type') . 'boolean' . $this->s('type') . ' ' . $this->p('value') . $core_var['value'] . $this->s('value');
+         return $this->p('type') . 'boolean' . $this->s('type') . ' ' .
+                $this->p('value') . $core_var['value'] . $this->s('value');
       }
 
       if ($core_var['type'] === 'integer') {
-         return $this->p('type') . 'integer' . $this->s('type') . ' ' . $this->p('value') . $core_var['value'] . $this->s('value');
+         return $this->p('type') . 'integer' . $this->s('type') . ' ' .
+                $this->p('value') . $core_var['value'] . $this->s('value');
       }
 
       if ($core_var['type'] === 'float') {
-         return $this->p('type') . 'float' . $this->s('type') . ' ' . $this->p('value') . $core_var['value'] . $this->s('value');
+         return $this->p('type') . 'float' . $this->s('type') . ' ' .
+                $this->p('value') . $core_var['value'] . $this->s('value');
       }
 
       if ($core_var['type'] === 'string') {
-         return $this->p('type') . 'string(' . $core_var['length'] . ')' . $this->s('type') . ' ' . $this->p('value') . '"' . addcslashes($core_var['value'], '"') . '"' . $this->s('value');
+         return $this->p('type') . 'string(' . $core_var['length'] . ')' . $this->s('type') . ' ' .
+                $this->p('value') . '"' . addcslashes($core_var['value'], '"') . '"' . $this->s('value');
       }
 
       if ($core_var['type'] === 'array') {
@@ -102,7 +106,10 @@ class AbstractRenderer {
          }
          foreach ($core_var['elements'] as $array_key => $array_value) {
             $array_key_formatted = (is_int($array_key) ? $array_key : '\'' . addcslashes($array_key, '\'') . '\'');
-            $r .= "\n" . str_repeat($this->level_prefix, $depth + 1) . '[' . $this->p('key') . $array_key_formatted . $this->s('key') . '] => ' . $this->renderCoreVar($array_value, $depth + 1);
+            $r .= "\n" .
+                  str_repeat($this->level_prefix, $depth + 1) .
+                  '[' . $this->p('key') . $array_key_formatted . $this->s('key') . '] => ' .
+                  $this->renderCoreVar($array_value, $depth + 1);
          }
          return $r;
       }
@@ -117,17 +124,25 @@ class AbstractRenderer {
             return $r;
          }
          $r .= ' ' . $this->p('file-line') . $core_var['class-file-line'] . $this->s('file-line');
-         foreach ($core_var['properties'] as $property_name => $property_value) {
-            $r .= "\n" . str_repeat($this->level_prefix, $depth + 1) . '->' . $this->p('property') . $property_name . $this->s('property') . ' : ' . $this->renderCoreVar($property_value, $depth + 1);
+         foreach ($core_var['properties'] as $property) {
+            $r .= "\n" .
+                  str_repeat($this->level_prefix, $depth + 1) . '->' .
+                  $this->p('access') . $property['access'] . ':' . $this->s('access') .
+                  $this->p('property') . $property['name'] . $this->s('property') . ' = ' .
+                  $this->renderCoreVar($property['value'], $depth + 1);
          }
-         foreach ($core_var['methods'] as $method_name) {
-            $r .= "\n" . str_repeat($this->level_prefix, $depth + 1) . '->' . $this->p('method') . $method_name . '()' . $this->s('method');
+         foreach ($core_var['methods'] as $method) {
+            $r .= "\n" .
+                  str_repeat($this->level_prefix, $depth + 1) . '->' .
+                  $this->p('access') . $method['access'] . ':' . $this->s('access') .
+                  $this->p('method') . $method['name'] . '()' . $this->s('method');
          }
          return $r;
       }
 
       if ($core_var['type'] === 'resource') {
-         return $this->p('type') . 'resource' . $this->s('type') . ' ' . $this->p('resource-type') . $core_var['resource-type'] . $this->s('resource-type');
+         return $this->p('type') . 'resource' . $this->s('type') . ' ' .
+                $this->p('resource-type') . $core_var['resource-type'] . $this->s('resource-type');
       }
 
       return $this->p('unknown') . '(unknown)' . $this->s('unknown');

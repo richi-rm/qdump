@@ -15,6 +15,7 @@ class HtmlCommentRenderer extends AbstractRenderer {
       'header'        => "<!-- VarDebug\n",
       'capture'       => "<!-- VarDebug\n",
 
+      'access'        => '',
       'class'         => '',
       'cycle'         => '',
       'file-line'     => '',
@@ -39,6 +40,7 @@ class HtmlCommentRenderer extends AbstractRenderer {
       'header'        => "-->\n",
       'capture'       => "\n-->",
 
+      'access'        => '',
       'class'         => '',
       'cycle'         => '',
       'file-line'     => '',

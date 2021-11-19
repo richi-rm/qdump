@@ -15,6 +15,7 @@ class PlainTextRenderer extends AbstractRenderer {
       'header'        => "---\n",
       'capture'       => '',
 
+      'access'        => '',
       'class'         => '',
       'cycle'         => '',
       'file-line'     => '',
@@ -39,6 +40,7 @@ class PlainTextRenderer extends AbstractRenderer {
       'header'        => '---',
       'capture'       => '',
 
+      'access'        => '',
       'class'         => '',
       'cycle'         => '',
       'file-line'     => '',

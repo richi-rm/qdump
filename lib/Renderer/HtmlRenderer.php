@@ -13,6 +13,7 @@ class HtmlRenderer extends AbstractRenderer {
 <style type="text/css">
    .vardebug-pre-header    { color: #a0a0a0; background-color: #f0f0f0; padding: 10px; font-size: 11pt; margin: 5px; }
    .vardebug-pre-capture   { color: black; background-color: #f0f0f0; padding: 10px; font-size: 11pt; margin: 5px; }
+   .vardebug-access        { color: #004000; }
    .vardebug-class         { color: #008000; font-weight: bold; }
    .vardebug-cycle         { color: #ff0000; }
    .vardebug-file-line     { text-decoration: underline; }
@@ -38,6 +39,7 @@ HTML;
       'header'        => '<pre class="vardebug vardebug-pre-header">',
       'capture'       => '<pre class="vardebug vardebug-pre-capture">',
 
+      'access'        => '<span class="vardebug vardebug-access">',
       'class'         => '<span class="vardebug vardebug-class">',
       'cycle'         => '<span class="vardebug vardebug-cycle">',
       'file-line'     => '<span class="vardebug vardebug-file-line">',
@@ -62,6 +64,7 @@ HTML;
       'header'        => '</pre>',
       'capture'       => '</pre>',
 
+      'access'        => '</span>',
       'class'         => '</span>',
       'cycle'         => '</span>',
       'file-line'     => '</span>',

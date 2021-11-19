@@ -162,14 +162,21 @@ class Core {
          }
          if ($this->config['pubm']) {
             foreach (get_class_methods($var) as $method_name) {
-               $r['methods'][] = $method_name;
+               $r['methods'][] = [
+                  'access' => 'public',
+                  'name' => $method_name
+               ];
             }
             sort($r['methods']);
          }
          if ($this->config['pubp']) {
             $this->ascending_objects_being_inspected[$object_id] = true;
             foreach (get_object_vars($var) as $property_name => &$property_value) {
-               $r['properties'][$property_name] = $this->inspect($property_value, $depth + 1);
+               $r['properties'][] = [
+                  'access' => 'public',
+                  'name' => $property_name,
+                  'value' => $this->inspect($property_value, $depth + 1)
+               ];
             }
             unset($this->ascending_objects_being_inspected[$object_id]);
             ksort($r['properties']);

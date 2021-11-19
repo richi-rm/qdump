@@ -46,6 +46,7 @@ class AnsiRenderer extends AbstractRenderer {
       'header'        => "---\n" . self::ANSI_CODES['blue_bri'],
       'capture'       => '',
 
+      'access'        => self::ANSI_CODES['green'],
       'class'         => self::ANSI_CODES['bold'] . self::ANSI_CODES['green_bri'],
       'cycle'         => self::ANSI_CODES['red_bri'],
       'file-line'     => self::ANSI_CODES['underline'] . self::ANSI_CODES['black_bri'],
@@ -70,6 +71,7 @@ class AnsiRenderer extends AbstractRenderer {
       'header'        => self::ANSI_CODES['reset'] . '---',
       'capture'       => '',
 
+      'access'        => self::ANSI_CODES['reset'],
       'class'         => self::ANSI_CODES['reset'],
       'cycle'         => self::ANSI_CODES['reset'],
       'file-line'     => self::ANSI_CODES['reset'],
