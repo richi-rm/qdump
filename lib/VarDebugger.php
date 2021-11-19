@@ -273,6 +273,31 @@ class VarDebugger {
          elseif ($option === '-pubm' ) { $options['core-config']['pubm' ] = false; }
          elseif ($option === '-pubp' ) { $options['core-config']['pubp' ] = false; }
 
+         elseif ($option === '+priv' ) { $options['core-config']['privm'] = true;  $options['core-config']['privp'] = true;  }
+         elseif ($option === '+prot' ) { $options['core-config']['protm'] = true;  $options['core-config']['protp'] = true;  }
+         elseif ($option === '+pub'  ) { $options['core-config']['pubm' ] = true;  $options['core-config']['pubp' ] = true;  }
+         elseif ($option === '-priv' ) { $options['core-config']['privm'] = false; $options['core-config']['privp'] = false; }
+         elseif ($option === '-prot' ) { $options['core-config']['protm'] = false; $options['core-config']['protp'] = false; }
+         elseif ($option === '-pub'  ) { $options['core-config']['pubm' ] = false; $options['core-config']['pubp' ] = false; }
+
+         elseif ($option === '+all') {
+            $options['core-config']['privm'] = true;
+            $options['core-config']['privp'] = true;
+            $options['core-config']['protm'] = true;
+            $options['core-config']['protp'] = true;
+            $options['core-config']['pubm']  = true;
+            $options['core-config']['pubp']  = true;
+         }
+
+         elseif ($option === '-all') {
+            $options['core-config']['privm'] = false;
+            $options['core-config']['privp'] = false;
+            $options['core-config']['protm'] = false;
+            $options['core-config']['protp'] = false;
+            $options['core-config']['pubm']  = false;
+            $options['core-config']['pubp']  = false;
+         }
+
          elseif (in_array($option, array_keys(self::OUTPUT_WRITERS))) {
             $options['output-type'] = $option;
          }
