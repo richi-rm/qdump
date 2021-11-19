@@ -135,7 +135,7 @@ class Context {
     *
     * @return string
     */
-   function getUserName()
+   public static function getUserName()
    {
       // posix solution
       //
