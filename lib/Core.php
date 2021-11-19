@@ -19,15 +19,15 @@ class Core {
     * Configuration of what to add to the output (properties and methods of the
     * objects)
     *
-    * @var boolean
+    * @var array
     */
-   protected $config_add_object = [
-      'mpriv' => null, // private methods
-      'mprot' => null, // protected methods
-      'mpub'  => null, // public methods
-      'ppriv' => null, // private properties
-      'pprot' => null, // protected properties
-      'ppub'  => null  // public properties
+   protected $config = [
+      'privm' => null, // private methods
+      'privp' => null, // private properties
+      'protm' => null, // protected methods
+      'protp' => null, // protected properties
+      'pubm'  => null, // public methods
+      'pubp'  => null  // public properties
    ];
 
 
@@ -43,11 +43,11 @@ class Core {
    /**
     * Constructor.
     *
-    * @param array $config_add_object
+    * @param array $config
     */
-   public function __construct($config_add_object)
+   public function __construct($config)
    {
-      $this->config_add_object = $config_add_object;
+      $this->config = $config;
    }
 
 
@@ -160,13 +160,13 @@ class Core {
             $r['cycle'] = true;
             return $r;
          }
-         if ($this->config_add_object['mpub']) {
+         if ($this->config['pubm']) {
             foreach (get_class_methods($var) as $method_name) {
                $r['methods'][] = $method_name;
             }
             sort($r['methods']);
          }
-         if ($this->config_add_object['ppub']) {
+         if ($this->config['pubp']) {
             $this->ascending_objects_being_inspected[$object_id] = true;
             foreach (get_object_vars($var) as $property_name => &$property_value) {
                $r['properties'][$property_name] = $this->inspect($property_value, $depth + 1);

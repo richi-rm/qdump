@@ -14,17 +14,17 @@ class VarDebugger {
     * Default options.
     */
    const DEFAULT_OPTIONS = [
-      'config-add-object' => [
-         'mpriv'        => false,
-         'mprot'        => false,
-         'mpub'         => false,
-         'ppriv'        => false,
-         'pprot'        => false,
-         'ppub'         => true
+      'core-config' => [
+         'privm' => false,
+         'privp' => false,
+         'protm' => false,
+         'protp' => false,
+         'pubm'  => false,
+         'pubp'  => true
       ],
-      'output-type'     => 'stdout',
-      'render-type'     => 'html-comment',
-      'verbose'         => false
+      'output-type' => 'stdout',
+      'render-type' => 'html-comment',
+      'verbose'     => false
    ];
 
 
@@ -130,7 +130,7 @@ class VarDebugger {
       // instantiate objects
       //
       $this->context = new Context();
-      $this->core = new Core($this->options['config-add-object']);
+      $this->core = new Core($this->options['core-config']);
 
       $renderer_class = self::RENDERERS[$this->options['render-type']];
       $this->renderer = new $renderer_class();
@@ -260,18 +260,18 @@ class VarDebugger {
 
          if (0) { }
 
-         elseif ($option === '+mpriv') { $options['config-add-object']['mpriv'] = true;  }
-         elseif ($option === '+mprot') { $options['config-add-object']['mprot'] = true;  }
-         elseif ($option === '+mpub' ) { $options['config-add-object']['mpub' ] = true;  }
-         elseif ($option === '-mpriv') { $options['config-add-object']['mpriv'] = false; }
-         elseif ($option === '-mprot') { $options['config-add-object']['mprot'] = false; }
-         elseif ($option === '-mpub' ) { $options['config-add-object']['mpub' ] = false; }
-         elseif ($option === '+ppriv') { $options['config-add-object']['ppriv'] = true;  }
-         elseif ($option === '+pprot') { $options['config-add-object']['pprot'] = true;  }
-         elseif ($option === '+ppub' ) { $options['config-add-object']['ppub' ] = true;  }
-         elseif ($option === '-ppriv') { $options['config-add-object']['ppriv'] = false; }
-         elseif ($option === '-pprot') { $options['config-add-object']['pprot'] = false; }
-         elseif ($option === '-ppub' ) { $options['config-add-object']['ppub' ] = false; }
+         elseif ($option === '+privm') { $options['core-config']['privm'] = true;  }
+         elseif ($option === '+privp') { $options['core-config']['privp'] = true;  }
+         elseif ($option === '+protm') { $options['core-config']['protm'] = true;  }
+         elseif ($option === '+protp') { $options['core-config']['protp'] = true;  }
+         elseif ($option === '+pubm' ) { $options['core-config']['pubm' ] = true;  }
+         elseif ($option === '+pubp' ) { $options['core-config']['pubp' ] = true;  }
+         elseif ($option === '-privm') { $options['core-config']['privm'] = false; }
+         elseif ($option === '-privp') { $options['core-config']['privp'] = false; }
+         elseif ($option === '-protm') { $options['core-config']['protm'] = false; }
+         elseif ($option === '-protp') { $options['core-config']['protp'] = false; }
+         elseif ($option === '-pubm' ) { $options['core-config']['pubm' ] = false; }
+         elseif ($option === '-pubp' ) { $options['core-config']['pubp' ] = false; }
 
          elseif (in_array($option, array_keys(self::OUTPUT_WRITERS))) {
             $options['output-type'] = $option;
