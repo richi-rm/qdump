@@ -11,9 +11,28 @@ class VarDebugger {
 
 
    /**
-    * Default options.
+    * Default options php cli.
     */
-   const DEFAULT_OPTIONS = [
+   const DEFAULT_OPTIONS_CLI = [
+      'core-config' => [
+         'privm' => false,
+         'privp' => false,
+         'protm' => false,
+         'protp' => false,
+         'pubm'  => false,
+         'pubp'  => true
+      ],
+      'file'        => '/tmp/vardebug/*username*',
+      'output-type' => 'stdout',
+      'render-type' => 'ansi',
+      'verbose'     => false
+   ];
+
+
+   /**
+    * Default options php no-cli.
+    */
+   const DEFAULT_OPTIONS_NO_CLI = [
       'core-config' => [
          'privm' => false,
          'privp' => false,
@@ -114,11 +133,10 @@ class VarDebugger {
     */
    public function __construct($options = '')
    {
+      $this->context = new Context();
+
       $this->options = $this->parse_options($options);
 
-      // instantiate objects
-      //
-      $this->context = new Context();
       $this->core = new Core($this->options['core-config']);
 
       $renderer_class = self::RENDERERS[$this->options['render-type']];
@@ -226,7 +244,9 @@ class VarDebugger {
     */
    protected function parse_options($options_string)
    {
-      $options = self::DEFAULT_OPTIONS;
+      $options = $this->context->sapiIsCli() ?
+                    self::DEFAULT_OPTIONS_CLI :
+                    self::DEFAULT_OPTIONS_NO_CLI;
 
       if (!is_string($options_string)) {
          return $options;
