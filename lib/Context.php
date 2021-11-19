@@ -143,6 +143,14 @@ class Context {
          return posix_getpwuid(posix_geteuid())['name'];
       }
 
+      // exec() solution
+      //
+      if (function_exists('exec')) {
+         $user_name = [];
+         exec('whoami', $user_name);
+         return $user_name[0];
+      }
+
       // temporary file solution
       //
       $dir = '/tmp';
