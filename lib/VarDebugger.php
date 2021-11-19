@@ -22,16 +22,11 @@ class VarDebugger {
          'pubm'  => false,
          'pubp'  => true
       ],
+      'file'        => '/tmp/vardebug/*username*',
       'output-type' => 'stdout',
       'render-type' => 'html-comment',
       'verbose'     => false
    ];
-
-
-   /**
-    * Default render type.
-    */
-   const DEFAULT_OUTPUT_DIR_PATH = '/tmp/';
 
 
    /**
@@ -115,17 +110,11 @@ class VarDebugger {
    /**
     * Constructor.
     *
-    * @param $options render, output and verbose options
-    * @param $output_dir_path directory where the data will be saved in case
-    *                         output type == 'file'
+    * @param string $options
     */
-   public function __construct($options = '', $output_dir_path = self::DEFAULT_OUTPUT_DIR_PATH)
+   public function __construct($options = '')
    {
       $this->options = $this->parse_options($options);
-
-      if (!is_string($output_dir_path)) {
-         $output_dir_path = self::DEFAULT_OUTPUT_DIR_PATH;
-      }
 
       // instantiate objects
       //
@@ -137,21 +126,10 @@ class VarDebugger {
 
       $output_writer_class = self::OUTPUT_WRITERS[$this->options['output-type']];
       if ($this->options['output-type'] === 'file') {
-         $this->output_writer = new $output_writer_class($output_dir_path, $this->options['render-type']);
+         $this->output_writer = new $output_writer_class($this->options['file'], $this->options['render-type']);
       } else {
          $this->output_writer = new $output_writer_class();
       }
-   }
-
-
-   /**
-    * Add class methods to the output.
-    *
-    * @param boolean $add true | false
-    */
-   public function addClassMethods($add = true)
-   {
-      $this->core->addClassMethods($add);
    }
 
 
@@ -260,26 +238,6 @@ class VarDebugger {
 
          if (0) { }
 
-         elseif ($option === '+privm') { $options['core-config']['privm'] = true;  }
-         elseif ($option === '+privp') { $options['core-config']['privp'] = true;  }
-         elseif ($option === '+protm') { $options['core-config']['protm'] = true;  }
-         elseif ($option === '+protp') { $options['core-config']['protp'] = true;  }
-         elseif ($option === '+pubm' ) { $options['core-config']['pubm' ] = true;  }
-         elseif ($option === '+pubp' ) { $options['core-config']['pubp' ] = true;  }
-         elseif ($option === '-privm') { $options['core-config']['privm'] = false; }
-         elseif ($option === '-privp') { $options['core-config']['privp'] = false; }
-         elseif ($option === '-protm') { $options['core-config']['protm'] = false; }
-         elseif ($option === '-protp') { $options['core-config']['protp'] = false; }
-         elseif ($option === '-pubm' ) { $options['core-config']['pubm' ] = false; }
-         elseif ($option === '-pubp' ) { $options['core-config']['pubp' ] = false; }
-
-         elseif ($option === '+priv' ) { $options['core-config']['privm'] = true;  $options['core-config']['privp'] = true;  }
-         elseif ($option === '+prot' ) { $options['core-config']['protm'] = true;  $options['core-config']['protp'] = true;  }
-         elseif ($option === '+pub'  ) { $options['core-config']['pubm' ] = true;  $options['core-config']['pubp' ] = true;  }
-         elseif ($option === '-priv' ) { $options['core-config']['privm'] = false; $options['core-config']['privp'] = false; }
-         elseif ($option === '-prot' ) { $options['core-config']['protm'] = false; $options['core-config']['protp'] = false; }
-         elseif ($option === '-pub'  ) { $options['core-config']['pubm' ] = false; $options['core-config']['pubp' ] = false; }
-
          elseif ($option === '+all') {
             $options['core-config']['privm'] = true;
             $options['core-config']['privp'] = true;
@@ -298,8 +256,33 @@ class VarDebugger {
             $options['core-config']['pubp']  = false;
          }
 
+         elseif ($option === '+priv' ) { $options['core-config']['privm'] = true;  $options['core-config']['privp'] = true;  }
+         elseif ($option === '+prot' ) { $options['core-config']['protm'] = true;  $options['core-config']['protp'] = true;  }
+         elseif ($option === '+pub'  ) { $options['core-config']['pubm' ] = true;  $options['core-config']['pubp' ] = true;  }
+         elseif ($option === '-priv' ) { $options['core-config']['privm'] = false; $options['core-config']['privp'] = false; }
+         elseif ($option === '-prot' ) { $options['core-config']['protm'] = false; $options['core-config']['protp'] = false; }
+         elseif ($option === '-pub'  ) { $options['core-config']['pubm' ] = false; $options['core-config']['pubp' ] = false; }
+
+         elseif ($option === '+privm') { $options['core-config']['privm'] = true;  }
+         elseif ($option === '+privp') { $options['core-config']['privp'] = true;  }
+         elseif ($option === '+protm') { $options['core-config']['protm'] = true;  }
+         elseif ($option === '+protp') { $options['core-config']['protp'] = true;  }
+         elseif ($option === '+pubm' ) { $options['core-config']['pubm' ] = true;  }
+         elseif ($option === '+pubp' ) { $options['core-config']['pubp' ] = true;  }
+         elseif ($option === '-privm') { $options['core-config']['privm'] = false; }
+         elseif ($option === '-privp') { $options['core-config']['privp'] = false; }
+         elseif ($option === '-protm') { $options['core-config']['protm'] = false; }
+         elseif ($option === '-protp') { $options['core-config']['protp'] = false; }
+         elseif ($option === '-pubm' ) { $options['core-config']['pubm' ] = false; }
+         elseif ($option === '-pubp' ) { $options['core-config']['pubp' ] = false; }
+
          elseif (in_array($option, array_keys(self::OUTPUT_WRITERS))) {
             $options['output-type'] = $option;
+         }
+
+         elseif (preg_match('/^file:(.*)$/', $option, $matches)) {
+            $options['output-type'] = 'file';
+            $options['file'] = $matches[1];
          }
 
          elseif (in_array($option, array_keys(self::RENDERERS))) {

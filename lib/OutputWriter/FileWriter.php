@@ -4,6 +4,9 @@
 namespace Cachitos\VarDebug\OutputWriter;
 
 
+use Cachitos\VarDebug\Context;
+
+
 class FileWriter implements WriterInterface {
 
    /**
@@ -22,7 +25,7 @@ class FileWriter implements WriterInterface {
     * Variable that indicates whether the output directory can be written to or
     * not.
     */
-   protected $can_write_to_output_dir = false;
+   protected $output_dir_can_write = false;
 
 
    /**
@@ -59,15 +62,38 @@ class FileWriter implements WriterInterface {
     */
    public function __construct($output_dir_path, $render_type)
    {
-      $output_dir_path = rtrim($output_dir_path, '/') . '/';
-      if (!is_dir($output_dir_path) || !is_writable($output_dir_path)) {
-         $this->can_write_to_output_dir = false;
+      $this->render_type = $render_type;
+
+      $output_dir_path = trim($output_dir_path);
+      if ($output_dir_path === '') {
+         $output_dir_path = './';
       } else {
-         $this->can_write_to_output_dir = true;
+         $output_dir_path = rtrim($output_dir_path, '/') . '/';
+      }
+
+      $username = Context::getUserName();
+      if ($username === -1) {
+         $username = 'common';
+      }
+      $output_dir_path = str_replace('*username*', $username, $output_dir_path);
+
+      if (is_dir($output_dir_path) && is_writable($output_dir_path)) {
+         $this->output_dir_can_write = true;
          $this->output_dir_path = $output_dir_path;
          $this->output_file_name = $this->get_next_output_file_name();
+         return;
       }
-      $this->render_type = $render_type;
+
+      @mkdir($output_dir_path, 0777, true);
+
+      if (is_dir($output_dir_path) && is_writable($output_dir_path)) {
+         $this->output_dir_can_write = true;
+         $this->output_dir_path = $output_dir_path;
+         $this->output_file_name = $this->get_next_output_file_name();
+         return;
+      }
+
+      $this->output_dir_can_write = false;
    }
 
 
@@ -123,7 +149,7 @@ class FileWriter implements WriterInterface {
     */
    public function write($string): string
    {
-      if (!$this->can_write_to_output_dir) {
+      if (!$this->output_dir_can_write) {
          return '';
       }
       file_put_contents(
