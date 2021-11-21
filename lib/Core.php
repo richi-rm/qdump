@@ -22,6 +22,7 @@ class Core {
     * @var array
     */
    protected $config = [
+      'max-strlen' => null, // max string length
       'privm' => null, // private methods
       'privp' => null, // private properties
       'protm' => null, // protected methods
@@ -74,6 +75,85 @@ class Core {
 
 
    /**
+    * Converts the string $str to its representation in PHP and shortens it to
+    * max-strlen characters. If max-strlen is negative the string is not
+    * shortened.
+    *
+    * @param string $string
+    * @return string
+    */
+   protected function format_string($str)
+   {
+      // shorten
+      //
+      $shortened = false;
+      if ($this->config['max-strlen'] >= 0) {
+         if (mb_strlen($str) > $this->config['max-strlen']) {
+            $str = mb_substr($str, 0, $this->config['max-strlen']);
+            $shortened = true;
+         }
+      }
+
+      //
+      // format
+      //
+
+      $str = addcslashes($str, '\\"');
+
+      $str = str_replace("\x09", "\\t", $str);
+      $str = str_replace("\x0a", "\\n", $str);
+      $str = str_replace("\x0b", "\\v", $str);
+      $str = str_replace("\x0c", "\\f", $str);
+      $str = str_replace("\x0d", "\\r", $str);
+      $str = str_replace("\x1b", "\\e", $str);
+
+      $str = str_replace("\0", "\\0", $str);
+      $str = str_replace("\1", "\\1", $str);
+      $str = str_replace("\2", "\\2", $str);
+      $str = str_replace("\3", "\\3", $str);
+      $str = str_replace("\4", "\\4", $str);
+      $str = str_replace("\5", "\\5", $str);
+      $str = str_replace("\6", "\\6", $str);
+      $str = str_replace("\7", "\\7", $str);
+
+      $str = str_replace("\10", "\\10", $str);
+      $str = str_replace("\11", "\\11", $str);
+      $str = str_replace("\12", "\\12", $str);
+      $str = str_replace("\13", "\\13", $str);
+      $str = str_replace("\14", "\\14", $str);
+      $str = str_replace("\15", "\\15", $str);
+      $str = str_replace("\16", "\\16", $str);
+      $str = str_replace("\17", "\\17", $str);
+
+      $str = str_replace("\20", "\\20", $str);
+      $str = str_replace("\21", "\\21", $str);
+      $str = str_replace("\22", "\\22", $str);
+      $str = str_replace("\23", "\\23", $str);
+      $str = str_replace("\24", "\\24", $str);
+      $str = str_replace("\25", "\\25", $str);
+      $str = str_replace("\26", "\\26", $str);
+      $str = str_replace("\27", "\\27", $str);
+
+      $str = str_replace("\30", "\\30", $str);
+      $str = str_replace("\31", "\\31", $str);
+      $str = str_replace("\32", "\\32", $str);
+      $str = str_replace("\33", "\\33", $str);
+      $str = str_replace("\34", "\\34", $str);
+      $str = str_replace("\35", "\\35", $str);
+      $str = str_replace("\36", "\\36", $str);
+      $str = str_replace("\37", "\\37", $str);
+
+      $str = '"' . $str . '"';
+
+      if ($shortened) {
+         $str .= ' ...';
+      }
+
+      return $str;
+   }
+
+
+   /**
     * Returns the file and the line in which the class of the object passed as
     * a parameter is declared.
     *
@@ -121,7 +201,7 @@ class Core {
       }
 
       if (is_string($var)) {
-         return ['type' => 'string', 'length' => strlen($var), 'value' => $var];
+         return ['type' => 'string', 'length' => mb_strlen($var), 'value' => $this->format_string($var)];
       }
 
       if (is_array($var)) {

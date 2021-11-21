@@ -15,6 +15,7 @@ class VarDebugger {
     */
    const DEFAULT_OPTIONS_CLI = [
       'core-config' => [
+         'max-strlen' => 50,
          'privm' => false,
          'privp' => false,
          'protm' => false,
@@ -22,7 +23,9 @@ class VarDebugger {
          'pubm'  => false,
          'pubp'  => true
       ],
-      'file'        => '/tmp/vardebug/*username*',
+      'file-writer-config' => [
+         'file' => '/tmp/vardebug/*username*'
+      ],
       'output-type' => 'stdout',
       'render-type' => 'ansi',
       'verbose'     => false
@@ -34,6 +37,7 @@ class VarDebugger {
     */
    const DEFAULT_OPTIONS_NO_CLI = [
       'core-config' => [
+         'max-strlen' => 50,
          'privm' => false,
          'privp' => false,
          'protm' => false,
@@ -41,7 +45,9 @@ class VarDebugger {
          'pubm'  => false,
          'pubp'  => true
       ],
-      'file'        => '/tmp/vardebug/*username*',
+      'file-writer-config' => [
+         'file' => '/tmp/vardebug/*username*'
+      ],
       'output-type' => 'stdout',
       'render-type' => 'html-comment',
       'verbose'     => false
@@ -144,7 +150,10 @@ class VarDebugger {
 
       $output_writer_class = self::OUTPUT_WRITERS[$this->options['output-type']];
       if ($this->options['output-type'] === 'file') {
-         $this->output_writer = new $output_writer_class($this->options['file'], $this->options['render-type']);
+         $this->output_writer = new $output_writer_class(
+            $this->options['file-writer-config']['file'],
+            $this->options['render-type']
+         );
       } else {
          $this->output_writer = new $output_writer_class();
       }
@@ -258,6 +267,19 @@ class VarDebugger {
 
          if (0) { }
 
+         elseif (preg_match('/^max-strlen:(.*)$/', $option, $matches)) {
+            $max_strlen = trim($matches[1]);
+            if ($max_strlen === 'no-limit') {
+               $max_strlen = -1;
+            } else {
+               $max_strlen = (int)$max_strlen;
+               if ($max_strlen < 0) {
+                  $max_strlen = -1;
+               }
+            }
+            $options['core-config']['max-strlen'] = $max_strlen;
+         }
+
          elseif ($option === '+all') {
             $options['core-config']['privm'] = true;
             $options['core-config']['privp'] = true;
@@ -296,13 +318,13 @@ class VarDebugger {
          elseif ($option === '-pubm' ) { $options['core-config']['pubm' ] = false; }
          elseif ($option === '-pubp' ) { $options['core-config']['pubp' ] = false; }
 
-         elseif (in_array($option, array_keys(self::OUTPUT_WRITERS))) {
-            $options['output-type'] = $option;
-         }
-
          elseif (preg_match('/^file:(.*)$/', $option, $matches)) {
             $options['output-type'] = 'file';
-            $options['file'] = $matches[1];
+            $options['file-writer-config']['file'] = trim($matches[1]);
+         }
+
+         elseif (in_array($option, array_keys(self::OUTPUT_WRITERS))) {
+            $options['output-type'] = $option;
          }
 
          elseif (in_array($option, array_keys(self::RENDERERS))) {

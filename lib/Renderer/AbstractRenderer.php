@@ -95,7 +95,7 @@ class AbstractRenderer {
 
       if ($core_var['type'] === 'string') {
          return $this->p('type') . 'string(' . $core_var['length'] . ')' . $this->s('type') . ' ' .
-                $this->p('value') . '"' . addcslashes($core_var['value'], '"') . '"' . $this->s('value');
+                $this->p('value') . $core_var['value'] . $this->s('value');
       }
 
       if ($core_var['type'] === 'array') {
