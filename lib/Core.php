@@ -143,6 +143,8 @@ class Core {
       $str = str_replace("\36", "\\36", $str);
       $str = str_replace("\37", "\\37", $str);
 
+      $str = str_replace("\x7f", "\\177", $str);
+
       $str = '"' . $str . '"';
 
       if ($shortened) {
