@@ -64,7 +64,6 @@ class FileWriter implements WriterInterface {
    {
       $this->render_type = $render_type;
 
-      $output_dir_path = trim($output_dir_path);
       if ($output_dir_path === '') {
          $output_dir_path = './';
       } else {
