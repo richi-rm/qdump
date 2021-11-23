@@ -210,7 +210,8 @@ class AbstractRenderer {
             $array_key_formatted = (is_int($array_key) ? $array_key : '\'' . addcslashes($array_key, '\'') . '\'');
             $r .= "\n" .
                   str_repeat($this->level_prefix, $depth + 1) .
-                  '[' . $this->p('key') . $array_key_formatted . $this->s('key') . '] => ' .
+                  '[' . $this->p('key') . $array_key_formatted . $this->s('key') . ']' .
+                  ' => ' .
                   $this->renderCoreVar($array_value, $depth + 1);
          }
          return $r;
@@ -228,9 +229,11 @@ class AbstractRenderer {
          $r .= ' ' . $this->p('file-line') . $core_var['class-file-line'] . $this->s('file-line');
          foreach ($core_var['properties'] as $property) {
             $r .= "\n" .
-                  str_repeat($this->level_prefix, $depth + 1) . '->' .
+                  str_repeat($this->level_prefix, $depth + 1) .
+                  '->' .
                   $this->p('access') . $property['access'] . ':' . $this->s('access') .
-                  $this->p('property') . $property['name'] . $this->s('property') . ' = ' .
+                  $this->p('property') . $property['name'] . $this->s('property') .
+                  ' = ' .
                   $this->renderCoreVar($property['value'], $depth + 1);
          }
          foreach ($core_var['methods'] as $method) {
