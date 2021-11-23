@@ -6,14 +6,14 @@ namespace Cachitos\VarDebug\Renderer;
 
 class AbstractRenderer {
 
-
    /**
     * Configuration of renderer.
     *
     * @var array
     */
    protected $config = [
-      'max-strlen' => null // max string length
+      'binary' => null, // UTF-8 strings (binary=false) or hex strings (binary=true)
+      'max-length' => null  // maximum visible string length
    ];
 
 
@@ -37,26 +37,50 @@ class AbstractRenderer {
 
 
    /**
-    * Converts the string $str to its representation in PHP and shortens it to
-    * config['max-strlen'] characters. If ['max-strlen'] is negative the string
-    * is not shortened.
+    * If the string is UTF-8 it shortens it (if config['max-length'] >= 0)
+    * and converts the control characters to human-readable form.
+    * If the string is binary just shorten it (if config['max-length'] >= 0)
     *
-    * @param string $string
+    * @param string $str
     * @return string
     */
    protected function format_string($str)
    {
+      //
+      // binary
+      //
+
+      if ($this->config['binary']) {
+         // shorten
+         //
+         $shortened = false;
+         if ($this->config['max-length'] >= 0) {
+            if ((strlen($str)/2) > $this->config['max-length']) {
+               $str = substr($str, 0, $this->config['max-length']*2);
+               $shortened = true;
+            }
+         }
+         $str = '"' . $str . '"';
+         if ($shortened) {
+            $str .= ' ...';
+         }
+         return $str;
+      }
+
+      //
+      // UTF-8
+      //
+
       // shorten
       //
       $shortened = false;
-      if ($this->config['max-strlen'] >= 0) {
-         if (mb_strlen($str) > $this->config['max-strlen']) {
-            $str = mb_substr($str, 0, $this->config['max-strlen']);
+      if ($this->config['max-length'] >= 0) {
+         if (mb_strlen($str) > $this->config['max-length']) {
+            $str = mb_substr($str, 0, $this->config['max-length']);
             $shortened = true;
          }
       }
 
-      //
       // format
       //
 

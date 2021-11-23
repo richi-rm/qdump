@@ -9,12 +9,12 @@ use Cachitos\VarDebug\Renderer\HtmlRenderer;
 
 class VarDebugger {
 
-
    /**
-    * Default options php cli.
+    * Default options.
     */
-   const DEFAULT_OPTIONS_CLI = [
+   const DEFAULT_OPTIONS = [
       'core-config' => [
+         'binary' => false,
          'privm' => false,
          'privp' => false,
          'protm' => false,
@@ -27,31 +27,8 @@ class VarDebugger {
       ],
       'output-type' => 'stdout',
       'render-config' => [
-         'max-strlen' => 50
-      ],
-      'render-type' => 'ansi',
-      'verbose'     => false
-   ];
-
-
-   /**
-    * Default options php no-cli.
-    */
-   const DEFAULT_OPTIONS_NO_CLI = [
-      'core-config' => [
-         'privm' => false,
-         'privp' => false,
-         'protm' => false,
-         'protp' => false,
-         'pubm'  => false,
-         'pubp'  => true
-      ],
-      'file-writer-config' => [
-         'file' => '/tmp/vardebug/*username*'
-      ],
-      'output-type' => 'stdout',
-      'render-config' => [
-         'max-strlen' => 50
+         'binary' => false,
+         'max-length' => -1
       ],
       'render-type' => 'html-comment',
       'verbose'     => false
@@ -257,9 +234,10 @@ class VarDebugger {
     */
    protected function parse_options($options_string)
    {
-      $options = $this->context->sapiIsCli() ?
-                    self::DEFAULT_OPTIONS_CLI :
-                    self::DEFAULT_OPTIONS_NO_CLI;
+      $options = self::DEFAULT_OPTIONS;
+      if ($this->context->sapiIsCli()) {
+         $options['render-type'] = 'ansi';
+      }
 
       if (!is_string($options_string)) {
          return $options;
@@ -270,6 +248,11 @@ class VarDebugger {
          $option = trim($option);
 
          if (0) { }
+
+         elseif ($option === 'binary') {
+            $options['core-config']['binary'] = true;
+            $options['render-config']['binary'] = true;
+         }
 
          elseif ($option === '+all') {
             $options['core-config']['privm'] = true;
@@ -309,33 +292,30 @@ class VarDebugger {
          elseif ($option === '-pubm' ) { $options['core-config']['pubm' ] = false; }
          elseif ($option === '-pubp' ) { $options['core-config']['pubp' ] = false; }
 
-         elseif (in_array($option, array_keys(self::OUTPUT_WRITERS))) {
-            $options['output-type'] = $option;
-         }
-
          elseif (preg_match('/^file:(.*)$/', $option, $matches)) {
             $options['output-type'] = 'file';
             $options['file-writer-config']['file'] = trim($matches[1]);
          }
 
-         elseif (preg_match('/^max-strlen:(.*)$/', $option, $matches)) {
-            $max_strlen = trim($matches[1]);
-            if ($max_strlen === 'no-limit') {
-               $max_strlen = -1;
-            } else {
-               $max_strlen = (int)$max_strlen;
-               if ($max_strlen < 0) {
-                  $max_strlen = -1;
-               }
+         elseif (in_array($option, array_keys(self::OUTPUT_WRITERS))) {
+            $options['output-type'] = $option;
+         }
+
+         elseif (preg_match('/^max-length:(.*)$/', $option, $matches)) {
+            $max_length = (int)trim($matches[1]);
+            if ($max_length < 0) {
+               $max_length = -1;
             }
-            $options['render-config']['max-strlen'] = $max_strlen;
+            $options['render-config']['max-length'] = $max_length;
          }
 
          elseif (in_array($option, array_keys(self::RENDERERS))) {
             $options['render-type'] = $option;
          }
 
-         elseif ($option === 'verbose') { $options['verbose'] = true; }
+         elseif ($option === 'verbose') {
+            $options['verbose'] = true;
+         }
 
       }
 

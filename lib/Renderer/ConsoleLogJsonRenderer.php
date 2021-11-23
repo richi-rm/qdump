@@ -7,6 +7,52 @@ namespace Cachitos\VarDebug\Renderer;
 class ConsoleLogJsonRenderer extends AbstractRenderer {
 
    /**
+    * Replacement token for character 0x7f.
+    *
+    * @var string
+    */
+   protected $replacement_token_for_character_0x7f = '__vardebug.replacement_token_for_character_0x7f__';
+
+
+   /**
+    * Format all normal strings in $core_var and delete hex strings.
+    *
+    * @param array $core_var variable returned by Core::inspect()
+    * @param integer $depth depth level starting from 0
+    */
+   protected function format_strings_core_var(&$core_var, $depth = 0)
+   {
+      if ($core_var['type'] === 'string') {
+         if ($this->config['max-length'] >= 0) {
+            if ($core_var['length'] > $this->config['max-length']) {
+               if ($this->config['binary']) {
+                  $core_var['value'] = substr($core_var['value'], 0, $this->config['max-length']*2) . '...';
+               } else {
+                  $core_var['value'] = mb_substr($core_var['value'], 0, $this->config['max-length']) . '...';
+               }
+            }
+         }
+         if (!$this->config['binary']) {
+            $core_var['value'] = str_replace(chr(0x7f), $this->replacement_token_for_character_0x7f, $core_var['value']);
+         }
+         return;
+      }
+      if ($core_var['type'] === 'array') {
+         foreach ($core_var['elements'] as $array_key => &$array_value) {
+            $this->format_strings_core_var($array_value, $depth + 1);
+         }
+         return;
+      }
+      if ($core_var['type'] === 'object') {
+         foreach ($core_var['properties'] as &$property) {
+            $this->format_strings_core_var($property['value'], $depth + 1);
+         }
+         return;
+      }
+   }
+
+
+   /**
     * Returns a string that is suffixed to the content of the capture.
     *
     * @return string
@@ -49,7 +95,15 @@ class ConsoleLogJsonRenderer extends AbstractRenderer {
     */
    public function renderCoreVar($core_var, $not_used = 0)
    {
-      return json_encode($core_var);
+      $this->format_strings_core_var($core_var);
+
+      $json = json_encode($core_var);
+
+      if (!$this->config['binary']) {
+         $json = str_replace($this->replacement_token_for_character_0x7f, '\\u007f', $json);
+      }
+
+      return $json;
    }
 
 

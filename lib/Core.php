@@ -22,6 +22,7 @@ class Core {
     * @var array
     */
    protected $config = [
+      'binary' => null, // UTF-8 strings (binary=false) or hex strings (binary=true)
       'privm' => null, // private methods
       'privp' => null, // private properties
       'protm' => null, // protected methods
@@ -103,7 +104,6 @@ class Core {
     */
    public function inspect(&$var, $depth = 0)
    {
-
       if ($var === null) {
          return ['type' => 'null', 'value' => 'null'];
       }
@@ -121,7 +121,15 @@ class Core {
       }
 
       if (is_string($var)) {
-         return ['type' => 'string', 'length' => mb_strlen($var), 'value' => $var];
+         if ($this->config['binary']) {
+            return ['type' => 'string', 'length' => strlen($var), 'value' => bin2hex($var)];
+         } else {
+            $substitute_character = mb_substitute_character();
+            mb_substitute_character(0x3f);
+            $string = mb_convert_encoding($var, 'UTF-8', 'UTF-8'); // clean up
+            mb_substitute_character($substitute_character);
+            return ['type' => 'string', 'length' => mb_strlen($string), 'value' => $string];
+         }
       }
 
       if (is_array($var)) {
