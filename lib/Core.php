@@ -122,7 +122,13 @@ class Core {
 
       if (is_string($var)) {
          if ($this->config['binary']) {
-            return ['type' => 'string', 'length' => strlen($var), 'value' => bin2hex($var)];
+            $string = '';
+            $string_length = strlen($var);
+            for ($i=0; $i<$string_length; $i++) {
+               $string .= str_pad(strtoupper(dechex(ord(substr($var, $i, 1)))), 2, '0', STR_PAD_LEFT) . ' ';
+            }
+            $string = trim($string);
+            return ['type' => 'string', 'length' => $string_length, 'value' => $string];
          } else {
             $substitute_character = mb_substitute_character();
             mb_substitute_character(0x3f);
