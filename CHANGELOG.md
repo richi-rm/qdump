@@ -5,6 +5,10 @@ Tags: Added | Changed | Deprecated | Fixed | Removed | Security | Yanked
 
 ## [v0.4.6-alpha] - 2021-11-24
 
+### Added
+
+ - Añadidos los formateadores de cadenas AsciiFormatter y UTF8Formatter.
+
 ### Changed
 
  - Cambiado el nombre del renderer ansi por color-text y cambiada la clase
