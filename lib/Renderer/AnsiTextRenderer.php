@@ -4,7 +4,7 @@
 namespace Cachitos\VarDebug\Renderer;
 
 
-class AnsiRenderer extends AbstractRenderer {
+class AnsiTextRenderer extends AbstractRenderer {
 
    /**
     * ANSI color escape sequences.

@@ -49,7 +49,7 @@ class VarDebugger {
     * Render identifiers and corresponding handler classes.
     */
    const RENDERERS = [
-      'ansi'             => 'Cachitos\VarDebug\Renderer\AnsiRenderer',
+      'color-text'       => 'Cachitos\VarDebug\Renderer\AnsiTextRenderer',
       'console-log-json' => 'Cachitos\VarDebug\Renderer\ConsoleLogJsonRenderer',
       'html'             => 'Cachitos\VarDebug\Renderer\HtmlRenderer',
       'html-comment'     => 'Cachitos\VarDebug\Renderer\HtmlCommentRenderer',
@@ -236,7 +236,7 @@ class VarDebugger {
    {
       $options = self::DEFAULT_OPTIONS;
       if ($this->context->sapiIsCli()) {
-         $options['render-type'] = 'ansi';
+         $options['render-type'] = 'color-text';
       }
 
       if (!is_string($options_string)) {

@@ -3,6 +3,14 @@
 Tags: Added | Changed | Deprecated | Fixed | Removed | Security | Yanked
 
 
+## [v0.4.6-alpha] - 2021-11-24
+
+### Changed
+
+ - Cambiado el nombre del renderer ansi por color-text y cambiada la clase
+   AnsiRenderer por AnsiTextRenderer.
+
+
 ## [v0.4.5-alpha] - 2021-11-23
 
 ### Added
