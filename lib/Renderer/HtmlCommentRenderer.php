@@ -4,7 +4,7 @@
 namespace Cachitos\VarDebug\Renderer;
 
 
-class HtmlCommentRenderer extends AbstractRenderer {
+class HtmlCommentRenderer extends Renderer {
 
    /**
     * Data prefixes.

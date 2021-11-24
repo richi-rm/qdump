@@ -4,7 +4,7 @@
 namespace Cachitos\VarDebug\Renderer;
 
 
-class PlainTextRenderer extends AbstractRenderer {
+class PlainTextRenderer extends Renderer {
 
    /**
     * Data prefixes.

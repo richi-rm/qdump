@@ -4,7 +4,7 @@
 namespace Cachitos\VarDebug\Renderer;
 
 
-class HtmlRenderer extends AbstractRenderer {
+class HtmlRenderer extends Renderer {
 
    /**
     * CSS styles.
