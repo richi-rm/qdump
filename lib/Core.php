@@ -22,7 +22,6 @@ class Core {
     * @var array
     */
    protected $config = [
-      'binary' => null, // UTF-8 strings (binary=false) or hex strings (binary=true)
       'privm' => null, // private methods
       'privp' => null, // private properties
       'protm' => null, // protected methods
@@ -121,21 +120,7 @@ class Core {
       }
 
       if (is_string($var)) {
-         if ($this->config['binary']) {
-            $string = '';
-            $string_length = strlen($var);
-            for ($i=0; $i<$string_length; $i++) {
-               $string .= str_pad(strtoupper(dechex(ord(substr($var, $i, 1)))), 2, '0', STR_PAD_LEFT) . ' ';
-            }
-            $string = trim($string);
-            return ['type' => 'string', 'length' => $string_length, 'value' => $string];
-         } else {
-            $substitute_character = mb_substitute_character();
-            mb_substitute_character(0x3f);
-            $string = mb_convert_encoding($var, 'UTF-8', 'UTF-8'); // clean up
-            mb_substitute_character($substitute_character);
-            return ['type' => 'string', 'length' => mb_strlen($string), 'value' => $string];
-         }
+         return ['type' => 'string', 'value' => $var];
       }
 
       if (is_array($var)) {
