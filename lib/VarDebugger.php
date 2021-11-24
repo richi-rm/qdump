@@ -14,7 +14,6 @@ class VarDebugger {
     */
    const DEFAULT_CONFIG = [
       'core-config' => [
-         'binary' => false,
          'privm' => false,
          'privp' => false,
          'protm' => false,
@@ -26,8 +25,9 @@ class VarDebugger {
          'file' => '/tmp/vardebug/*username*'
       ],
       'render-config' => [
-         'binary' => false,
-         'max-length' => -1
+         'byte-format' => 'octal',
+         'max-length' => -1,
+         'string-format' => 'utf-8'
       ],
       'vardebugger-config' => [
          'output-type' => 'stdout',
@@ -35,6 +35,12 @@ class VarDebugger {
          'verbose'     => false
       ]
    ];
+
+
+   /**
+    * Byte formats.
+    */
+   const BYTE_FORMATS = [ 'decimal', 'hex-lower', 'hex-upper', 'octal' ];
 
 
    /**
@@ -57,6 +63,12 @@ class VarDebugger {
       'html-comment'     => 'Cachitos\VarDebug\Renderer\HtmlCommentRenderer',
       'plain-text'       => 'Cachitos\VarDebug\Renderer\PlainTextRenderer'
    ];
+
+
+   /**
+    * String formats.
+    */
+   const STRING_FORMATS = [ 'ascii', 'bit', 'byte', 'utf-8' ];
 
 
    /**
@@ -250,11 +262,6 @@ class VarDebugger {
 
          if (0) { }
 
-         elseif ($option === 'binary') {
-            $config['core-config']['binary'] = true;
-            $config['render-config']['binary'] = true;
-         }
-
          elseif ($option === '+all') {
             $config['core-config']['privm'] = true;
             $config['core-config']['privp'] = true;
@@ -298,12 +305,20 @@ class VarDebugger {
             $config['file-writer-config']['file'] = trim($matches[1]);
          }
 
+         elseif (in_array($option, self::BYTE_FORMATS)) {
+            $config['render-config']['byte-format'] = $option;
+         }
+
          elseif (preg_match('/^max-length:(.*)$/', $option, $matches)) {
             $max_length = (int)trim($matches[1]);
             if ($max_length < 0) {
                $max_length = -1;
             }
             $config['render-config']['max-length'] = $max_length;
+         }
+
+         elseif (in_array($option, self::STRING_FORMATS)) {
+            $config['render-config']['string-format'] = $option;
          }
 
          elseif (in_array($option, array_keys(self::OUTPUT_WRITERS))) {
