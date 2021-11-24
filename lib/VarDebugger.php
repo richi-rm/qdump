@@ -10,9 +10,9 @@ use Cachitos\VarDebug\Renderer\HtmlRenderer;
 class VarDebugger {
 
    /**
-    * Default options.
+    * Default configuration.
     */
-   const DEFAULT_OPTIONS = [
+   const DEFAULT_CONFIG = [
       'core-config' => [
          'binary' => false,
          'privm' => false,
@@ -25,13 +25,15 @@ class VarDebugger {
       'file-writer-config' => [
          'file' => '/tmp/vardebug/*username*'
       ],
-      'output-type' => 'stdout',
       'render-config' => [
          'binary' => false,
          'max-length' => -1
       ],
-      'render-type' => 'html-comment',
-      'verbose'     => false
+      'vardebugger-config' => [
+         'output-type' => 'stdout',
+         'render-type' => 'html-comment',
+         'verbose'     => false
+      ]
    ];
 
 
@@ -66,6 +68,14 @@ class VarDebugger {
 
 
    /**
+    * Configuration.
+    *
+    * @var array
+    */
+   protected $config = null;
+
+
+   /**
     * Context.
     *
     * @var Context
@@ -87,14 +97,6 @@ class VarDebugger {
     * @var boolean
     */
    protected $first_dump_done = false;
-
-
-   /**
-    * Options specified when calling constructor.
-    *
-    * @var array
-    */
-   protected $options = null;
 
 
    /**
@@ -122,18 +124,18 @@ class VarDebugger {
    {
       $this->context = new Context();
 
-      $this->options = $this->parse_options($options);
+      $this->config = $this->parse_options($options);
 
-      $this->core = new Core($this->options['core-config']);
+      $this->core = new Core($this->config['core-config']);
 
-      $renderer_class = self::RENDERERS[$this->options['render-type']];
-      $this->renderer = new $renderer_class($this->options['render-config']);
+      $renderer_class = self::RENDERERS[$this->config['vardebugger-config']['render-type']];
+      $this->renderer = new $renderer_class($this->config['render-config']);
 
-      $output_writer_class = self::OUTPUT_WRITERS[$this->options['output-type']];
-      if ($this->options['output-type'] === 'file') {
+      $output_writer_class = self::OUTPUT_WRITERS[$this->config['vardebugger-config']['output-type']];
+      if ($this->config['vardebugger-config']['output-type'] === 'file') {
          $this->output_writer = new $output_writer_class(
-            $this->options['file-writer-config']['file'],
-            $this->options['render-type']
+            $this->config['file-writer-config']['file'],
+            $this->config['vardebugger-config']['render-type']
          );
       } else {
          $this->output_writer = new $output_writer_class();
@@ -161,7 +163,7 @@ class VarDebugger {
       // capture
       //
       $capture = '';
-      if ($this->options['verbose']) {
+      if ($this->config['vardebugger-config']['verbose']) {
          $capture .= $this->renderer->preRender($this->capture_sequence_number,
                                                 $this->context->getTraceFileLine(),
                                                 $this->context->getElapsedTime());
@@ -203,7 +205,7 @@ class VarDebugger {
       // capture
       //
       $capture = '';
-      if ($this->options['verbose']) {
+      if ($this->config['vardebugger-config']['verbose']) {
          $capture .= $this->renderer->preRender($this->capture_sequence_number,
                                                 $this->context->getTraceFileLine(),
                                                 $this->context->getElapsedTime());
@@ -226,79 +228,74 @@ class VarDebugger {
 
 
    /**
-    * Function to parse the first parameter of the constructor (VarDebugger
-    * options).
+    * Function to parse the first parameter of the constructor.
     *
-    * @param string $options_string
+    * @param string $options
     * @return array
     */
-   protected function parse_options($options_string)
+   protected function parse_options($options)
    {
-      $options = self::DEFAULT_OPTIONS;
+      $config = self::DEFAULT_CONFIG;
       if ($this->context->sapiIsCli()) {
-         $options['render-type'] = 'color-text';
+         $config['vardebugger-config']['render-type'] = 'color-text';
       }
 
-      if (!is_string($options_string)) {
-         return $options;
+      if (!is_string($options)) {
+         return $config;
       }
 
-      foreach (explode(',', $options_string) as $option) {
+      foreach (explode(',', $options) as $option) {
 
          $option = trim($option);
 
          if (0) { }
 
          elseif ($option === 'binary') {
-            $options['core-config']['binary'] = true;
-            $options['render-config']['binary'] = true;
+            $config['core-config']['binary'] = true;
+            $config['render-config']['binary'] = true;
          }
 
          elseif ($option === '+all') {
-            $options['core-config']['privm'] = true;
-            $options['core-config']['privp'] = true;
-            $options['core-config']['protm'] = true;
-            $options['core-config']['protp'] = true;
-            $options['core-config']['pubm']  = true;
-            $options['core-config']['pubp']  = true;
+            $config['core-config']['privm'] = true;
+            $config['core-config']['privp'] = true;
+            $config['core-config']['protm'] = true;
+            $config['core-config']['protp'] = true;
+            $config['core-config']['pubm']  = true;
+            $config['core-config']['pubp']  = true;
          }
 
          elseif ($option === '-all') {
-            $options['core-config']['privm'] = false;
-            $options['core-config']['privp'] = false;
-            $options['core-config']['protm'] = false;
-            $options['core-config']['protp'] = false;
-            $options['core-config']['pubm']  = false;
-            $options['core-config']['pubp']  = false;
+            $config['core-config']['privm'] = false;
+            $config['core-config']['privp'] = false;
+            $config['core-config']['protm'] = false;
+            $config['core-config']['protp'] = false;
+            $config['core-config']['pubm']  = false;
+            $config['core-config']['pubp']  = false;
          }
 
-         elseif ($option === '+priv' ) { $options['core-config']['privm'] = true;  $options['core-config']['privp'] = true;  }
-         elseif ($option === '+prot' ) { $options['core-config']['protm'] = true;  $options['core-config']['protp'] = true;  }
-         elseif ($option === '+pub'  ) { $options['core-config']['pubm' ] = true;  $options['core-config']['pubp' ] = true;  }
-         elseif ($option === '-priv' ) { $options['core-config']['privm'] = false; $options['core-config']['privp'] = false; }
-         elseif ($option === '-prot' ) { $options['core-config']['protm'] = false; $options['core-config']['protp'] = false; }
-         elseif ($option === '-pub'  ) { $options['core-config']['pubm' ] = false; $options['core-config']['pubp' ] = false; }
+         elseif ($option === '+priv' ) { $config['core-config']['privm'] = true;  $config['core-config']['privp'] = true;  }
+         elseif ($option === '+prot' ) { $config['core-config']['protm'] = true;  $config['core-config']['protp'] = true;  }
+         elseif ($option === '+pub'  ) { $config['core-config']['pubm' ] = true;  $config['core-config']['pubp' ] = true;  }
+         elseif ($option === '-priv' ) { $config['core-config']['privm'] = false; $config['core-config']['privp'] = false; }
+         elseif ($option === '-prot' ) { $config['core-config']['protm'] = false; $config['core-config']['protp'] = false; }
+         elseif ($option === '-pub'  ) { $config['core-config']['pubm' ] = false; $config['core-config']['pubp' ] = false; }
 
-         elseif ($option === '+privm') { $options['core-config']['privm'] = true;  }
-         elseif ($option === '+privp') { $options['core-config']['privp'] = true;  }
-         elseif ($option === '+protm') { $options['core-config']['protm'] = true;  }
-         elseif ($option === '+protp') { $options['core-config']['protp'] = true;  }
-         elseif ($option === '+pubm' ) { $options['core-config']['pubm' ] = true;  }
-         elseif ($option === '+pubp' ) { $options['core-config']['pubp' ] = true;  }
-         elseif ($option === '-privm') { $options['core-config']['privm'] = false; }
-         elseif ($option === '-privp') { $options['core-config']['privp'] = false; }
-         elseif ($option === '-protm') { $options['core-config']['protm'] = false; }
-         elseif ($option === '-protp') { $options['core-config']['protp'] = false; }
-         elseif ($option === '-pubm' ) { $options['core-config']['pubm' ] = false; }
-         elseif ($option === '-pubp' ) { $options['core-config']['pubp' ] = false; }
+         elseif ($option === '+privm') { $config['core-config']['privm'] = true;  }
+         elseif ($option === '+privp') { $config['core-config']['privp'] = true;  }
+         elseif ($option === '+protm') { $config['core-config']['protm'] = true;  }
+         elseif ($option === '+protp') { $config['core-config']['protp'] = true;  }
+         elseif ($option === '+pubm' ) { $config['core-config']['pubm' ] = true;  }
+         elseif ($option === '+pubp' ) { $config['core-config']['pubp' ] = true;  }
+         elseif ($option === '-privm') { $config['core-config']['privm'] = false; }
+         elseif ($option === '-privp') { $config['core-config']['privp'] = false; }
+         elseif ($option === '-protm') { $config['core-config']['protm'] = false; }
+         elseif ($option === '-protp') { $config['core-config']['protp'] = false; }
+         elseif ($option === '-pubm' ) { $config['core-config']['pubm' ] = false; }
+         elseif ($option === '-pubp' ) { $config['core-config']['pubp' ] = false; }
 
          elseif (preg_match('/^file:(.*)$/', $option, $matches)) {
-            $options['output-type'] = 'file';
-            $options['file-writer-config']['file'] = trim($matches[1]);
-         }
-
-         elseif (in_array($option, array_keys(self::OUTPUT_WRITERS))) {
-            $options['output-type'] = $option;
+            $config['vardebugger-config']['output-type'] = 'file';
+            $config['file-writer-config']['file'] = trim($matches[1]);
          }
 
          elseif (preg_match('/^max-length:(.*)$/', $option, $matches)) {
@@ -306,20 +303,24 @@ class VarDebugger {
             if ($max_length < 0) {
                $max_length = -1;
             }
-            $options['render-config']['max-length'] = $max_length;
+            $config['render-config']['max-length'] = $max_length;
+         }
+
+         elseif (in_array($option, array_keys(self::OUTPUT_WRITERS))) {
+            $config['vardebugger-config']['output-type'] = $option;
          }
 
          elseif (in_array($option, array_keys(self::RENDERERS))) {
-            $options['render-type'] = $option;
+            $config['vardebugger-config']['render-type'] = $option;
          }
 
          elseif ($option === 'verbose') {
-            $options['verbose'] = true;
+            $config['vardebugger-config']['verbose'] = true;
          }
 
       }
 
-      return $options;
+      return $config;
    }
 
 
@@ -332,10 +333,10 @@ class VarDebugger {
    protected function initial_write(): string
    {
       $written = '';
-      if ($this->options['render-type'] === 'html') {
+      if ($this->config['vardebugger-config']['render-type'] === 'html') {
          $written .= $this->output_writer->write(HtmlRenderer::CSS_STYLES . "\n");
       }
-      if ($this->options['verbose']) {
+      if ($this->config['vardebugger-config']['verbose']) {
          $header_lines = [$this->context->getEnvironmentInfo()];
          if (!$this->context->sapiIsCli()) {
             $header_lines[] = $this->context->getRequestInfo();
