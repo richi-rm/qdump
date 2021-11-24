@@ -9,6 +9,9 @@ Tags: Added | Changed | Deprecated | Fixed | Removed | Security | Yanked
 
  - Cambiado el nombre del renderer ansi por color-text y cambiada la clase
    AnsiRenderer por AnsiTextRenderer.
+ - Refactorizada la configuración de VarDebugger.
+ - Ahora no se usa bin2hex() en la opción binary, sino una función manual para
+   que los bytes estén separados por espacios en blanco.
 
 
 ## [v0.4.5-alpha] - 2021-11-23

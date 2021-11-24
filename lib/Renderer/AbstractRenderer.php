@@ -41,10 +41,11 @@ class AbstractRenderer {
     * and converts the control characters to human-readable form.
     * If the string is binary just shorten it (if config['max-length'] >= 0)
     *
+    * @param int $length
     * @param string $str
     * @return string
     */
-   protected function format_string($str)
+   protected function format_string($length, $str)
    {
       //
       // binary
@@ -54,11 +55,9 @@ class AbstractRenderer {
          // shorten
          //
          $shortened = false;
-         if ($this->config['max-length'] >= 0) {
-            if ((strlen($str)/2) > $this->config['max-length']) {
-               $str = substr($str, 0, $this->config['max-length']*2);
-               $shortened = true;
-            }
+         if ($this->config['max-length'] >= 0 && $length > $this->config['max-length']) {
+            $str = trim(substr($str, 0, $this->config['max-length']*3));
+            $shortened = true;
          }
          $str = '"' . $str . '"';
          if ($shortened) {
@@ -74,14 +73,12 @@ class AbstractRenderer {
       // shorten
       //
       $shortened = false;
-      if ($this->config['max-length'] >= 0) {
-         if (mb_strlen($str) > $this->config['max-length']) {
-            $str = mb_substr($str, 0, $this->config['max-length']);
-            $shortened = true;
-         }
+      if ($this->config['max-length'] >= 0 && $length > $this->config['max-length']) {
+         $str = mb_substr($str, 0, $this->config['max-length']);
+         $shortened = true;
       }
 
-      // format
+      // format (replace ASCII characters by their human-readable form)
       //
 
       $str = addcslashes($str, '\\"');
@@ -221,7 +218,7 @@ class AbstractRenderer {
 
       if ($core_var['type'] === 'string') {
          return $this->p('type') . 'string(' . $core_var['length'] . ')' . $this->s('type') . ' ' .
-                $this->p('value') . $this->format_string($core_var['value']) . $this->s('value');
+                $this->p('value') . $this->format_string($core_var['length'], $core_var['value']) . $this->s('value');
       }
 
       if ($core_var['type'] === 'array') {

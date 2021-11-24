@@ -15,7 +15,7 @@ class ConsoleLogJsonRenderer extends AbstractRenderer {
 
 
    /**
-    * Format all normal strings in $core_var and delete hex strings.
+    * Cut the strings and replace the character 0x7f if they are not binary.
     *
     * @param array $core_var variable returned by Core::inspect()
     * @param integer $depth depth level starting from 0
@@ -23,13 +23,11 @@ class ConsoleLogJsonRenderer extends AbstractRenderer {
    protected function format_strings_core_var(&$core_var, $depth = 0)
    {
       if ($core_var['type'] === 'string') {
-         if ($this->config['max-length'] >= 0) {
-            if ($core_var['length'] > $this->config['max-length']) {
-               if ($this->config['binary']) {
-                  $core_var['value'] = substr($core_var['value'], 0, $this->config['max-length']*2) . '...';
-               } else {
-                  $core_var['value'] = mb_substr($core_var['value'], 0, $this->config['max-length']) . '...';
-               }
+         if ($this->config['max-length'] >= 0 && $core_var['length'] > $this->config['max-length']) {
+            if ($this->config['binary']) {
+               $core_var['value'] = substr($core_var['value'], 0, $this->config['max-length']*3) . '...';
+            } else {
+               $core_var['value'] = mb_substr($core_var['value'], 0, $this->config['max-length']) . '...';
             }
          }
          if (!$this->config['binary']) {
