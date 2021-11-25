@@ -25,7 +25,7 @@ class VarDebugger {
          'file' => '/tmp/vardebug/*username*'
       ],
       'render-config' => [
-         'byte-format' => 'hexuc',
+         'byte-format' => 'hexlc',
          'max-length' => -1,
          'string-format' => 'utf-8'
       ],

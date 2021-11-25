@@ -117,7 +117,7 @@ class Renderer {
       }
 
       if ($core_var['type'] === 'null') {
-         return $this->p('value') . 'null' . $this->s('value');
+         return $this->p('value') . $core_var['value'] . $this->s('value');
       }
 
       if ($core_var['type'] === 'boolean') {
