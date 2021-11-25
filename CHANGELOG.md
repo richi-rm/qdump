@@ -8,6 +8,7 @@ Tags: Added | Changed | Deprecated | Fixed | Removed | Security | Yanked
 
  - Añadido el formateador de cadenas BytesFormatter.
  - Añadido el formateador de cadenas JsonFormatter.
+ - Añadido el formateador de cadenas ISO88591Formatter.
 
 ### Changed
 

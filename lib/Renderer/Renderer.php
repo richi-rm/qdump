@@ -10,10 +10,11 @@ class Renderer {
     * String formatters.
     */
    const STRING_FORMATTERS = [
-      'ascii' => 'Cachitos\VarDebug\StringFormatter\AsciiFormatter',
-      'bytes' => 'Cachitos\VarDebug\StringFormatter\BytesFormatter',
-      'json'  => 'Cachitos\VarDebug\StringFormatter\JsonFormatter',
-      'utf-8' => 'Cachitos\VarDebug\StringFormatter\UTF8Formatter'
+      'ascii'      => 'Cachitos\VarDebug\StringFormatter\AsciiFormatter',
+      'bytes'      => 'Cachitos\VarDebug\StringFormatter\BytesFormatter',
+      'iso-8859-1' => 'Cachitos\VarDebug\StringFormatter\ISO88591Formatter',
+      'json'       => 'Cachitos\VarDebug\StringFormatter\JsonFormatter',
+      'utf-8'      => 'Cachitos\VarDebug\StringFormatter\UTF8Formatter'
    ];
 
 

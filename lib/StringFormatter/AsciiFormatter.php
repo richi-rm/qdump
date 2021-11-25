@@ -6,10 +6,10 @@ namespace Cachitos\VarDebug\StringFormatter;
 
 /**
  * ASCII:
- *    00..1f : control characters
- *    20..7e : printable characters
- *    7f     : control character
- *    80..ff : invalid
+ *    00..1F : control characters
+ *    20..7E : printable characters
+ *    7F     : control character
+ *    80..FF : invalid
  */
 class AsciiFormatter extends AbstractStringFormatter {
 
@@ -31,19 +31,19 @@ class AsciiFormatter extends AbstractStringFormatter {
 
       if (0) { }
       elseif ($this->byte_format == 'hexlc') {
-         for ($c=0; $c<32; $c++) {
+         for ($c=0; $c<=0x1f; $c++) {
             $string = str_replace(chr($c), "\\x" . strtolower(dechex($c)), $string);
          }
          $string = str_replace(chr(0x7f), "\\x7f", $string);
       }
       elseif ($this->byte_format == 'hexuc') {
-         for ($c=0; $c<32; $c++) {
+         for ($c=0; $c<=0x1f; $c++) {
             $string = str_replace(chr($c), "\\X" . strtoupper(dechex($c)), $string);
          }
          $string = str_replace(chr(0x7f), "\\X7F", $string);
       }
       else {
-         for ($c=0; $c<32; $c++) {
+         for ($c=0; $c<=0x1f; $c++) {
             $string = str_replace(chr($c), "\\" . decoct($c), $string);
          }
          $string = str_replace(chr(0x7f), "\\177", $string);

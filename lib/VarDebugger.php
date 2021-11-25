@@ -68,7 +68,7 @@ class VarDebugger {
    /**
     * String formats.
     */
-   const STRING_FORMATS = [ 'ascii', 'bytes', 'json', 'utf-8' ];
+   const STRING_FORMATS = [ 'ascii', 'bytes', 'iso-8859-1', 'json', 'utf-8' ];
 
 
    /**

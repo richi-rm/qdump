@@ -5,13 +5,13 @@ namespace Cachitos\VarDebug\StringFormatter;
 
 
 /**
- * UTF-8 (1 byte):
+ * ISO-8859-1:
  *    00..1F : control characters
  *    20..7E : printable characters
- *    7F     : control character
- *    80..FF : invalid
+ *    7F..A0 : control character
+ *    A1..FF : printable characters
  */
-class UTF8Formatter extends AbstractStringFormatter {
+class ISO88591Formatter extends AbstractStringFormatter {
 
    /**
     * Escapes the control characters and " and \
@@ -34,25 +34,34 @@ class UTF8Formatter extends AbstractStringFormatter {
          for ($c=0; $c<=0x1f; $c++) {
             $string = str_replace(chr($c), "\\x" . strtolower(dechex($c)), $string);
          }
-         $string = str_replace(chr(0x7f), "\\x7f", $string);
+         for ($c=0x7f; $c<=0xa0; $c++) {
+            $string = str_replace(chr($c), "\\x" . strtolower(dechex($c)), $string);
+         }
+         $string = str_replace(chr(0xad), "\\xad", $string);
       }
       elseif ($this->byte_format == 'hexuc') {
          for ($c=0; $c<=0x1f; $c++) {
             $string = str_replace(chr($c), "\\X" . strtoupper(dechex($c)), $string);
          }
-         $string = str_replace(chr(0x7f), "\\X7F", $string);
+         for ($c=0x7f; $c<=0xa0; $c++) {
+            $string = str_replace(chr($c), "\\X" . strtoupper(dechex($c)), $string);
+         }
+         $string = str_replace(chr(0xad), "\\XAD", $string);
       }
       else {
          for ($c=0; $c<=0x1f; $c++) {
             $string = str_replace(chr($c), "\\" . decoct($c), $string);
          }
-         $string = str_replace(chr(0x7f), "\\177", $string);
+         for ($c=0x7f; $c<=0xa0; $c++) {
+            $string = str_replace(chr($c), "\\" . decoct($c), $string);
+         }
+         $string = str_replace(chr(0xad), "\\255", $string);
       }
    }
 
 
    /**
-    * Returns a shortened and formatted UTF-8 version of $raw_string.
+    * Returns a shortened and formatted ISO-8859-1 version of $raw_string.
     * Returns the length of the string in $length.
     *
     * @param string $raw_string
@@ -63,26 +72,23 @@ class UTF8Formatter extends AbstractStringFormatter {
    {
       $string = $raw_string;
 
-      // clean up UTF-8
-      //
-      $substitute_character = mb_substitute_character();
-      mb_substitute_character(ord('?'));
-      $string = mb_convert_encoding($string, 'UTF-8', 'UTF-8');
-      mb_substitute_character($substitute_character);
-
       // string length
       //
-      $length = mb_strlen($string);
+      $length = strlen($string);
 
       // shorten
       //
       if ($this->max_length >= 0 && $length > $this->max_length) {
-         $string = mb_substr($string, 0, $this->max_length) . '...';
+         $string = substr($string, 0, $this->max_length) . '...';
       }
 
       // escape
       //
       $this->escape($string);
+
+      // convert to UTF-8 to display the characters
+      //
+      $string = mb_convert_encoding($string, 'UTF-8', 'ISO-8859-1');
 
       // double quotation marks
       //
