@@ -25,7 +25,7 @@ class VarDebugger {
          'file' => '/tmp/vardebug/*username*'
       ],
       'render-config' => [
-         'byte-format' => 'hex-lower',
+         'byte-format' => 'hexlc',
          'max-length' => -1,
          'string-format' => 'utf-8'
       ],
@@ -40,7 +40,7 @@ class VarDebugger {
    /**
     * Byte formats.
     */
-   const BYTE_FORMATS = [ 'bits', 'decimal', 'hex-lower', 'hex-upper', 'octal' ];
+   const BYTE_FORMATS = [ 'bits', 'decimal', 'hexlc', 'hexuc', 'octal' ];
 
 
    /**
@@ -310,7 +310,7 @@ class VarDebugger {
          }
 
          elseif ($option === 'hex') {
-            $config['render-config']['byte-format'] = 'hex-lower';
+            $config['render-config']['byte-format'] = 'hexlc';
          }
 
          elseif (preg_match('/^([0-9]+)$/', $option, $matches)) {

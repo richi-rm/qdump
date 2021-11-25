@@ -9,6 +9,11 @@ Tags: Added | Changed | Deprecated | Fixed | Removed | Security | Yanked
  - Añadido el formateador de cadenas BytesFormatter.
  - Añadido el formateador de cadenas JsonFormatter.
 
+### Changed
+
+ - Cambiadas las opciones hex-lower y hex-upper por hexlc y hexuc.
+ - Refactorizados AsciiFormatter y UTF8Formatter.
+
 ### Removed
 
  - Eliminada la opción max-length. Ahora se puede especificar una longitud

@@ -43,10 +43,10 @@ class BytesFormatter extends AbstractStringFormatter {
          elseif ($this->byte_format === 'decimal') {
             $byte = str_pad($char, 3, '0', STR_PAD_LEFT);
          }
-         elseif ($this->byte_format === 'hex-lower') {
+         elseif ($this->byte_format === 'hexlc') {
             $byte = str_pad(strtolower(dechex($char)), 2, '0', STR_PAD_LEFT);
          }
-         elseif ($this->byte_format === 'hex-upper') {
+         elseif ($this->byte_format === 'hexuc') {
             $byte = str_pad(strtoupper(dechex($char)), 2, '0', STR_PAD_LEFT);
          }
          else {
