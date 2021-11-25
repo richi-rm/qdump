@@ -7,7 +7,7 @@ namespace Cachitos\VarDebug\StringFormatter;
 class UTF8Formatter extends AbstractStringFormatter {
 
    /**
-    * Returns a shortened and formatted version of $raw_string.
+    * Returns a shortened and formatted UTF-8 version of $raw_string.
     * Returns the length of the string in $length.
     *
     * @param string $raw_string
@@ -32,6 +32,10 @@ class UTF8Formatter extends AbstractStringFormatter {
       if ($this->max_length >= 0 && $length > $this->max_length) {
          $string = mb_substr($string, 0, $this->max_length) . '...';
       }
+
+      //
+      // format
+      //
 
       // escaped characters
       //

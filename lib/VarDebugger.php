@@ -25,7 +25,7 @@ class VarDebugger {
          'file' => '/tmp/vardebug/*username*'
       ],
       'render-config' => [
-         'byte-format' => 'octal',
+         'byte-format' => 'hex-lower',
          'max-length' => -1,
          'string-format' => 'utf-8'
       ],
@@ -40,7 +40,7 @@ class VarDebugger {
    /**
     * Byte formats.
     */
-   const BYTE_FORMATS = [ 'decimal', 'hex-lower', 'hex-upper', 'octal' ];
+   const BYTE_FORMATS = [ 'bits', 'decimal', 'hex-lower', 'hex-upper', 'octal' ];
 
 
    /**
@@ -68,7 +68,7 @@ class VarDebugger {
    /**
     * String formats.
     */
-   const STRING_FORMATS = [ 'ascii', 'bit', 'byte', 'utf-8' ];
+   const STRING_FORMATS = [ 'ascii', 'bytes', 'json', 'utf-8' ];
 
 
    /**
@@ -309,7 +309,11 @@ class VarDebugger {
             $config['render-config']['byte-format'] = $option;
          }
 
-         elseif (preg_match('/^max-length:(.*)$/', $option, $matches)) {
+         elseif ($option === 'hex') {
+            $config['render-config']['byte-format'] = 'hex-lower';
+         }
+
+         elseif (preg_match('/^([0-9]+)$/', $option, $matches)) {
             $max_length = (int)trim($matches[1]);
             if ($max_length < 0) {
                $max_length = -1;

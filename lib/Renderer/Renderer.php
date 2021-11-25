@@ -11,8 +11,8 @@ class Renderer {
     */
    const STRING_FORMATTERS = [
       'ascii' => 'Cachitos\VarDebug\StringFormatter\AsciiFormatter',
-      'bit'   => 'Cachitos\VarDebug\StringFormatter\BitFormatter',
-      'byte'  => 'Cachitos\VarDebug\StringFormatter\ByteFormatter',
+      'bytes' => 'Cachitos\VarDebug\StringFormatter\BytesFormatter',
+      'json'  => 'Cachitos\VarDebug\StringFormatter\JsonFormatter',
       'utf-8' => 'Cachitos\VarDebug\StringFormatter\UTF8Formatter'
    ];
 

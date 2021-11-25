@@ -7,7 +7,7 @@ namespace Cachitos\VarDebug\StringFormatter;
 class AsciiFormatter extends AbstractStringFormatter {
 
    /**
-    * Returns a shortened and formatted version of $raw_string.
+    * Returns a shortened and formatted ASCII version of $raw_string.
     * Returns the length of the string in $length.
     *
     * @param string $raw_string
@@ -32,6 +32,10 @@ class AsciiFormatter extends AbstractStringFormatter {
       if ($this->max_length >= 0 && $length > $this->max_length) {
          $string = substr($string, 0, $this->max_length) . '...';
       }
+
+      //
+      // format
+      //
 
       // escaped characters
       //

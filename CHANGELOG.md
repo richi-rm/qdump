@@ -2,6 +2,18 @@
 
 Tags: Added | Changed | Deprecated | Fixed | Removed | Security | Yanked
 
+## [v0.4.7-alpha] - 2021-11-25
+
+### Added
+
+ - Añadido el formateador de cadenas BytesFormatter.
+ - Añadido el formateador de cadenas JsonFormatter.
+
+### Removed
+
+ - Eliminada la opción max-length. Ahora se puede especificar una longitud
+   máxima de cadenas indicando sólo el número.
+
 
 ## [v0.4.6-alpha] - 2021-11-24
 

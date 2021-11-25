@@ -7,7 +7,7 @@ namespace Cachitos\VarDebug\StringFormatter;
 abstract class AbstractStringFormatter {
 
    /**
-    * Byte format ('decimal', 'hex-lower', 'hex-upper', 'octal').
+    * Byte format ('bits', decimal', 'hex-lower', 'hex-upper', 'octal').
     *     
     * @var string
     */
