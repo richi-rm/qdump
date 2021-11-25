@@ -21,7 +21,7 @@ class VarDebugger {
          'pubm'  => false,
          'pubp'  => true
       ],
-      'file-writer-config' => [
+      'filewriter-config' => [
          'file' => '/tmp/vardebug/*username*'
       ],
       'render-config' => [
@@ -146,7 +146,7 @@ class VarDebugger {
       $output_writer_class = self::OUTPUT_WRITERS[$this->config['vardebugger-config']['output-type']];
       if ($this->config['vardebugger-config']['output-type'] === 'file') {
          $this->output_writer = new $output_writer_class(
-            $this->config['file-writer-config']['file'],
+            $this->config['filewriter-config']['file'],
             $this->config['vardebugger-config']['render-type']
          );
       } else {
@@ -262,6 +262,10 @@ class VarDebugger {
 
          if (0) { }
 
+         //
+         // core config
+         //
+
          elseif ($option === '+all') {
             $config['core-config']['privm'] = true;
             $config['core-config']['privp'] = true;
@@ -300,13 +304,15 @@ class VarDebugger {
          elseif ($option === '-pubm' ) { $config['core-config']['pubm' ] = false; }
          elseif ($option === '-pubp' ) { $config['core-config']['pubp' ] = false; }
 
-         elseif (preg_match('/^file:(.*)$/', $option, $matches)) {
-            $config['vardebugger-config']['output-type'] = 'file';
-            $config['file-writer-config']['file'] = trim($matches[1]);
-         }
+         //
+         // render config
+         //
 
          elseif (in_array($option, self::BYTE_FORMATS)) {
             $config['render-config']['byte-format'] = $option;
+            if ($option === 'bits') {
+               $config['render-config']['string-format'] = 'bytes';
+            }
          }
 
          elseif ($option === 'hex') {
@@ -325,8 +331,17 @@ class VarDebugger {
             $config['render-config']['string-format'] = $option;
          }
 
+         //
+         // vardebugger config
+         //
+
          elseif (in_array($option, array_keys(self::OUTPUT_WRITERS))) {
             $config['vardebugger-config']['output-type'] = $option;
+         }
+
+         elseif (preg_match('/^file:(.*)$/', $option, $matches)) {
+            $config['vardebugger-config']['output-type'] = 'file';
+            $config['filewriter-config']['file'] = trim($matches[1]);
          }
 
          elseif (in_array($option, array_keys(self::RENDERERS))) {

@@ -4,7 +4,7 @@
 namespace Cachitos\VarDebug\StringFormatter;
 
 
-class BytesFormatter extends AbstractStringFormatter {
+class ByteSequenceFormatter extends AbstractStringFormatter {
 
    /**
     * Returns a shortened and formatted binary version of $raw_string.
@@ -61,7 +61,7 @@ class BytesFormatter extends AbstractStringFormatter {
          $bytes = rtrim($bytes);
       }
 
-      $string = '"' . $bytes . '"';
+      $string = $bytes;
 
       return $string;
    }
