@@ -1,10 +1,10 @@
 <?php
 
 
-namespace Cachitos\VarDebug\Renderer;
+namespace Cachitos\VarDebug\Renderer\BasicRenderer;
 
 
-class PlainTextRenderer extends Renderer {
+class PlainTextRenderer extends BasicRenderer {
 
    /**
     * Data prefixes.

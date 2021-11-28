@@ -1,10 +1,10 @@
 <?php
 
 
-namespace Cachitos\VarDebug\Renderer;
+namespace Cachitos\VarDebug\Renderer\BasicRenderer;
 
 
-class AnsiTextRenderer extends Renderer {
+class AnsiTextRenderer extends BasicRenderer {
 
    /**
     * ANSI color escape sequences.
@@ -32,7 +32,7 @@ class AnsiTextRenderer extends Renderer {
       'white'       => "\033[37m",
       'white_bri'   => "\033[97m",
       'yellow'      => "\033[33m",
-      'yellow_bri'  => "\033[93m",
+      'yellow_bri'  => "\033[93m"
 
    ];
 

@@ -16,12 +16,31 @@ class Core {
 
 
    /**
+    * Core configuration.
+    *
+    * @var array
+    */
+   protected $config = null;
+
+
+   /**
     * Variable to detect cycles in arrays. It is a mark for the arrays being
     * iterated.
     *
     * @var string
     */
    protected $this_array_is_being_iterated = '__vardebug.this_array_is_being_iterated__';
+
+
+   /**
+    * Constructor.
+    *
+    * @param array $config
+    */
+   public function __construct($config)
+   {
+      $this->config = $config;
+   }
 
 
    /**

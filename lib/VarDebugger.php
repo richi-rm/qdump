@@ -4,7 +4,7 @@
 namespace Cachitos\VarDebug;
 
 
-use Cachitos\VarDebug\Renderer\HtmlRenderer;
+use Cachitos\VarDebug\Renderer\BasicRenderer\HtmlRenderer;
 
 
 class VarDebugger {
@@ -14,12 +14,6 @@ class VarDebugger {
     */
    const DEFAULT_CONFIG = [
       'core-config' => [
-         'privm' => false,
-         'privp' => false,
-         'protm' => false,
-         'protp' => false,
-         'pubm'  => false,
-         'pubp'  => true
       ],
       'filewriter-config' => [
          'file' => '/tmp/vardebug/*username*'
@@ -27,6 +21,7 @@ class VarDebugger {
       'render-config' => [
          'byte-format' => 'hexlc',
          'max-length' => -1,
+         'object' => 'public-properties',
          'string-format' => 'utf-8'
       ],
       'vardebugger-config' => [
@@ -54,14 +49,20 @@ class VarDebugger {
 
 
    /**
+    * Constant with all possible rendering options for objects.
+    */
+   const RENDER_OBJECT = [ 'public-properties', 'all-properties', 'public', 'all' ];
+
+
+   /**
     * Render identifiers and corresponding handler classes.
     */
    const RENDERERS = [
-      'color-text'       => 'Cachitos\VarDebug\Renderer\AnsiTextRenderer',
+      'color-text'       => 'Cachitos\VarDebug\Renderer\BasicRenderer\AnsiTextRenderer',
       'console-log-json' => 'Cachitos\VarDebug\Renderer\ConsoleLogJsonRenderer',
-      'html'             => 'Cachitos\VarDebug\Renderer\HtmlRenderer',
-      'html-comment'     => 'Cachitos\VarDebug\Renderer\HtmlCommentRenderer',
-      'plain-text'       => 'Cachitos\VarDebug\Renderer\PlainTextRenderer'
+      'html'             => 'Cachitos\VarDebug\Renderer\BasicRenderer\HtmlRenderer',
+      'html-comment'     => 'Cachitos\VarDebug\Renderer\BasicRenderer\HtmlCommentRenderer',
+      'plain-text'       => 'Cachitos\VarDebug\Renderer\BasicRenderer\PlainTextRenderer'
    ];
 
 
@@ -136,7 +137,7 @@ class VarDebugger {
    {
       $this->context = new Context();
 
-      $this->config = $this->parse_options($options);
+      $this->config = $this->get_config($options);
 
       $this->core = new Core($this->config['core-config']);
 
@@ -240,12 +241,12 @@ class VarDebugger {
 
 
    /**
-    * Function to parse the first parameter of the constructor.
+    * Returns a configuration based on the options passed.
     *
     * @param string $options
     * @return array
     */
-   protected function parse_options($options)
+   protected function get_config($options)
    {
       $config = self::DEFAULT_CONFIG;
       if ($this->context->sapiIsCli()) {
@@ -263,46 +264,13 @@ class VarDebugger {
          if (0) { }
 
          //
-         // core config
+         // filewriter config
          //
 
-         elseif ($option === '+all') {
-            $config['core-config']['privm'] = true;
-            $config['core-config']['privp'] = true;
-            $config['core-config']['protm'] = true;
-            $config['core-config']['protp'] = true;
-            $config['core-config']['pubm']  = true;
-            $config['core-config']['pubp']  = true;
+         elseif (preg_match('/^file:(.*)$/', $option, $matches)) {
+            $config['vardebugger-config']['output-type'] = 'file';
+            $config['filewriter-config']['file'] = trim($matches[1]);
          }
-
-         elseif ($option === '-all') {
-            $config['core-config']['privm'] = false;
-            $config['core-config']['privp'] = false;
-            $config['core-config']['protm'] = false;
-            $config['core-config']['protp'] = false;
-            $config['core-config']['pubm']  = false;
-            $config['core-config']['pubp']  = false;
-         }
-
-         elseif ($option === '+priv' ) { $config['core-config']['privm'] = true;  $config['core-config']['privp'] = true;  }
-         elseif ($option === '+prot' ) { $config['core-config']['protm'] = true;  $config['core-config']['protp'] = true;  }
-         elseif ($option === '+pub'  ) { $config['core-config']['pubm' ] = true;  $config['core-config']['pubp' ] = true;  }
-         elseif ($option === '-priv' ) { $config['core-config']['privm'] = false; $config['core-config']['privp'] = false; }
-         elseif ($option === '-prot' ) { $config['core-config']['protm'] = false; $config['core-config']['protp'] = false; }
-         elseif ($option === '-pub'  ) { $config['core-config']['pubm' ] = false; $config['core-config']['pubp' ] = false; }
-
-         elseif ($option === '+privm') { $config['core-config']['privm'] = true;  }
-         elseif ($option === '+privp') { $config['core-config']['privp'] = true;  }
-         elseif ($option === '+protm') { $config['core-config']['protm'] = true;  }
-         elseif ($option === '+protp') { $config['core-config']['protp'] = true;  }
-         elseif ($option === '+pubm' ) { $config['core-config']['pubm' ] = true;  }
-         elseif ($option === '+pubp' ) { $config['core-config']['pubp' ] = true;  }
-         elseif ($option === '-privm') { $config['core-config']['privm'] = false; }
-         elseif ($option === '-privp') { $config['core-config']['privp'] = false; }
-         elseif ($option === '-protm') { $config['core-config']['protm'] = false; }
-         elseif ($option === '-protp') { $config['core-config']['protp'] = false; }
-         elseif ($option === '-pubm' ) { $config['core-config']['pubm' ] = false; }
-         elseif ($option === '-pubp' ) { $config['core-config']['pubp' ] = false; }
 
          //
          // render config
@@ -319,12 +287,16 @@ class VarDebugger {
             $config['render-config']['byte-format'] = 'hexlc';
          }
 
-         elseif (preg_match('/^([0-9]+)$/', $option, $matches)) {
+         elseif (preg_match('/^s([0-9]+)$/', $option, $matches)) {
             $max_length = (int)trim($matches[1]);
             if ($max_length < 0) {
                $max_length = -1;
             }
             $config['render-config']['max-length'] = $max_length;
+         }
+
+         elseif (in_array($option, self::RENDER_OBJECT)) {
+            $config['render-config']['object'] = $option;
          }
 
          elseif (in_array($option, self::STRING_FORMATS)) {
@@ -337,11 +309,6 @@ class VarDebugger {
 
          elseif (in_array($option, array_keys(self::OUTPUT_WRITERS))) {
             $config['vardebugger-config']['output-type'] = $option;
-         }
-
-         elseif (preg_match('/^file:(.*)$/', $option, $matches)) {
-            $config['vardebugger-config']['output-type'] = 'file';
-            $config['filewriter-config']['file'] = trim($matches[1]);
          }
 
          elseif (in_array($option, array_keys(self::RENDERERS))) {

@@ -4,7 +4,7 @@
 namespace Cachitos\VarDebug\OutputWriter;
 
 
-interface WriterInterface {
+interface OutputWriterInterface {
 
    /**
     * Write $string to something.

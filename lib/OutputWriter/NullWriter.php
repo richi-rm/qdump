@@ -4,7 +4,7 @@
 namespace Cachitos\VarDebug\OutputWriter;
 
 
-class NullWriter implements WriterInterface {
+class NullWriter implements OutputWriterInterface {
 
    /**
     * It does not write $string anywhere, it just returns it.

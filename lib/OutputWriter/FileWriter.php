@@ -7,7 +7,7 @@ namespace Cachitos\VarDebug\OutputWriter;
 use Cachitos\VarDebug\Context;
 
 
-class FileWriter implements WriterInterface {
+class FileWriter implements OutputWriterInterface {
 
    /**
     * VarDebug file extensions corresponding to each render type.

@@ -1,10 +1,10 @@
 <?php
 
 
-namespace Cachitos\VarDebug\Renderer;
+namespace Cachitos\VarDebug\Renderer\BasicRenderer;
 
 
-class Renderer {
+class BasicRenderer {
 
    /**
     * String formatters.
@@ -103,7 +103,8 @@ class Renderer {
 
 
    /**
-    * Converts the array returned by Core::inspect() to a human-readable representation.
+    * Converts the array returned by Core::inspect() to a human-readable
+    * representation.
     *
     * @param array $core_var variable returned by Core::inspect()
     * @param integer $depth depth level starting from 0
@@ -112,29 +113,41 @@ class Renderer {
     */
    public function renderCoreVar($core_var, $depth = 0)
    {
+      // unknown
+      //
       if (!is_array($core_var) || !isset($core_var['type'])) {
          return $this->p('unknown') . '(unknown)' . $this->s('unknown');
       }
 
+      // null
+      //
       if ($core_var['type'] === 'null') {
          return $this->p('value') . $core_var['value'] . $this->s('value');
       }
 
-      if ($core_var['type'] === 'boolean') {
-         return $this->p('type') . 'boolean' . $this->s('type') . ' ' .
+      // bool
+      //
+      if ($core_var['type'] === 'bool') {
+         return $this->p('type') . $core_var['type'] . $this->s('type') . ' ' .
                 $this->p('value') . $core_var['value'] . $this->s('value');
       }
 
-      if ($core_var['type'] === 'integer') {
-         return $this->p('type') . 'integer' . $this->s('type') . ' ' .
+      // int
+      //
+      if ($core_var['type'] === 'int') {
+         return $this->p('type') . $core_var['type'] . $this->s('type') . ' ' .
                 $this->p('value') . $core_var['value'] . $this->s('value');
       }
 
+      // float
+      //
       if ($core_var['type'] === 'float') {
-         return $this->p('type') . 'float' . $this->s('type') . ' ' .
+         return $this->p('type') . $core_var['type'] . $this->s('type') . ' ' .
                 $this->p('value') . $core_var['value'] . $this->s('value');
       }
 
+      // string
+      //
       if ($core_var['type'] === 'string') {
          $length = 0;
          $string_formatted = $this->string_formatter->format($core_var['value'], $length);
@@ -142,23 +155,29 @@ class Renderer {
                 $this->p('value') . $string_formatted . $this->s('value');
       }
 
+      // array
+      //
       if ($core_var['type'] === 'array') {
          $r = $this->p('type') . 'array(' . $core_var['size'] . ')' . $this->s('type');
-         if ($core_var['cycle'] === true) {
+         if (isset($core_var['cycle'])) {
             $r .= ' ' . $this->p('cycle') . '(CYCLE array)' . $this->s('cycle');
             return $r;
          }
-         foreach ($core_var['elements'] as $array_key => $array_value) {
-            $array_key_formatted = (is_int($array_key) ? $array_key : '\'' . addcslashes($array_key, '\'') . '\'');
-            $r .= "\n" .
-                  str_repeat($this->level_prefix, $depth + 1) .
-                  '[' . $this->p('key') . $array_key_formatted . $this->s('key') . ']' .
-                  ' => ' .
-                  $this->renderCoreVar($array_value, $depth + 1);
+         if (isset($core_var['elements'])) {
+            foreach ($core_var['elements'] as $array_key => $array_value) {
+               $array_key_formatted = (is_int($array_key) ? $array_key : "'" . addcslashes($array_key, "'") . "'");
+               $r .= "\n" .
+                     str_repeat($this->level_prefix, $depth + 1) .
+                     '[' . $this->p('key') . $array_key_formatted . $this->s('key') . ']' .
+                     ' => ' .
+                     $this->renderCoreVar($array_value, $depth + 1);
+            }
          }
          return $r;
       }
 
+      // object
+      //
       if ($core_var['type'] === 'object') {
          $r = $this->p('type') . 'object' . $this->s('type') . ' ' .
               $this->p('namespace') . $core_var['class-namespace'] . $this->s('namespace') .
@@ -173,7 +192,7 @@ class Renderer {
             $r .= "\n" .
                   str_repeat($this->level_prefix, $depth + 1) .
                   '->' .
-                  $this->p('access') . $property['access'] . ':' . $this->s('access') .
+                  $this->p('access') . $property['access'] . $this->s('access') . ' ' .
                   $this->p('property') . $property['name'] . $this->s('property') .
                   ' = ' .
                   $this->renderCoreVar($property['value'], $depth + 1);
@@ -181,17 +200,21 @@ class Renderer {
          foreach ($core_var['methods'] as $method) {
             $r .= "\n" .
                   str_repeat($this->level_prefix, $depth + 1) . '->' .
-                  $this->p('access') . $method['access'] . ':' . $this->s('access') .
+                  $this->p('access') . $property['access'] . $this->s('access') . ' ' .
                   $this->p('method') . $method['name'] . '()' . $this->s('method');
          }
          return $r;
       }
 
+      // resource
+      //
       if ($core_var['type'] === 'resource') {
          return $this->p('type') . 'resource' . $this->s('type') . ' ' .
                 $this->p('resource-type') . $core_var['resource-type'] . $this->s('resource-type');
       }
 
+      // unknown
+      //
       return $this->p('unknown') . '(unknown)' . $this->s('unknown');
    }
 

@@ -4,7 +4,7 @@
 namespace Cachitos\VarDebug\OutputWriter;
 
 
-class StdoutWriter implements WriterInterface {
+class StdoutWriter implements OutputWriterInterface {
 
    /**
     * Write $string to STDOUT.

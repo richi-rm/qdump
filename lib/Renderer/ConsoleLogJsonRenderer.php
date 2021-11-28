@@ -4,7 +4,7 @@
 namespace Cachitos\VarDebug\Renderer;
 
 
-class ConsoleLogJsonRenderer extends Renderer {
+class ConsoleLogJsonRenderer {
 
    /**
     * Replacement token for character 0x7f.

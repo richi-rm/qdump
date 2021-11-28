@@ -2,6 +2,19 @@
 
 Tags: Added | Changed | Deprecated | Fixed | Removed | Security | Yanked
 
+
+## [v0.4.9-alpha] - 2021-11-28
+
+### Added
+
+ - Añadida a Core inspección de constantes y propiedades y métodos private y
+   protected.
+
+### Changed
+
+ - Movidos todos los renderers menos ConsoleLogJsonRenderer a BasicRenderer.
+
+
 ## [v0.4.7-alpha] - 2021-11-25
 
 ### Added

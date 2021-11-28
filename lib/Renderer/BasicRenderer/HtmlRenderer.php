@@ -1,10 +1,10 @@
 <?php
 
 
-namespace Cachitos\VarDebug\Renderer;
+namespace Cachitos\VarDebug\Renderer\BasicRenderer;
 
 
-class HtmlRenderer extends Renderer {
+class HtmlRenderer extends BasicRenderer {
 
    /**
     * CSS styles.
