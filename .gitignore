@@ -1,5 +1,6 @@
 examples/
 tests/
+*Test.php
 DONE.md
 TODO.md
 WORKFLOW.md
