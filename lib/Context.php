@@ -131,6 +131,18 @@ class Context {
 
 
    /**
+    * Returns where dump() or dumpbyref() was called from.
+    *
+    * @return string
+    */
+   public function getTraceFileLine()
+   {
+      $callers = debug_backtrace();
+      return $callers[1]['file'] . '(' . $callers[1]['line'] . ')';
+   }
+
+
+   /**
     * Returns the name of the user who is running the script.
     *
     * @return string
@@ -165,18 +177,6 @@ class Context {
       // error
       //
       return -1;
-   }
-
-
-   /**
-    * Returns where dump() or dumpbyref() was called from.
-    *
-    * @return string
-    */
-   public function getTraceFileLine()
-   {
-      $callers = debug_backtrace();
-      return $callers[1]['file'] . '(' . $callers[1]['line'] . ')';
    }
 
 
