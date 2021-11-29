@@ -183,7 +183,7 @@ class Context {
    /**
     * Returns true if the server api is cli.
     *
-    * @return boolean
+    * @return bool
     */
    public function sapiIsCli()
    {

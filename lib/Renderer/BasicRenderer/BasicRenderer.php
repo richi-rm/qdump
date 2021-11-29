@@ -83,7 +83,7 @@ class BasicRenderer {
    /**
     * Returns a string that is prefixed to the content of the capture.
     *
-    * @param integer $capture_sequence_number
+    * @param int $capture_sequence_number
     * @param string $file_line
     * @param string $time
     *
@@ -96,7 +96,7 @@ class BasicRenderer {
       } else {
          return $this->p('capture') .
                 $capture_sequence_number . ') ' .
-                $this->p('file-line') . $file_line . $this->s('file-line') . ' ' .
+                $this->p('file(line)') . $file_line . $this->s('file(line)') . ' ' .
                 $this->p('time') . $time . $this->s('time') . "\n";
       }
    }
@@ -107,7 +107,7 @@ class BasicRenderer {
     * representation.
     *
     * @param array $core_var variable returned by Core::inspect()
-    * @param integer $depth depth level starting from 0
+    * @param int $depth depth level starting from 0
     *
     * @return string
     */
@@ -179,15 +179,51 @@ class BasicRenderer {
       // object
       //
       if ($core_var['type'] === 'object') {
-         $r = $this->p('type') . 'object' . $this->s('type') . ' ' .
-              $this->p('namespace') . $core_var['class-namespace'] . $this->s('namespace') .
-              $this->p('class') . $core_var['class-name'] . $this->s('class') . ' ' .
-              '#' . $core_var['object-id'];
-         if ($core_var['cycle'] === true) {
+
+         // type and object id
+         //
+         $r = $this->p('type') . 'object' . $this->s('type') . ' ' . '#' . $core_var['id'];
+
+         // cycle
+         //
+         if (isset($core_var['cycle'])) {
             $r .= ' ' . $this->p('cycle') . '(CYCLE object)' . $this->s('cycle');
             return $r;
          }
-         $r .= ' ' . $this->p('file-line') . $core_var['class-file-line'] . $this->s('file-line');
+
+         // namespace, class and file(line)
+         //
+         $r .= ' ' .
+               $this->p('namespace') . $core_var['namespace'] . $this->s('namespace') .
+               $this->p('class') . $core_var['class'] . $this->s('class') . ' ' .
+               $this->p('file(line)') . $core_var['file(line)'] . $this->s('file(line)');
+
+         // constants
+         //
+         if (isset($core_var['constants'])) {
+            $constants = [];
+            foreach ($core_var['constants'] as $constant) {
+               $constants[$constant['name']] = $constant;
+            }
+            ksort($constants);
+            foreach ($constants as $constant) {
+               if ($constant['access'] === 'private') {
+                  $r .= $this->render_constant($constant, $depth);
+               }
+            }
+            foreach ($constants as $constant) {
+               if ($constant['access'] === 'protected') {
+                  $r .= $this->render_constant($constant, $depth);
+               }
+            }
+            foreach ($constants as $constant) {
+               if ($constant['access'] === 'public') {
+                  $r .= $this->render_constant($constant, $depth);
+               }
+            }
+         }
+
+/*
          foreach ($core_var['properties'] as $property) {
             $r .= "\n" .
                   str_repeat($this->level_prefix, $depth + 1) .
@@ -203,6 +239,7 @@ class BasicRenderer {
                   $this->p('access') . $property['access'] . $this->s('access') . ' ' .
                   $this->p('method') . $method['name'] . '()' . $this->s('method');
          }
+*/
          return $r;
       }
 
@@ -216,6 +253,28 @@ class BasicRenderer {
       // unknown
       //
       return $this->p('unknown') . '(unknown)' . $this->s('unknown');
+   }
+
+
+   /**
+    * Render a class constant.
+    *
+    * @param array $constant
+    * @param int $depth depth level starting from 0
+    * @return string
+    */
+   protected function render_constant($constant, $depth)
+   {
+      $r = "\n" .
+           str_repeat($this->level_prefix, $depth + 1) .
+           '::' .
+           $this->p('access') . $constant['access'] . $this->s('access') . ' ' .
+           $this->p('constant-type') . 'const' . $this->s('constant-type') . ' ' .
+           $this->p('constant') . $constant['name'] . $this->s('constant') .
+           ' = ' .
+           $this->renderCoreVar($constant['value'], $depth + 1);
+
+      return $r;
    }
 
 

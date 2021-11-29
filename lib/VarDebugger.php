@@ -10,9 +10,15 @@ use Cachitos\VarDebug\Renderer\BasicRenderer\HtmlRenderer;
 class VarDebugger {
 
    /**
+    * Byte formats.
+    */
+   protected const BYTE_FORMATS = [ 'bits', 'decimal', 'hexlc', 'hexuc', 'octal' ];
+
+
+   /**
     * Default configuration.
     */
-   const DEFAULT_CONFIG = [
+   protected const DEFAULT_CONFIG = [
       'core-config' => [
       ],
       'filewriter-config' => [
@@ -33,15 +39,9 @@ class VarDebugger {
 
 
    /**
-    * Byte formats.
-    */
-   const BYTE_FORMATS = [ 'bits', 'decimal', 'hexlc', 'hexuc', 'octal' ];
-
-
-   /**
     * Output identifiers and corresponding handler classes.
     */
-   const OUTPUT_WRITERS = [
+   protected const OUTPUT_WRITERS = [
       'file'    => 'Cachitos\VarDebug\OutputWriter\FileWriter',
       'no-dump' => 'Cachitos\VarDebug\OutputWriter\NullWriter',
       'stdout'  => 'Cachitos\VarDebug\OutputWriter\StdoutWriter'
@@ -49,15 +49,9 @@ class VarDebugger {
 
 
    /**
-    * Constant with all possible rendering options for objects.
-    */
-   const RENDER_OBJECT = [ 'public-properties', 'all-properties', 'public', 'all' ];
-
-
-   /**
     * Render identifiers and corresponding handler classes.
     */
-   const RENDERERS = [
+   protected const RENDERERS = [
       'color-text'       => 'Cachitos\VarDebug\Renderer\BasicRenderer\AnsiTextRenderer',
       'console-log-json' => 'Cachitos\VarDebug\Renderer\ConsoleLogJsonRenderer',
       'html'             => 'Cachitos\VarDebug\Renderer\BasicRenderer\HtmlRenderer',
@@ -67,15 +61,21 @@ class VarDebugger {
 
 
    /**
+    * Constant with all possible rendering options for objects.
+    */
+   protected const RENDER_OBJECT = [ 'public-properties', 'all-properties', 'public', 'all' ];
+
+
+   /**
     * String formats.
     */
-   const STRING_FORMATS = [ 'ascii', 'bytes', 'iso-8859-1', 'json', 'utf-8' ];
+   protected const STRING_FORMATS = [ 'ascii', 'bytes', 'iso-8859-1', 'json', 'utf-8' ];
 
 
    /**
     * Times dump() or dumpByRef() have been called.
     *
-    * @var integer
+    * @var int
     */
    protected $capture_sequence_number = 1;
 
@@ -107,7 +107,7 @@ class VarDebugger {
    /**
     * First dump() / dumpByRef() done.
     *
-    * @var boolean
+    * @var bool
     */
    protected $first_dump_done = false;
 

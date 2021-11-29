@@ -17,8 +17,10 @@ class HtmlCommentRenderer extends BasicRenderer {
 
       'access'        => '',
       'class'         => '',
+      'constant'      => '',
+      'constant-type' => '',
       'cycle'         => '',
-      'file-line'     => '',
+      'file(line)'    => '',
       'key'           => '',
       'method'        => '',
       'namespace'     => '',
@@ -42,8 +44,10 @@ class HtmlCommentRenderer extends BasicRenderer {
 
       'access'        => '',
       'class'         => '',
+      'constant'      => '',
+      'constant-type' => '',
       'cycle'         => '',
-      'file-line'     => '',
+      'file(line)'    => '',
       'key'           => '',
       'method'        => '',
       'namespace'     => '',

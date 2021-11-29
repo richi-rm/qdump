@@ -18,7 +18,7 @@ class ConsoleLogJsonRenderer {
     * Cut the strings and replace the character 0x7f if they are not binary.
     *
     * @param array $core_var variable returned by Core::inspect()
-    * @param integer $depth depth level starting from 0
+    * @param int $depth depth level starting from 0
     */
    protected function format_strings_core_var(&$core_var, $depth = 0)
    {
@@ -64,7 +64,7 @@ class ConsoleLogJsonRenderer {
    /**
     * Returns a string that is prefixed to the content of the capture.
     *
-    * @param integer $capture_sequence_number
+    * @param int $capture_sequence_number
     * @param string $file_line
     * @param string $time
     *

@@ -37,7 +37,7 @@ class Core {
     *
     * @param array $config
     */
-   public function __construct($config)
+   public function __construct($config = [])
    {
       $this->config = $config;
    }
@@ -49,7 +49,7 @@ class Core {
     *
     * @param mixed &$var variable to inspect (it is passed by reference to mark
     *                    the arrays being iterated)
-    * @param integer $depth depth level starting from 0
+    * @param int $depth depth level starting from 0
     * @return array
     */
    public function inspect(&$var, $depth = 0)

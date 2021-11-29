@@ -3,16 +3,28 @@
 Tags: Added | Changed | Deprecated | Fixed | Removed | Security | Yanked
 
 
+## [v0.4.10-alpha] - 2021-11-29
+
+### Added
+
+ - Añadido renderizado de constantes de clase a BasicRenderer.
+
+
 ## [v0.4.9-alpha] - 2021-11-28
 
 ### Added
 
- - Añadida a Core inspección de constantes y propiedades y métodos private y
+ - Añadida a Core inspección de constantes y de propiedades y métodos private y
    protected.
 
 ### Changed
 
- - Movidos todos los renderers menos ConsoleLogJsonRenderer a BasicRenderer.
+ - Movidos todos los renderers (menos ConsoleLogJsonRenderer) a BasicRenderer.
+
+### Removed
+
+ - Eliminadas las opciones +-all, +-priv, +-prot, +-pub, +-privm, +-privp,
+   +-protm, +-protp, +-pubm, +-pubp.
 
 
 ## [v0.4.7-alpha] - 2021-11-25
