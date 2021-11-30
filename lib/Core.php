@@ -139,6 +139,18 @@ class Core {
             }
             unset($this->ascending_objects_being_inspected[$r['id']]);
          }
+         // recursive inspection of method parameter defaults
+         if (isset($r['methods'])) {
+            foreach ($r['methods'] as &$method) {
+               if (isset($method['parameters'])) {
+                  foreach ($method['parameters'] as &$parameter) {
+                     if (isset($parameter['default-value']) && array_key_exists('value', $parameter['default-value'])) {
+                        $parameter['default-value']['value'] = $this->inspect($parameter['default-value']['value'], $depth + 1);
+                     }
+                  }
+               }
+            }
+         }
          return $r;
       }
 
@@ -298,7 +310,7 @@ class Core {
             if ($refl_parameter->isDefaultValueAvailable()) {
                $parameter['default-value'] = $refl_parameter->isDefaultValueConstant() ?
                   [ 'constant' => $refl_parameter->getDefaultValueConstantName() ] :
-                  [ 'value' => $this->inspect($refl_parameter->getDefaultValue()) ];
+                  [ 'value' => $refl_parameter->getDefaultValue() ];
             }
             $parameter['name'] = $refl_parameter->getName();
             if ($refl_parameter->isPassedByReference()) {
