@@ -3,6 +3,13 @@
 Tags: Added | Changed | Deprecated | Fixed | Removed | Security | Yanked
 
 
+## [v0.4.11-alpha] - 2021-11-30
+
+### Added
+
+ - Core distingue los métodos que devuelven referencias.
+
+
 ## [v0.4.10-alpha] - 2021-11-29
 
 ### Added

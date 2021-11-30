@@ -1,10 +1,10 @@
 {
    "name": "cachitos/vardebug",
-   "description": "Enhanced var_dump()",
-   "version": "0.4.6-alpha",
+   "description": "Improved var_dump()",
+   "version": "0.4.11-alpha",
    "type": "library",
-   "keywords": ["debug", "debugging", "var_dump", "var_export", "vardebug"],
-   "homepage": "https://github.com/richiruizmartinez/vardebug",
+   "keywords": ["debug", "debugging", "var_dump", "var_export", "vardebug", "vardebugger"],
+   "homepage": "https://github.com/richirm77/vardebug",
    "license": "GPL-3.0-or-later",
    "authors": [
       {

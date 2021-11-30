@@ -246,10 +246,10 @@ class Core {
          // type
          //
          if ($refl_property->hasType()) {
-            $property['type'] = [
-               'allows-null' => $refl_property->getType()->allowsNull(),
-               'name' => $refl_property->getType()->getName()
-            ];
+            if ($refl_property->getType()->allowsNull()) {
+               $property['type']['null'] = true;
+            }
+            $property['type']['name'] = $refl_property->getType()->getName();
          }
 
          // value
@@ -295,18 +295,20 @@ class Core {
          $parameters = [];
          foreach ($refl_method->getParameters() as $refl_parameter) {
             $parameter = [];
-            if ($refl_parameter->isPassedByReference()) {
-               $parameter['by-reference'] = true;
+            if ($refl_parameter->isDefaultValueAvailable()) {
+               $parameter['default-value'] = $refl_parameter->isDefaultValueConstant() ?
+                  [ 'constant' => $refl_parameter->getDefaultValueConstantName() ] :
+                  [ 'value' => $this->inspect($refl_parameter->getDefaultValue()) ];
             }
             $parameter['name'] = $refl_parameter->getName();
-            if ($refl_parameter->isOptional()) {
-               $parameter['optional'] = true;
+            if ($refl_parameter->isPassedByReference()) {
+               $parameter['reference'] = true;
             }
             if ($refl_parameter->hasType()) {
-               $parameter['type'] = [
-                  'allows-null' => $refl_parameter->getType()->allowsNull(),
-                  'name' => $refl_parameter->getType()->getName()
-               ];
+               if ($refl_parameter->getType()->allowsNull()) {
+                  $parameter['type']['null'] = true;
+               }
+               $parameter['type']['name'] = $refl_parameter->getType()->getName();
             }
             if ($refl_parameter->isVariadic()) {
                $parameter['variadic'] = true;
@@ -315,6 +317,12 @@ class Core {
          }
          if (count($parameters) > 0) {
             $method['parameters'] = $parameters;
+         }
+
+         // reference
+         //
+         if ($refl_method->returnsReference()) {
+            $method['reference'] = true;
          }
 
          // static
@@ -326,10 +334,10 @@ class Core {
          // type (return type)
          //
          if ($refl_method->hasReturnType()) {
-            $method['type'] = [
-               'allows-null' => $refl_method->getReturnType()->allowsNull(),
-               'name' => $refl_method->getReturnType()->getName()
-            ];
+            if ($refl_method->getReturnType()->allowsNull()) {
+               $method['type']['null'] = true;
+            }
+            $method['type']['name'] = $refl_method->getReturnType()->getName();
          }
 
          $r['methods'][] = $method;
