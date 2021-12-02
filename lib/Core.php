@@ -37,7 +37,7 @@ class Core {
     *
     * @param array $config
     */
-   public function __construct($config = [])
+   public function __construct($config)
    {
       $this->config = $config;
    }
