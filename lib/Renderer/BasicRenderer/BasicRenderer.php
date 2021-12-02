@@ -25,6 +25,7 @@ class BasicRenderer {
     */
    protected $config = [
       'byte-format' => null, // byte format
+      'expand-arrays' => null, // expand arrays
       'max-length' => null, // maximum visible string length
       'string-format' => null // string format
    ];
