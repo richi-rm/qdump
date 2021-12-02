@@ -26,8 +26,8 @@ class VarDebugger {
       ],
       'render-config' => [
          'byte-format' => 'hexlc',
+         'expand-arrays' => true,
          'max-length' => -1,
-         'object' => 'public-properties',
          'string-format' => 'utf-8'
       ],
       'vardebugger-config' => [
@@ -58,12 +58,6 @@ class VarDebugger {
       'html-comment'     => 'Cachitos\VarDebug\Renderer\BasicRenderer\HtmlCommentRenderer',
       'plain-text'       => 'Cachitos\VarDebug\Renderer\BasicRenderer\PlainTextRenderer'
    ];
-
-
-   /**
-    * Constant with all possible rendering options for objects.
-    */
-   protected const RENDER_OBJECT = [ 'public-properties', 'all-properties', 'public', 'all' ];
 
 
    /**
@@ -287,16 +281,20 @@ class VarDebugger {
             $config['render-config']['byte-format'] = 'hexlc';
          }
 
+         elseif ($option === '-arrays') {
+            $config['render-config']['expand-arrays'] = false;
+         }
+
+         elseif ($option === '+arrays') {
+            $config['render-config']['expand-arrays'] = true;
+         }
+
          elseif (preg_match('/^s([0-9]+)$/', $option, $matches)) {
             $max_length = (int)trim($matches[1]);
             if ($max_length < 0) {
                $max_length = -1;
             }
             $config['render-config']['max-length'] = $max_length;
-         }
-
-         elseif (in_array($option, self::RENDER_OBJECT)) {
-            $config['render-config']['object'] = $option;
          }
 
          elseif (in_array($option, self::STRING_FORMATS)) {
