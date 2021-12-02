@@ -26,8 +26,8 @@ class VarDebugger {
       ],
       'render-config' => [
          'byte-format' => 'hexlc',
-         'expand-arrays' => true,
-         'max-length' => -1,
+         'expand-arrays' => false,
+         'max-length' => 50,
          'string-format' => 'utf-8'
       ],
       'vardebugger-config' => [
