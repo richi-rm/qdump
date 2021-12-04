@@ -239,11 +239,7 @@ class VarDebugger {
             $config['render-config']['byte-format'] = 'hexlc';
          }
 
-         elseif ($option === '-arrays') {
-            $config['render-config']['expand-arrays'] = false;
-         }
-
-         elseif ($option === '+arrays') {
+         elseif ($option === 'expand-arrays') {
             $config['render-config']['expand-arrays'] = true;
          }
 
