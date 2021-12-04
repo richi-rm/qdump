@@ -13,11 +13,11 @@ class FileWriter implements OutputWriterInterface {
     * VarDebug file extensions corresponding to each render type.
     */
    const VARDEBUG_FILE_EXTENSIONS = [
-      'color-text'         => '.ansi.txt',
-      'console-log-json'   => '.js.html',
-      'html'               => '.html',
-      'html-comment'       => '.comment.html',
-      'plain-text'         => '.txt'
+      'ansi'             => '.ansi.txt',
+      'console-log-json' => '.js.html',
+      'html'             => '.html',
+      'html-comment'     => '.comment.html',
+      'plain-text'       => '.txt'
    ];
 
 
