@@ -67,7 +67,7 @@ class VarDebugger {
 
 
    /**
-    * Times dump() or dumpByRef() have been called.
+    * Times dump() have been called.
     *
     * @var int
     */
@@ -99,7 +99,7 @@ class VarDebugger {
 
 
    /**
-    * First dump() / dumpByRef() done.
+    * First dump() done.
     *
     * @var bool
     */
