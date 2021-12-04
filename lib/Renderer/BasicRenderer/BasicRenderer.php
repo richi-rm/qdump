@@ -197,6 +197,7 @@ class BasicRenderer {
                      $this->renderCoreVar($array_value, $depth + 1);
             }
          }
+
          return $r;
       }
 
