@@ -159,11 +159,34 @@ class BasicRenderer {
       // array
       //
       if ($core_var['type'] === 'array') {
-         $r = $this->p('type') . 'array(' . $core_var['size'] . ')' . $this->s('type');
-         if (isset($core_var['cycle'])) {
-            $r .= ' ' . $this->p('cycle') . '(CYCLE array)' . $this->s('cycle');
-            return $r;
+
+         // do not expand array
+         //
+         if (!$this->config['expand-arrays']) {
+            return $this->p('type') . 'array(' . $core_var['size'] . ')' . $this->s('type');
          }
+
+         // no line break
+         //
+         if ($depth < 1 || $core_var['size'] < 1 || isset($core_var['cycle'])) {
+            $r = $this->p('type') . 'array(' . $core_var['size'] . ')' . $this->s('type');
+            // cycle
+            //
+            if (isset($core_var['cycle'])) {
+               $r .= ' ' . $this->p('cycle') . '(CYCLE array)' . $this->s('cycle');
+               return $r;
+            }
+
+         // line break
+         //
+         } else {
+            $r = "\n" .
+                 str_repeat($this->level_prefix, $depth + 1) .
+                 $this->p('type') . 'array(' . $core_var['size'] . ')' . $this->s('type');
+         }
+
+         // elements
+         //
          if (isset($core_var['elements'])) {
             foreach ($core_var['elements'] as $array_key => $array_value) {
                $array_key_formatted = (is_int($array_key) ? $array_key : "'" . addcslashes($array_key, "'") . "'");
