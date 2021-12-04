@@ -193,48 +193,6 @@ class VarDebugger {
 
 
    /**
-    * This method is the same as dump(), except that the parameter is passed by
-    * reference to properly inspect recursive arrays.
-    *
-    * @param $var variable to inspect
-    */
-   public function dumpByRef(&$var = null, &$output = null)
-   {
-      $written = '';
-
-      // initial write
-      //
-      if (!$this->first_dump_done) {
-         $written .= $this->initial_write();
-         $this->first_dump_done = true;
-      }
-
-      // capture
-      //
-      $capture = '';
-      if ($this->config['vardebugger-config']['verbose']) {
-         $capture .= $this->renderer->preRender($this->capture_sequence_number,
-                                                $this->context->getTraceFileLine(),
-                                                $this->context->getElapsedTime());
-      } else {
-         $capture .= $this->renderer->preRender($this->capture_sequence_number);
-      }
-      $capture .= $this->renderer->renderCoreVar($this->core->inspect($var));
-      $capture .= $this->renderer->postRender();
-
-      // dump
-      //
-      $written .= $this->output_writer->write($capture);
-
-      // output
-      //
-      $output = $written;
-
-      $this->capture_sequence_number++;
-   }
-
-
-   /**
     * Returns a configuration based on the options passed.
     *
     * @param string $options
