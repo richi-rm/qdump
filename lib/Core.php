@@ -245,6 +245,14 @@ class Core {
          }
          $property['access'] = $access;
 
+         // dynamic
+         //
+         $is_dynamic = false;
+         if ($this->is_dynamic($object, $refl_property->getName())) {
+            $property['dynamic'] = true;
+            $is_dynamic = true;
+         }
+
          // name
          //
          $property['name'] = $refl_property->getName();
@@ -257,11 +265,13 @@ class Core {
 
          // type
          //
-         if ($refl_property->hasType()) {
-            if ($refl_property->getType()->allowsNull()) {
-               $property['type']['null'] = true;
+         if (!$is_dynamic) {
+            if ($refl_property->hasType()) {
+               if ($refl_property->getType()->allowsNull()) {
+                  $property['type']['null'] = true;
+               }
+               $property['type']['name'] = $refl_property->getType()->getName();
             }
-            $property['type']['name'] = ($this->is_dynamic($object, $property['name']) ? 'dynamic' : $refl_property->getType()->getName());
          }
 
          // value
