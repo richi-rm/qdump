@@ -186,22 +186,22 @@ class Core {
          'id' => null
       ];
 
-      $refl_class = new \ReflectionClass($object);
+      $refl_object = new \ReflectionObject($object);
 
       // file(line)
       //
-      $file_path = $refl_class->getFileName();
-      $start_line = $refl_class->getStartLine();
+      $file_path = $refl_object->getFileName();
+      $start_line = $refl_object->getStartLine();
       $r['file(line)'] = $file_path === false ? null : $file_path . '(' . $start_line . ')';
 
       // namespace
       //
-      $namespace = $refl_class->getNamespaceName();
+      $namespace = $refl_object->getNamespaceName();
       $r['namespace'] = $namespace . (strlen($namespace) > 0 ? '\\' : '');
 
       // class
       //
-      $class = explode('\\', $refl_class->getName());
+      $class = explode('\\', $refl_object->getName());
       $class = end($class);
       if (substr($class, 0, 15) === 'class@anonymous') {
          $class = 'class@anonymous';
@@ -214,7 +214,7 @@ class Core {
 
       // constants
       //
-      foreach ($refl_class->getConstants() as $name => $value) {
+      foreach ($refl_object->getConstants() as $name => $value) {
          $refl_constant = new \ReflectionClassConstant($object, $name);
          if ($refl_constant->isPrivate()) {
             $access = 'private';
@@ -228,7 +228,7 @@ class Core {
 
       // properties
       //
-      foreach ($refl_class->getProperties() as $refl_property) {
+      foreach ($refl_object->getProperties() as $refl_property) {
 
          $property = [];
 
@@ -261,7 +261,7 @@ class Core {
             if ($refl_property->getType()->allowsNull()) {
                $property['type']['null'] = true;
             }
-            $property['type']['name'] = $refl_property->getType()->getName();
+            $property['type']['name'] = ($this->is_dynamic($object, $property['name']) ? 'dynamic' : $refl_property->getType()->getName());
          }
 
          // value
@@ -277,7 +277,7 @@ class Core {
 
       // methods
       //
-      foreach ($refl_class->getMethods() as $refl_method) {
+      foreach ($refl_object->getMethods() as $refl_method) {
 
          $method = [];
 
@@ -356,6 +356,20 @@ class Core {
       }
 
       return $r;
+   }
+
+
+   /**
+    * Returns true if property $property_name is dynamic.
+    *
+    * @param object $object
+    * @param string $property_name
+    * @return bool
+    */
+   protected function is_dynamic($object, $property_name)
+   {
+      return  array_key_exists($property_name, get_object_vars($object)) &&
+             !array_key_exists($property_name, get_class_vars(get_class($object)));
    }
 
 }
