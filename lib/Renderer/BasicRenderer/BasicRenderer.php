@@ -315,7 +315,7 @@ class BasicRenderer {
 
 
    /**
-    * Render a class constant.
+    * Render a constant and its value.
     *
     * @param array $constant
     * @param int $depth depth level starting from 0
@@ -323,12 +323,18 @@ class BasicRenderer {
     */
    protected function render_constant($constant, $depth)
    {
+      $left_blanks = '';
+      for ($d=0; $d<=$depth; $d++) {
+         $left_blanks .= str_repeat(' ', $this->left_pad_length[$d]);
+      }
+      $left_string = '::' . $constant['access'] . ' const ' . $constant['name'] . ' = ';
+      $this->left_pad_length[$depth+1] = mb_strlen($left_string);
       $r = "\n" .
-           str_repeat($this->level_prefix, $depth + 1) .
+           $left_blanks .
            '::' .
-           $this->p('access') . $constant['access'] . $this->s('access') . ' ' .
-           $this->p('constant-type') . 'const' . $this->s('constant-type') . ' ' .
-           $this->p('constant') . $constant['name'] . $this->s('constant') .
+           $this->p('modifier') . $constant['access'] . $this->s('modifier') . ' ' .
+           $this->p('modifier') . 'const' . $this->s('modifier') . ' ' .
+           $this->p('name') . $constant['name'] . $this->s('name') .
            ' = ' .
            $this->renderCoreVar($constant['value'], $depth + 1);
 
