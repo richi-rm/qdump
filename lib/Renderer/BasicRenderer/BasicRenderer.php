@@ -312,13 +312,13 @@ class BasicRenderer {
     */
    public function renderHeader($header_lines)
    {
-      $header = $this->p('header');
+      $r = $this->p('header');
       foreach ($header_lines as $header_line) {
-         $header .= $header_line . "\n";
+         $r .= $header_line . "\n";
       }
-      $header .= $this->s('header') . "\n";
+      $r .= $this->s('header');
 
-      return $header;
+      return $r;
    }
 
 
