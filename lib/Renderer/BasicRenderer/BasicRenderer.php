@@ -206,6 +206,22 @@ class BasicRenderer {
          return $r;
       }
 
+      // enum case
+      //
+      if ($core_var['type'] === 'enumcase') {
+         $r .= $this->p('type') . $core_var['type'] . $this->s('type') . ' ' .
+               $this->p('namespace') . $core_var['namespace'] . $this->s('namespace') .
+               $this->p('enum') . $core_var['enum'] . $this->s('enum') .
+               '::' .
+               $this->p('name') . $core_var['case'] . $this->s('name');
+         if (isset($core_var['backing-value'])) {
+            $r .= ' = ' . $this->renderCoreVar($core_var['backing-value'], $depth + 1);
+         }
+         if ($this->config['verbose']) {
+            $r .= ' ' . $this->p('file(line)') . $core_var['file(line)'] . $this->s('file(line)');
+         }
+         return $r;
+      }
       // object
       //
       if ($core_var['type'] === 'object') {
