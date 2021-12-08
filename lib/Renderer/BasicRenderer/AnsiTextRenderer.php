@@ -59,7 +59,7 @@ class AnsiTextRenderer extends BasicRenderer {
       'resource-type' => self::ANSI_CODES['magenta_bri'],
       'time'          => self::ANSI_CODES['blue_bri'],
       'type'          => self::ANSI_CODES['italic'] . self::ANSI_CODES['white_bri'],
-      'uninitialized' => self::ANSI_CODES['red_bri'],
+      'uninitialized' => self::ANSI_CODES['bold'] . self::ANSI_CODES['cyan_bri'],
       'unknown'       => self::ANSI_CODES['red_bri'],
       'value'         => self::ANSI_CODES['bold'] . self::ANSI_CODES['cyan_bri']
    ];

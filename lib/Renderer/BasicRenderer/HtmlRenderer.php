@@ -26,7 +26,7 @@ class HtmlRenderer extends BasicRenderer {
    .vardebug-resource-type { color: #ff00ff; }
    .vardebug-time          { color: #a0a0a0; }
    .vardebug-type          { font-style: italic; }
-   .vardebug-uninitialized { color: #ff0000; }
+   .vardebug-uninitialized { color: #0080ff; font-weight: bold; }
    .vardebug-unknown       { color: #ff0000; }
    .vardebug-value         { color: #0080ff; font-weight: bold; }
 </style>
