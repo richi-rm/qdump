@@ -309,7 +309,8 @@ class BasicRenderer {
 
       // unknown
       //
-      return $this->p('unknown') . '(unknown)' . $this->s('unknown');
+      $r .= $this->p('unknown') . '(unknown)' . $this->s('unknown');
+      return $r;
    }
 
 
