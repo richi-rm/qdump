@@ -33,11 +33,11 @@ class BasicRenderer {
 
 
    /**
-    * Level prefix.
+    * Left padding length.
     *
-    * @var string
+    * @var array
     */
-   protected $level_prefix = '   ';
+   protected $left_pad_length = [];
 
 
    /**
