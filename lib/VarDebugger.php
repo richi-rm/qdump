@@ -269,6 +269,10 @@ class VarDebugger {
             $config['vardebugger-config']['render-type'] = $option;
          }
 
+         elseif ($option === 'plaintext') {
+            $config['vardebugger-config']['render-type'] = 'plain-text';
+         }
+
       } // foreach
 
       return $config;
