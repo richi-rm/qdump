@@ -3,21 +3,68 @@
 Tags: Added | Changed | Deprecated | Fixed | Removed | Security | Yanked
 
 
-## [v0.4.11-alpha] - 2021-11-30
+## [v0.5.0-prealpha] - 2021-12-07
+
+### Added
+
+ - Añadido soporte para enums, propiedades readonly y resources ids (PHP 8).
+
+
+## [v0.4.14-prealpha] - 2021-12-05
+
+### Fixed
+
+ - Sorteado un segmentation fault de PHP que no permite obtener el tipo de las
+   propiedades dinámicas.
+ - Mejorada la inspección de propiedades dinámicas en PHP 7.4 y 8.1.
+
+
+## [v0.4.13-prealpha] - 2021-12-04
+
+### Added
+
+ - Añadido soporte para propiedades dinámicas.
+
+### Changed
+
+ - Cambiada la opción +arrays por expand-arrays.
+ - Mejorado el renderizado de arrays.
+ - Renombrada la opción color-text por ansi.
+
+### Removed
+
+ - Elimnada la oción -arrays
+ - Eliminado el método dumpByRef()
+
+
+## [v0.4.12-prealpha] - 2021-12-02
+
+### Added
+ - Añadidas opciones +arrays, -arrays, para expandir o no los arrays a la
+   salida.
+
+### Changed
+
+ - Actualizados los sufijos usados por BasicRenderer.
+ - Salida por defecto limitada: expand-arrays false, max-length: 50
+
+
+## [v0.4.11-prealpha] - 2021-11-30
 
 ### Added
 
  - Core distingue los métodos que devuelven referencias.
+ - Añadidos a los parámetros sus valores por defecto.
 
 
-## [v0.4.10-alpha] - 2021-11-29
+## [v0.4.10-prealpha] - 2021-11-29
 
 ### Added
 
  - Añadido renderizado de constantes de clase a BasicRenderer.
 
 
-## [v0.4.9-alpha] - 2021-11-28
+## [v0.4.9-prealpha] - 2021-11-28
 
 ### Added
 
@@ -34,7 +81,7 @@ Tags: Added | Changed | Deprecated | Fixed | Removed | Security | Yanked
    +-protm, +-protp, +-pubm, +-pubp.
 
 
-## [v0.4.7-alpha] - 2021-11-25
+## [v0.4.7-prealpha] - 2021-11-25
 
 ### Added
 
@@ -53,7 +100,7 @@ Tags: Added | Changed | Deprecated | Fixed | Removed | Security | Yanked
    máxima de cadenas indicando sólo el número.
 
 
-## [v0.4.6-alpha] - 2021-11-24
+## [v0.4.6-prealpha] - 2021-11-24
 
 ### Added
 
@@ -68,7 +115,7 @@ Tags: Added | Changed | Deprecated | Fixed | Removed | Security | Yanked
    que los bytes estén separados por espacios en blanco.
 
 
-## [v0.4.5-alpha] - 2021-11-23
+## [v0.4.5-prealpha] - 2021-11-23
 
 ### Added
 
@@ -86,14 +133,14 @@ Tags: Added | Changed | Deprecated | Fixed | Removed | Security | Yanked
  - Cambiado el nombre de la propiedad max-vistrlen a max-length.
 
 
-## [v0.4.4-alpha] - 2021-11-22
+## [v0.4.4-prealpha] - 2021-11-22
 
 ### Added
 
  - Añadido a Core saneado de caracteres UTF-8 mal formados en las cadenas.
 
 
-## [v0.4.3-alpha] - 2021-11-21
+## [v0.4.3-prealpha] - 2021-11-21
 
 ### Added
 
@@ -105,7 +152,7 @@ Tags: Added | Changed | Deprecated | Fixed | Removed | Security | Yanked
    cadenas.
 
 
-## [v0.4.2-alpha] - 2021-11-19
+## [v0.4.2-prealpha] - 2021-11-19
 
 ### Added
 
@@ -124,7 +171,7 @@ Tags: Added | Changed | Deprecated | Fixed | Removed | Security | Yanked
  - Cambiado el namespace de las clases de Cachito a Cachitos.
 
 
-## [v0.4.1-alpha] - 2021-11-18
+## [v0.4.1-prealpha] - 2021-11-18
 
 ### Added
 
@@ -141,7 +188,7 @@ Tags: Added | Changed | Deprecated | Fixed | Removed | Security | Yanked
    adaptarse a FileWriter).
 
 
-## [v0.4.0-alpha] - 2021-11-17
+## [v0.4.0-prealpha] - 2021-11-17
 
 ### Added
 
