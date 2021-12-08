@@ -108,6 +108,30 @@ class Core {
          return $r;
       }
 
+      // enum case
+      //
+      if (PHP_VERSION_ID >= 80100) {
+         if ($var instanceof \UnitEnum) {
+            $refl_enum = new \ReflectionEnum($var);
+            $file_path = $refl_enum->getFileName();
+            $start_line = $refl_enum->getStartLine();
+            $file_line = ($file_path === false ? null : $file_path . '(' . $start_line . ')');
+            $namespace = $refl_enum->getNamespaceName();
+            if (strlen($namespace) > 0) {
+               $namespace .= '\\';
+            }
+            $enum = explode('\\', $refl_enum->getName());
+            $enum = end($enum);
+            $r = ['type' => 'enumcase', 'file(line)' => $file_line, 'namespace' => $namespace, 'enum' => $enum, 'case' => $var->name];
+            if ($var instanceof \BackedEnum) {
+               $r['backing-type'] = $refl_enum->getBackingType()->getName();
+               $backing_value = $var->value;
+               $r['backing-value'] = $this->inspect($backing_value, $depth + 1);
+            }
+            return $r;
+         }
+      }
+
       // object
       //
       if (is_object($var)) {
@@ -157,11 +181,11 @@ class Core {
       // resource
       //
       if (is_resource($var)) {
-         return ['type' => 'resource', 'resource-type' => get_resource_type($var)];
-         // PHP 8:
-         // return ['type' => 'resource',
-         //         'resource-type' => get_resource_type($var),
-         //         'resource-id' => get_resource_id($var)];
+         $r = ['type' => 'resource', 'resource-type' => get_resource_type($var)];
+         if (PHP_VERSION_ID >= 80000) {
+            $r['id'] = get_resource_id($var);
+         }
+         return $r;
       }
 
       // unknown
@@ -192,7 +216,7 @@ class Core {
       //
       $file_path = $refl_object->getFileName();
       $start_line = $refl_object->getStartLine();
-      $r['file(line)'] = $file_path === false ? null : $file_path . '(' . $start_line . ')';
+      $r['file(line)'] = ($file_path === false ? null : $file_path . '(' . $start_line . ')');
 
       // namespace
       //
@@ -256,6 +280,14 @@ class Core {
          // name
          //
          $property['name'] = $refl_property->getName();
+
+         // readonly
+         //
+         if (PHP_VERSION_ID >= 80100) {
+            if ($refl_property->isReadOnly()) {
+               $property['readonly'] = true;
+            }
+         }
 
          // static
          //
