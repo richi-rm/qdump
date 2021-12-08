@@ -271,10 +271,8 @@ class Core {
 
          // dynamic
          //
-         $is_dynamic = false;
          if ($this->is_dynamic($object, $refl_property->getName())) {
             $property['dynamic'] = true;
-            $is_dynamic = true;
          }
 
          // name
@@ -297,7 +295,7 @@ class Core {
 
          // type
          //
-         if (!$is_dynamic) {
+         if (!isset($property['dynamic'])) {
             if ($refl_property->hasType()) {
                if ($refl_property->getType()->allowsNull()) {
                   $property['type']['null'] = true;
