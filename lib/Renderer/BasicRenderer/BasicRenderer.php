@@ -343,6 +343,81 @@ class BasicRenderer {
 
 
    /**
+    * Render a property and its value.
+    *
+    * @param array $property
+    * @param int $depth depth level starting from 0
+    * @return string
+    */
+   protected function render_property($property, $depth)
+   {
+      // left blanks
+      //
+      $left_blanks = '';
+      for ($d=0; $d<=$depth; $d++) {
+         $left_blanks .= str_repeat(' ', $this->left_pad_length[$d]);
+      }
+
+      // left string
+      //
+      $left_string = (isset($property['static']) ? '::' : '->') .
+                     $property['access'];
+      if (isset($property['dynamic'])) {
+         $left_string .= ' (dynamic)';
+      }
+      if (isset($property['static'])) {
+         $left_string .= ' static';
+      }
+      if (isset($property['readonly'])) {
+         $left_string .= ' readonly';
+      }
+      if (isset($property['type'])) {
+         $type = ' ';
+         if (isset($property['type']['null'])) {
+            $type .= '?';
+         }
+         $type .= $property['type']['name'];
+         $left_string .= $type;
+      }
+      $left_string .= ' $' . $property['name'] . ' = ';
+      $this->left_pad_length[$depth+1] = mb_strlen($left_string);
+
+      // render string
+      //
+      $r = "\n" .
+           $left_blanks .
+           (isset($property['static']) ? '::' : '->') .
+           $this->p('modifier') . $property['access'] . $this->s('modifier');
+      if (isset($property['dynamic'])) {
+         $r .= ' ' . $this->p('modifier') . '(dynamic)' . $this->s('modifier');
+      }
+      if (isset($property['static'])) {
+         $r .= ' ' . $this->p('modifier') . 'static' . $this->s('modifier');
+      }
+      if (isset($property['readonly'])) {
+         $r .= ' ' . $this->p('modifier') . 'readonly' . $this->s('modifier');
+      }
+      if (isset($property['type'])) {
+         $r_type = $this->p('type');
+         if (isset($property['type']['null'])) {
+            $r_type .= '?';
+         }
+         $r_type .= $property['type']['name'];
+         $r_type .= $this->s('type');
+         $r .= ' ' . $r_type;
+      }
+      $r .= ' ' . $this->p('name') . '$' . $property['name'] . $this->s('name');
+      if (isset($property['value'])) {
+         $r .= ' = ' . $this->renderCoreVar($property['value'], $depth + 1);
+      } else {
+         $r .= ' ' . $this->p('uninitialized') . '(uninitialized)' . $this->s('uninitialized');
+      }
+
+      return $r;
+   }
+
+
+   /**
     * Returns the rendering of the header.
     *
     * @param array $header_lines header lines to render
