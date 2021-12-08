@@ -91,16 +91,20 @@ class BasicRenderer {
     *
     * @return string
     */
-   public function preRender($capture_sequence_number, $file_line = null, $time = null)
+   public function preRender($capture_sequence_number, $file_line, $time)
    {
-      if ($file_line === null) {
-         return $this->p('capture') . $capture_sequence_number . ') ';
+      if ($this->config['verbose']) {
+         $r = $this->p('capture') .
+              $capture_sequence_number . ') ' .
+              $this->p('file(line)') . $file_line . $this->s('file(line)') . ' ' .
+              $this->p('time') . $time . $this->s('time') .
+              "\n";
       } else {
-         return $this->p('capture') .
-                $capture_sequence_number . ') ' .
-                $this->p('file(line)') . $file_line . $this->s('file(line)') . ' ' .
-                $this->p('time') . $time . $this->s('time') . "\n";
+         $r = $this->p('capture') .
+              $capture_sequence_number . ') ';
       }
+      $this->left_pad_length[0] = mb_strlen($capture_sequence_number . ') ');
+      return $r;
    }
 
 
