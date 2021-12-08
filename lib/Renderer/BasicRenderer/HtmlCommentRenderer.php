@@ -26,11 +26,11 @@ class HtmlCommentRenderer extends BasicRenderer {
       'namespace'     => '',
       'property'      => '',
       'resource-type' => '',
+      'scalar'        => '',
       'time'          => '',
       'type'          => '',
       'uninitialized' => '',
-      'unknown'       => '',
-      'value'         => ''
+      'unknown'       => ''
    ];
 
 
@@ -54,10 +54,10 @@ class HtmlCommentRenderer extends BasicRenderer {
       'namespace'     => '',
       'property'      => '',
       'resource-type' => '',
+      'scalar'        => '',
       'time'          => '',
       'type'          => '',
       'uninitialized' => '',
-      'unknown'       => '',
-      'value'         => ''
+      'unknown'       => ''
    ];
 }

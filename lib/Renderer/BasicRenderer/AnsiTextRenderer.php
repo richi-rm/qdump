@@ -57,11 +57,11 @@ class AnsiTextRenderer extends BasicRenderer {
       'namespace'     => self::ANSI_CODES['green'],
       'property'      => self::ANSI_CODES['green_bri'],
       'resource-type' => self::ANSI_CODES['magenta_bri'],
+      'scalar'        => self::ANSI_CODES['bold'] . self::ANSI_CODES['cyan_bri'],
       'time'          => self::ANSI_CODES['blue_bri'],
       'type'          => self::ANSI_CODES['italic'] . self::ANSI_CODES['white_bri'],
-      'uninitialized' => self::ANSI_CODES['bold'] . self::ANSI_CODES['cyan_bri'],
-      'unknown'       => self::ANSI_CODES['red_bri'],
-      'value'         => self::ANSI_CODES['bold'] . self::ANSI_CODES['cyan_bri']
+      'uninitialized' => self::ANSI_CODES['italic'] . self::ANSI_CODES['white_bri'],
+      'unknown'       => self::ANSI_CODES['red_bri']
    ];
 
 
@@ -85,10 +85,10 @@ class AnsiTextRenderer extends BasicRenderer {
       'namespace'     => self::ANSI_CODES['reset'],
       'property'      => self::ANSI_CODES['reset'],
       'resource-type' => self::ANSI_CODES['reset'],
+      'scalar'        => self::ANSI_CODES['reset'],
       'time'          => self::ANSI_CODES['reset'],
       'type'          => self::ANSI_CODES['reset'],
       'uninitialized' => self::ANSI_CODES['reset'],
-      'unknown'       => self::ANSI_CODES['reset'],
-      'value'         => self::ANSI_CODES['reset']
+      'unknown'       => self::ANSI_CODES['reset']
    ];
 }

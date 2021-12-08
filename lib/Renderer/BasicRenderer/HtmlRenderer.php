@@ -24,11 +24,11 @@ class HtmlRenderer extends BasicRenderer {
    .vardebug-namespace     { color: #004000; }
    .vardebug-property      { color: #008000; }
    .vardebug-resource-type { color: #ff00ff; }
+   .vardebug-scalar        { color: #0080ff; font-weight: bold; }
    .vardebug-time          { color: #a0a0a0; }
    .vardebug-type          { font-style: italic; }
-   .vardebug-uninitialized { color: #0080ff; font-weight: bold; }
+   .vardebug-uninitialized { font-style: italic; }
    .vardebug-unknown       { color: #ff0000; }
-   .vardebug-value         { color: #0080ff; font-weight: bold; }
 </style>
 HTML;
 
@@ -53,11 +53,11 @@ HTML;
       'namespace'     => '<span class="vardebug vardebug-namespace">',
       'property'      => '<span class="vardebug vardebug-property">',
       'resource-type' => '<span class="vardebug vardebug-resource-type">',
+      'scalar'        => '<span class="vardebug vardebug-scalar">',
       'time'          => '<span class="vardebug vardebug-time">',
       'type'          => '<span class="vardebug vardebug-type">',
       'uninitialized' => '<span class="vardebug vardebug-uninitialized">',
-      'unknown'       => '<span class="vardebug vardebug-unknown">',
-      'value'         => '<span class="vardebug vardebug-value">'
+      'unknown'       => '<span class="vardebug vardebug-unknown">'
    ];
 
 
@@ -81,10 +81,10 @@ HTML;
       'namespace'     => '</span>',
       'property'      => '</span>',
       'resource-type' => '</span>',
+      'scalar'        => '</span>',
       'time'          => '</span>',
       'type'          => '</span>',
       'uninitialized' => '</span>',
-      'unknown'       => '</span>',
-      'value'         => '</span>'
+      'unknown'       => '</span>'
    ];
 }

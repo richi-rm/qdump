@@ -135,7 +135,7 @@ class BasicRenderer {
       // null
       //
       if ($core_var['type'] === 'null') {
-         $r .= $this->p('value') . $core_var['value'] . $this->s('value');
+         $r .= $this->p('scalar') . $core_var['value'] . $this->s('scalar');
          return $r;
       }
 
@@ -143,7 +143,7 @@ class BasicRenderer {
       //
       if ($core_var['type'] === 'bool') {
          $r .= $this->p('type') . $core_var['type'] . $this->s('type') . ' ' .
-               $this->p('value') . $core_var['value'] . $this->s('value');
+               $this->p('scalar') . $core_var['value'] . $this->s('scalar');
          return $r;
       }
 
@@ -151,7 +151,7 @@ class BasicRenderer {
       //
       if ($core_var['type'] === 'int') {
          $r .= $this->p('type') . $core_var['type'] . $this->s('type') . ' ' .
-               $this->p('value') . $core_var['value'] . $this->s('value');
+               $this->p('scalar') . $core_var['value'] . $this->s('scalar');
          return $r;
       }
 
@@ -159,7 +159,7 @@ class BasicRenderer {
       //
       if ($core_var['type'] === 'float') {
          $r .= $this->p('type') . $core_var['type'] . $this->s('type') . ' ' .
-               $this->p('value') . $core_var['value'] . $this->s('value');
+               $this->p('scalar') . $core_var['value'] . $this->s('scalar');
          return $r;
       }
 
@@ -169,7 +169,7 @@ class BasicRenderer {
          $length = 0;
          $string_formatted = $this->string_formatter->format($core_var['value'], $length);
          $r .= $this->p('type') . $core_var['type'] . '(' . $length . ')' . $this->s('type') . ' ' .
-               $this->p('value') . $string_formatted . $this->s('value');
+               $this->p('scalar') . $string_formatted . $this->s('scalar');
          return $r;
       }
 
