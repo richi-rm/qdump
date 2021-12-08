@@ -292,8 +292,12 @@ class BasicRenderer {
       // resource
       //
       if ($core_var['type'] === 'resource') {
-         return $this->p('type') . 'resource' . $this->s('type') . ' ' .
-                $this->p('resource-type') . $core_var['resource-type'] . $this->s('resource-type');
+         $r .= $this->p('type') . $core_var['type'] . $this->s('type');
+         if (isset($core_var['id'])) {
+            $r .= ' ' . '#' . $core_var['id'];
+         }
+         $r .= ' ' . $this->p('resource-type') . $core_var['resource-type'] . $this->s('resource-type');
+         return $r;
       }
 
       // unknown
