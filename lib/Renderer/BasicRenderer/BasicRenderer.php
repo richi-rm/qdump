@@ -177,40 +177,35 @@ class BasicRenderer {
       //
       if ($core_var['type'] === 'array') {
 
-         // do not expand array
+         $r .= $this->p('type') . $core_var['type'] . '(' . $core_var['size'] . ')' . $this->s('type');
+
+         // do not expand array or empty array
          //
-         if (!$this->config['expand-arrays']) {
-            return $this->p('type') . 'array(' . $core_var['size'] . ')' . $this->s('type');
+         if (!$this->config['expand-arrays'] || ($core_var['size'] < 1)) {
+            return $r;
          }
 
-         // no line break
+         // cycle
          //
-         if ($depth < 1 || $core_var['size'] < 1 || isset($core_var['cycle'])) {
-            $r = $this->p('type') . 'array(' . $core_var['size'] . ')' . $this->s('type');
-            // cycle
-            //
-            if (isset($core_var['cycle'])) {
-               $r .= ' ' . $this->p('cycle') . '(CYCLE array)' . $this->s('cycle');
-               return $r;
-            }
-
-         // line break
-         //
-         } else {
-            $r = "\n" .
-                 str_repeat($this->level_prefix, $depth + 1) .
-                 $this->p('type') . 'array(' . $core_var['size'] . ')' . $this->s('type');
+         if (isset($core_var['cycle'])) {
+            $r .= ' ' . $this->p('cycle') . '(CYCLE ' . $core_var['type'] . ')' . $this->s('cycle');
+            return $r;
          }
 
          // elements
          //
          if (isset($core_var['elements'])) {
             foreach ($core_var['elements'] as $array_key => $array_value) {
+               $left_blanks = '';
+               for ($d=0; $d<=$depth; $d++) {
+                  $left_blanks .= str_repeat(' ', $this->left_pad_length[$d]);
+               }
                $array_key_formatted = (is_int($array_key) ? $array_key : "'" . addcslashes($array_key, "'") . "'");
+               $left_string = '[' . $array_key_formatted . '] => ';
+               $this->left_pad_length[$depth+1] = mb_strlen($left_string);
                $r .= "\n" .
-                     str_repeat($this->level_prefix, $depth + 1) .
-                     '[' . $this->p('key') . $array_key_formatted . $this->s('key') . ']' .
-                     ' => ' .
+                     $left_blanks .
+                     '[' . $this->p('key') . $array_key_formatted . $this->s('key') . '] => ' .
                      $this->renderCoreVar($array_value, $depth + 1);
             }
          }
