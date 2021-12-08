@@ -24,11 +24,12 @@ class VarDebugger {
       'filewriter-config' => [
          'file' => '/tmp/vardebug/*username*'
       ],
-      'render-config' => [
-         'byte-format' => 'hexlc',
+      'render-config'    => [
+         'byte-format'   => 'hexlc',
          'expand-arrays' => false,
-         'max-length' => 50,
-         'string-format' => 'utf-8'
+         'max-length'    => 50,
+         'string-format' => 'utf-8',
+         'verbose'       => false
       ],
       'vardebugger-config' => [
          'output-type' => 'stdout',
@@ -170,13 +171,9 @@ class VarDebugger {
       // capture
       //
       $capture = '';
-      if ($this->config['vardebugger-config']['verbose']) {
-         $capture .= $this->renderer->preRender($this->capture_sequence_number,
-                                                $this->context->getTraceFileLine(),
-                                                $this->context->getElapsedTime());
-      } else {
-         $capture .= $this->renderer->preRender($this->capture_sequence_number);
-      }
+      $capture .= $this->renderer->preRender($this->capture_sequence_number,
+                                             $this->context->getTraceFileLine(),
+                                             $this->context->getElapsedTime());
       $capture .= $this->renderer->renderCoreVar($this->core->inspect($var));
       $capture .= $this->renderer->postRender();
 
@@ -255,6 +252,11 @@ class VarDebugger {
             $config['render-config']['string-format'] = $option;
          }
 
+         elseif ($option === 'verbose') {
+            $config['render-config']['verbose'] = true;
+            $config['vardebugger-config']['verbose'] = true;
+         }
+
          //
          // vardebugger config
          //
@@ -267,11 +269,7 @@ class VarDebugger {
             $config['vardebugger-config']['render-type'] = $option;
          }
 
-         elseif ($option === 'verbose') {
-            $config['vardebugger-config']['verbose'] = true;
-         }
-
-      }
+      } // foreach
 
       return $config;
    }
