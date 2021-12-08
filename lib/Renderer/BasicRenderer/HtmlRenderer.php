@@ -16,7 +16,7 @@ class HtmlRenderer extends BasicRenderer {
    .vardebug-class         { color: #008000; font-weight: bold; }
    .vardebug-cycle         { color: #ff0000; }
    .vardebug-enum          { color: #008000; font-weight: bold; }
-   .vardebug-fileline      { text-decoration: underline; }
+   .vardebug-fileline      { color: #a0a0a0; text-decoration: underline; }
    .vardebug-key           { color: #d08000; }
    .vardebug-method        { color: #008000; font-weight: bold; }
    .vardebug-modifier      { font-style: italic; }
@@ -67,7 +67,7 @@ HTML;
     * @var array
     */
    protected $suffixes = [
-      'header'        => '</pre>',
+      'header'        => '</pre>' . "\n\n",
       'capture'       => '</pre>',
 
       'class'         => '</span>',

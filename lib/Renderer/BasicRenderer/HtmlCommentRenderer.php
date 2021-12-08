@@ -12,8 +12,8 @@ class HtmlCommentRenderer extends BasicRenderer {
     * @var array
     */
    protected $prefixes = [
-      'header'        => "<!-- VarDebug\n",
-      'capture'       => "<!-- VarDebug\n",
+      'header'        => '<!-- VarDebug' . "\n",
+      'capture'       => '<!-- VarDebug' . "\n",
 
       'class'         => '',
       'cycle'         => '',
@@ -40,8 +40,8 @@ class HtmlCommentRenderer extends BasicRenderer {
     * @var array
     */
    protected $suffixes = [
-      'header'        => "-->\n",
-      'capture'       => "\n-->",
+      'header'        => '-->' . "\n\n",
+      'capture'       => "\n" . '-->',
 
       'class'         => '',
       'cycle'         => '',

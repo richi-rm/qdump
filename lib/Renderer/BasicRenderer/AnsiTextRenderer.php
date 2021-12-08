@@ -43,7 +43,7 @@ class AnsiTextRenderer extends BasicRenderer {
     * @var array
     */
    protected $prefixes = [
-      'header'        => "---\n" . self::ANSI_CODES['blue_bri'],
+      'header'        => self::ANSI_CODES['blue_bri'] . '---' . "\n",
       'capture'       => '',
 
       'class'         => self::ANSI_CODES['bold'] . self::ANSI_CODES['green_bri'],
@@ -71,7 +71,7 @@ class AnsiTextRenderer extends BasicRenderer {
     * @var array
     */
    protected $suffixes = [
-      'header'        => self::ANSI_CODES['reset'] . '---',
+      'header'        => '---' . self::ANSI_CODES['reset'] . "\n\n",
       'capture'       => '',
 
       'class'         => self::ANSI_CODES['reset'],

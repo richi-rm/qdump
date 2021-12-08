@@ -285,7 +285,7 @@ class VarDebugger {
    {
       $written = '';
       if ($this->config['vardebugger-config']['render-type'] === 'html') {
-         $written .= $this->output_writer->write(HtmlRenderer::CSS_STYLES . "\n");
+         $written .= $this->output_writer->write(HtmlRenderer::CSS_STYLES . "\n\n");
       }
       if ($this->config['vardebugger-config']['verbose']) {
          $header_lines = [$this->context->getEnvironmentInfo()];
