@@ -119,37 +119,48 @@ class BasicRenderer {
     */
    public function renderCoreVar($core_var, $depth = 0)
    {
+      $r = '';
+
+      if ($depth === 0 && $this->config['verbose']) {
+         $r = str_repeat(' ', $this->left_pad_length[0]);
+      }
+
       // unknown
       //
       if (!is_array($core_var) || !isset($core_var['type'])) {
-         return $this->p('unknown') . '(unknown)' . $this->s('unknown');
+         $r .= $this->p('unknown') . '(unknown)' . $this->s('unknown');
+         return $r;
       }
 
       // null
       //
       if ($core_var['type'] === 'null') {
-         return $this->p('value') . $core_var['value'] . $this->s('value');
+         $r .= $this->p('value') . $core_var['value'] . $this->s('value');
+         return $r;
       }
 
       // bool
       //
       if ($core_var['type'] === 'bool') {
-         return $this->p('type') . $core_var['type'] . $this->s('type') . ' ' .
-                $this->p('value') . $core_var['value'] . $this->s('value');
+         $r .= $this->p('type') . $core_var['type'] . $this->s('type') . ' ' .
+               $this->p('value') . $core_var['value'] . $this->s('value');
+         return $r;
       }
 
       // int
       //
       if ($core_var['type'] === 'int') {
-         return $this->p('type') . $core_var['type'] . $this->s('type') . ' ' .
-                $this->p('value') . $core_var['value'] . $this->s('value');
+         $r .= $this->p('type') . $core_var['type'] . $this->s('type') . ' ' .
+               $this->p('value') . $core_var['value'] . $this->s('value');
+         return $r;
       }
 
       // float
       //
       if ($core_var['type'] === 'float') {
-         return $this->p('type') . $core_var['type'] . $this->s('type') . ' ' .
-                $this->p('value') . $core_var['value'] . $this->s('value');
+         $r .= $this->p('type') . $core_var['type'] . $this->s('type') . ' ' .
+               $this->p('value') . $core_var['value'] . $this->s('value');
+         return $r;
       }
 
       // string
@@ -157,8 +168,9 @@ class BasicRenderer {
       if ($core_var['type'] === 'string') {
          $length = 0;
          $string_formatted = $this->string_formatter->format($core_var['value'], $length);
-         return $this->p('type') . 'string(' . $length . ')' . $this->s('type') . ' ' .
-                $this->p('value') . $string_formatted . $this->s('value');
+         $r .= $this->p('type') . $core_var['type'] . '(' . $length . ')' . $this->s('type') . ' ' .
+               $this->p('value') . $string_formatted . $this->s('value');
+         return $r;
       }
 
       // array
