@@ -229,18 +229,19 @@ class BasicRenderer {
          }
          return $r;
       }
+
       // object
       //
       if ($core_var['type'] === 'object') {
 
          // type and object id
          //
-         $r = $this->p('type') . 'object' . $this->s('type') . ' ' . '#' . $core_var['id'];
+         $r .= $this->p('type') . $core_var['type'] . $this->s('type') . ' ' . '#' . $core_var['id'];
 
          // cycle
          //
          if (isset($core_var['cycle'])) {
-            $r .= ' ' . $this->p('cycle') . '(CYCLE object)' . $this->s('cycle');
+            $r .= ' ' . $this->p('cycle') . '(CYCLE ' . $core_var['type'] . ')' . $this->s('cycle');
             return $r;
          }
 
@@ -248,27 +249,33 @@ class BasicRenderer {
          //
          $r .= ' ' .
                $this->p('namespace') . $core_var['namespace'] . $this->s('namespace') .
-               $this->p('class') . $core_var['class'] . $this->s('class') . ' ' .
-               $this->p('file(line)') . $core_var['file(line)'] . $this->s('file(line)');
+               $this->p('class') . $core_var['class'] . $this->s('class');
+         if ($this->config['verbose']) {
+            $r .= ' ' . $this->p('file(line)') . $core_var['file(line)'] . $this->s('file(line)');
+         }
 
          // constants
          //
          if (isset($core_var['constants'])) {
             $constants = [];
+            // sort
             foreach ($core_var['constants'] as $constant) {
                $constants[$constant['name']] = $constant;
             }
-            ksort($constants);
+            ksort($constants, SORT_STRING | SORT_FLAG_CASE);
+            // private constants
             foreach ($constants as $constant) {
                if ($constant['access'] === 'private') {
                   $r .= $this->render_constant($constant, $depth);
                }
             }
+            // protected constants
             foreach ($constants as $constant) {
                if ($constant['access'] === 'protected') {
                   $r .= $this->render_constant($constant, $depth);
                }
             }
+            // public constants
             foreach ($constants as $constant) {
                if ($constant['access'] === 'public') {
                   $r .= $this->render_constant($constant, $depth);
@@ -276,16 +283,68 @@ class BasicRenderer {
             }
          }
 
-/*
-         foreach ($core_var['properties'] as $property) {
-            $r .= "\n" .
-                  str_repeat($this->level_prefix, $depth + 1) .
-                  '->' .
-                  $this->p('access') . $property['access'] . $this->s('access') . ' ' .
-                  $this->p('property') . $property['name'] . $this->s('property') .
-                  ' = ' .
-                  $this->renderCoreVar($property['value'], $depth + 1);
+         // properties
+         //
+         if (isset($core_var['properties'])) {
+            $properties = [];
+            // sort
+            foreach ($core_var['properties'] as $property) {
+               $properties[$property['name']] = $property;
+            }
+            ksort($properties, SORT_STRING | SORT_FLAG_CASE);
+            // private static properties
+            foreach ($properties as $property) {
+               if (isset($property['static'])) {
+                  if ($property['access'] === 'private') {
+                     $r .= $this->render_property($property, $depth);
+                  }
+               }
+            }
+            // protected static properties
+            foreach ($properties as $property) {
+               if (isset($property['static'])) {
+                  if ($property['access'] === 'protected') {
+                     $r .= $this->render_property($property, $depth);
+                  }
+               }
+            }
+            // public static properties
+            foreach ($properties as $property) {
+               if (isset($property['static'])) {
+                  if ($property['access'] === 'public') {
+                     $r .= $this->render_property($property, $depth);
+                  }
+               }
+            }
+            // private properties
+            foreach ($properties as $property) {
+               if (!isset($property['static'])) {
+                  if ($property['access'] === 'private') {
+                     $r .= $this->render_property($property, $depth);
+                  }
+               }
+            }
+            // protected properties
+            foreach ($properties as $property) {
+               if (!isset($property['static'])) {
+                  if ($property['access'] === 'protected') {
+                     $r .= $this->render_property($property, $depth);
+                  }
+               }
+            }
+            // public properties
+            foreach ($properties as $property) {
+               if (!isset($property['static'])) {
+                  if ($property['access'] === 'public') {
+                     $r .= $this->render_property($property, $depth);
+                  }
+               }
+            }
          }
+
+         // methods
+         //
+/*
          foreach ($core_var['methods'] as $method) {
             $r .= "\n" .
                   str_repeat($this->level_prefix, $depth + 1) . '->' .
