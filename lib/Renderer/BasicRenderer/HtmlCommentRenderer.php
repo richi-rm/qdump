@@ -17,6 +17,7 @@ class HtmlCommentRenderer extends BasicRenderer {
 
       'class'         => '',
       'cycle'         => '',
+      'enum'          => '',
       'file(line)'    => '',
       'key'           => '',
       'method'        => '',
@@ -44,6 +45,7 @@ class HtmlCommentRenderer extends BasicRenderer {
 
       'class'         => '',
       'cycle'         => '',
+      'enum'          => '',
       'file(line)'    => '',
       'key'           => '',
       'method'        => '',

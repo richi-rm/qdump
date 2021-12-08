@@ -15,6 +15,7 @@ class HtmlRenderer extends BasicRenderer {
    .vardebug-pre-capture   { color: black; background-color: #f0f0f0; padding: 10px; font-size: 11pt; margin: 5px; }
    .vardebug-class         { color: #008000; font-weight: bold; }
    .vardebug-cycle         { color: #ff0000; }
+   .vardebug-enum          { color: #008000; font-weight: bold; }
    .vardebug-fileline      { text-decoration: underline; }
    .vardebug-key           { color: #d08000; }
    .vardebug-method        { color: #008000; font-weight: bold; }
@@ -43,6 +44,7 @@ HTML;
 
       'class'         => '<span class="vardebug vardebug-class">',
       'cycle'         => '<span class="vardebug vardebug-cycle">',
+      'enum'          => '<span class="vardebug vardebug-enum">',
       'file(line)'    => '<span class="vardebug vardebug-fileline">',
       'key'           => '<span class="vardebug vardebug-key">',
       'method'        => '<span class="vardebug vardebug-method">',
@@ -70,6 +72,7 @@ HTML;
 
       'class'         => '</span>',
       'cycle'         => '</span>',
+      'enum'          => '</span>',
       'file(line)'    => '</span>',
       'key'           => '</span>',
       'method'        => '</span>',
