@@ -292,52 +292,60 @@ class BasicRenderer {
                $properties[$property['name']] = $property;
             }
             ksort($properties, SORT_STRING | SORT_FLAG_CASE);
+
             // private static properties
+            //
             foreach ($properties as $property) {
-               if (isset($property['static'])) {
-                  if ($property['access'] === 'private') {
-                     $r .= $this->render_property($property, $depth);
-                  }
+               if (isset($property['static']) && $property['access'] === 'private') {
+                  $r .= $this->render_property($property, $depth);
                }
             }
+
             // protected static properties
+            ///
             foreach ($properties as $property) {
-               if (isset($property['static'])) {
-                  if ($property['access'] === 'protected') {
-                     $r .= $this->render_property($property, $depth);
-                  }
+               if (isset($property['static']) && $property['access'] === 'protected') {
+                  $r .= $this->render_property($property, $depth);
                }
             }
+
             // public static properties
+            //
             foreach ($properties as $property) {
-               if (isset($property['static'])) {
-                  if ($property['access'] === 'public') {
-                     $r .= $this->render_property($property, $depth);
-                  }
+               if (isset($property['static']) && $property['access'] === 'public') {
+                  $r .= $this->render_property($property, $depth);
                }
             }
+
             // private properties
+            //
             foreach ($properties as $property) {
-               if (!isset($property['static'])) {
-                  if ($property['access'] === 'private') {
-                     $r .= $this->render_property($property, $depth);
-                  }
+               if (!isset($property['static']) && $property['access'] === 'private') {
+                  $r .= $this->render_property($property, $depth);
                }
             }
+
             // protected properties
+            //
             foreach ($properties as $property) {
-               if (!isset($property['static'])) {
-                  if ($property['access'] === 'protected') {
-                     $r .= $this->render_property($property, $depth);
-                  }
+               if (!isset($property['static']) && $property['access'] === 'protected') {
+                  $r .= $this->render_property($property, $depth);
                }
             }
-            // public properties
+
+            // non-dynamic public properties
+            //
             foreach ($properties as $property) {
-               if (!isset($property['static'])) {
-                  if ($property['access'] === 'public') {
-                     $r .= $this->render_property($property, $depth);
-                  }
+               if (!isset($property['dynamic']) && !isset($property['static']) && $property['access'] === 'public') {
+                  $r .= $this->render_property($property, $depth);
+               }
+            }
+
+            // dynamic properties
+            //
+            foreach ($properties as $property) {
+               if (isset($property['dynamic'])) {
+                  $r .= $this->render_property($property, $depth);
                }
             }
          }
