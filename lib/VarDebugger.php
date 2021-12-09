@@ -28,6 +28,7 @@ class VarDebugger {
          'byte-format'   => 'hexlc',
          'expand-arrays' => false,
          'max-length'    => 50,
+         'sort'          => false,
          'string-format' => 'utf-8',
          'verbose'       => false
       ],
@@ -246,6 +247,10 @@ class VarDebugger {
                $max_length = -1;
             }
             $config['render-config']['max-length'] = $max_length;
+         }
+
+         elseif ($option === 'sort') {
+            $config['render-config']['sort'] = true;
          }
 
          elseif (in_array($option, self::STRING_FORMATS)) {
