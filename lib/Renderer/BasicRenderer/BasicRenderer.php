@@ -420,23 +420,17 @@ class BasicRenderer {
       // left string
       //
       $left_string = (isset($property['static']) ? '::' : '->') .
-                     $property['access'];
-      if (isset($property['dynamic'])) {
-         $left_string .= ' (dynamic)';
-      }
-      if (isset($property['static'])) {
-         $left_string .= ' static';
-      }
-      if (isset($property['readonly'])) {
-         $left_string .= ' readonly';
-      }
+                     (isset($property['dynamic']) ? '(dynamic) ' : '') .
+                     $property['access'] .
+                     (isset($property['static']) ? ' static' : '') .
+                     (isset($property['readonly']) ? ' readonly' : '');
       if (isset($property['type'])) {
-         $type = ' ';
+         $type = '';
          if (isset($property['type']['null'])) {
             $type .= '?';
          }
          $type .= $property['type']['name'];
-         $left_string .= $type;
+         $left_string .= ' ' . $type;
       }
       $left_string .= ' $' . $property['name'] . ' = ';
       $this->left_pad_length[$depth+1] = mb_strlen($left_string);
@@ -445,11 +439,11 @@ class BasicRenderer {
       //
       $r = "\n" .
            $left_blanks .
-           (isset($property['static']) ? '::' : '->') .
-           $this->p('modifier') . $property['access'] . $this->s('modifier');
+           (isset($property['static']) ? '::' : '->');
       if (isset($property['dynamic'])) {
-         $r .= ' ' . $this->p('modifier') . '(dynamic)' . $this->s('modifier');
+         $r .= $this->p('modifier') . '(dynamic)' . $this->s('modifier') . ' ';
       }
+      $r .= $this->p('modifier') . $property['access'] . $this->s('modifier');
       if (isset($property['static'])) {
          $r .= ' ' . $this->p('modifier') . 'static' . $this->s('modifier');
       }
