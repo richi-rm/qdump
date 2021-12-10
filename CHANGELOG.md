@@ -1,12 +1,34 @@
 # VARDEBUG CHANGELOG
 
-Tags: Added | Changed | Deprecated | Fixed | Removed | Security | Yanked
+Tags: Added | Changed | Upgraded | Deprecated | Fixed | Removed | Security | Yanked
+
+
+## [v0.5.2-prealpha] - 2021-12-09
+
+### Added
+
+ - Opción 'sort' para ordenar los objetos (por defecto desordenados).
+ - Fichero include.php, para quien no quiera usar composer.
+
+### Changed
+
+ - Propiedades dinámicas de los objetos se muestran al final del renderizado del
+   objeto.
+ - Arrays, constantes y propiedades se ordenan con el método "natural".
+
+
+## [v0.5.1-prealpha] - 2021-12-08
+
+### Changed
+
+ - Propiedades no inicializadas del mismo color que los valores.
 
 
 ## [v0.5.0-prealpha] - 2021-12-07
 
-### Added
+### Upgraded
 
+ - Añadido padding izquierdo dinámico.
  - Añadido soporte para enums, propiedades readonly y resources ids (PHP 8).
 
 
