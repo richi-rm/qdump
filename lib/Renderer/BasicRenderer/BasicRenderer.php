@@ -196,6 +196,9 @@ class BasicRenderer {
          // elements
          //
          if (isset($core_var['elements'])) {
+            if ($this->config['sort']) {
+               ksort($core_var['elements'], SORT_NATURAL | SORT_FLAG_CASE);
+            }
             foreach ($core_var['elements'] as $array_key => $array_value) {
                $left_blanks = '';
                for ($d=0; $d<=$depth; $d++) {
@@ -268,7 +271,7 @@ class BasicRenderer {
                foreach ($core_var['constants'] as $constant) {
                   $constants[$constant['name']] = $constant;
                }
-               ksort($constants, SORT_STRING | SORT_FLAG_CASE);
+               ksort($constants, SORT_NATURAL | SORT_FLAG_CASE);
 
                // private constants
                //
@@ -318,7 +321,7 @@ class BasicRenderer {
                foreach ($core_var['properties'] as $property) {
                   $properties[$property['name']] = $property;
                }
-               ksort($properties, SORT_STRING | SORT_FLAG_CASE);
+               ksort($properties, SORT_NATURAL | SORT_FLAG_CASE);
 
                // private static properties
                //
