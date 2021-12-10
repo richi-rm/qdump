@@ -27,7 +27,7 @@ class VarDebugger {
       'render-config'    => [
          'byte-format'   => 'hexlc',
          'expand-arrays' => false,
-         'max-length'    => 50,
+         'max-length'    => 100,
          'sort'          => false,
          'string-format' => 'utf-8',
          'verbose'       => false
@@ -241,12 +241,12 @@ class VarDebugger {
             $config['render-config']['expand-arrays'] = true;
          }
 
-         elseif (preg_match('/^s([0-9]+)$/', $option, $matches)) {
-            $max_length = (int)trim($matches[1]);
-            if ($max_length < 0) {
-               $max_length = -1;
-            }
-            $config['render-config']['max-length'] = $max_length;
+         elseif (preg_match('/^sl:([0-9]+)$/', $option, $matches)) {
+            $config['render-config']['max-length'] = (int)trim($matches[1]);
+         }
+
+         elseif ($option === 'sl:unlimited') {
+            $config['render-config']['max-length'] = -1;
          }
 
          elseif ($option === 'sort') {
