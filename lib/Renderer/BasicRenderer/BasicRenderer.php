@@ -4,6 +4,10 @@
 namespace Cachitos\VarDebug\Renderer\BasicRenderer;
 
 
+use Cachitos\VarDebug\Renderer\BasicRenderer\HtmlCommentRenderer;
+use Cachitos\VarDebug\Renderer\BasicRenderer\HtmlRenderer;
+
+
 class BasicRenderer {
 
    /**
@@ -169,6 +173,17 @@ class BasicRenderer {
       if ($core_var['type'] === 'string') {
          $length = 0;
          $string_formatted = $this->string_formatter->format($core_var['value'], $length);
+
+         // escape some sequences
+         //
+         if (0) { }
+         elseif ($this instanceof HtmlCommentRenderer) {
+            $string_formatted = str_replace(['<!--', '-->'], ['[!--', '--]'], $string_formatted);
+         }
+         elseif ($this instanceof HtmlRenderer) {
+            $string_formatted = \htmlspecialchars($string_formatted, \ENT_NOQUOTES);
+         }
+
          $r .= $this->p('type') . $core_var['type'] . '(' . $length . ')' . $this->s('type') . ' ' .
                $this->p('scalar') . $string_formatted . $this->s('scalar');
          return $r;
