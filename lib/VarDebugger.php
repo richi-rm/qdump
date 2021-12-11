@@ -20,6 +20,7 @@ class VarDebugger {
     */
    protected const DEFAULT_CONFIG = [
       'core-config' => [
+         'max-depth' => 2
       ],
       'filewriter-config' => [
          'file' => '/tmp/vardebug/*username*'
@@ -212,6 +213,18 @@ class VarDebugger {
          $option = trim($option);
 
          if (0) { }
+
+         //
+         // core config
+         //
+
+         elseif (preg_match('/^d:([0-9]+)$/', $option, $matches)) {
+            $config['core-config']['max-depth'] = (int)$matches[1];
+         }
+
+         elseif ($option === 'd:unlimited') {
+            $config['core-config']['max-depth'] = \PHP_INT_MAX;
+         }
 
          //
          // filewriter config
