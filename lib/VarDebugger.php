@@ -20,7 +20,7 @@ class VarDebugger {
     */
    protected const DEFAULT_CONFIG = [
       'core-config' => [
-         'max-depth' => 2
+         'max-depth' => 3
       ],
       'filewriter-config' => [
          'file' => '/tmp/vardebug/*username*'
