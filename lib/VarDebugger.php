@@ -35,7 +35,7 @@ class VarDebugger {
       ],
       'vardebugger-config' => [
          'output-type' => 'stdout',
-         'render-type' => 'html-comment',
+         'render-type' => 'html',
          'verbose'     => false
       ]
    ];
