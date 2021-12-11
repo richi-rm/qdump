@@ -12,8 +12,8 @@ class PlainTextRenderer extends BasicRenderer {
     * @var array
     */
    protected $prefixes = [
-      'header'        => '---' . "\n",
-      'capture'       => '',
+      'header'        => "\n" . '---' . "\n",
+      'capture'       => "\n" . '',
 
       'class'         => '',
       'cycle'         => '',
@@ -40,8 +40,8 @@ class PlainTextRenderer extends BasicRenderer {
     * @var array
     */
    protected $suffixes = [
-      'header'        => '---' . "\n\n",
-      'capture'       => '',
+      'header'        => '---' . "\n",
+      'capture'       => "\n",
 
       'class'         => '',
       'cycle'         => '',

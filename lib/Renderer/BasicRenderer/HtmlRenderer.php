@@ -39,8 +39,8 @@ HTML;
     * @var array
     */
    protected $prefixes = [
-      'header'        => '<pre class="vardebug vardebug-pre-header">',
-      'capture'       => '<pre class="vardebug vardebug-pre-capture">',
+      'header'        => "\n" . '<pre class="vardebug vardebug-pre-header">',
+      'capture'       => "\n" . '<pre class="vardebug vardebug-pre-capture">',
 
       'class'         => '<span class="vardebug vardebug-class">',
       'cycle'         => '<span class="vardebug vardebug-cycle">',
@@ -67,8 +67,8 @@ HTML;
     * @var array
     */
    protected $suffixes = [
-      'header'        => '</pre>' . "\n\n",
-      'capture'       => '</pre>',
+      'header'        => '</pre>' . "\n",
+      'capture'       => '</pre>' . "\n",
 
       'class'         => '</span>',
       'cycle'         => '</span>',
