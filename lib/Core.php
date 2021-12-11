@@ -20,7 +20,9 @@ class Core {
     *
     * @var array
     */
-   protected $config = null;
+   protected $config = [
+      'max-depth' => null // maximum inspection depth
+   ];
 
 
    /**
@@ -97,6 +99,9 @@ class Core {
          if ($size < 1) {
             return $r;
          }
+         if ($depth >= $this->config['max-depth']) {
+            return $r;
+         }
          // recursive inspection of elements
          $var[$this->this_array_is_being_iterated] = true;
          foreach ($var as $array_key => &$array_value) {
@@ -135,8 +140,13 @@ class Core {
       // object
       //
       if (is_object($var)) {
+
          // initial inspection
+         //
          $r = $this->inspect_object($var);
+
+         // cycle
+         //
          if (in_array($r['id'], array_keys($this->ascending_objects_being_inspected))) {
             unset($r['file(line)']);
             unset($r['namespace']);
@@ -147,13 +157,24 @@ class Core {
             $r['cycle'] = true;
             return $r;
          }
+
+         if ($depth >= $this->config['max-depth']) {
+            unset($r['constants']);
+            unset($r['properties']);
+            unset($r['methods']);
+            return $r;
+         }
+
          // recursive inspection of constants
+         //
          if (isset($r['constants'])) {
             foreach ($r['constants'] as &$constant) {
                $constant['value'] = $this->inspect($constant['value'], $depth + 1);
             }
          }
+
          // recursive inspection of properties
+         //
          if (isset($r['properties'])) {
             $this->ascending_objects_being_inspected[$r['id']] = true;
             foreach ($r['properties'] as &$property) {
@@ -163,7 +184,9 @@ class Core {
             }
             unset($this->ascending_objects_being_inspected[$r['id']]);
          }
+
          // recursive inspection of method parameter defaults
+         //
          if (isset($r['methods'])) {
             foreach ($r['methods'] as &$method) {
                if (isset($method['parameters'])) {
