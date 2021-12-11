@@ -79,7 +79,7 @@ class BasicRenderer {
     */
    public function postRender()
    {
-      return $this->s('capture') . "\n\n";
+      return $this->s('capture');
    }
 
 
