@@ -1,10 +1,10 @@
 <?php
 
 
-namespace Cachitos\VarDebug;
+namespace Onedevs\QDump;
 
 
-use Cachitos\VarDebug\Renderer\BasicRenderer\HtmlRenderer;
+use Onedevs\QDump\Renderer\BasicRenderer\HtmlRenderer;
 
 
 class VarDebugger {
@@ -45,9 +45,9 @@ class VarDebugger {
     * Output identifiers and corresponding handler classes.
     */
    protected const OUTPUT_WRITERS = [
-      'file'    => 'Cachitos\VarDebug\OutputWriter\FileWriter',
-      'no-dump' => 'Cachitos\VarDebug\OutputWriter\NullWriter',
-      'stdout'  => 'Cachitos\VarDebug\OutputWriter\StdoutWriter'
+      'file'    => 'Onedevs\QDump\OutputWriter\FileWriter',
+      'no-dump' => 'Onedevs\QDump\OutputWriter\NullWriter',
+      'stdout'  => 'Onedevs\QDump\OutputWriter\StdoutWriter'
    ];
 
 
@@ -55,11 +55,11 @@ class VarDebugger {
     * Render identifiers and corresponding handler classes.
     */
    protected const RENDERERS = [
-      'ansi'             => 'Cachitos\VarDebug\Renderer\BasicRenderer\AnsiTextRenderer',
-      'console-log-json' => 'Cachitos\VarDebug\Renderer\ConsoleLogJsonRenderer',
-      'html'             => 'Cachitos\VarDebug\Renderer\BasicRenderer\HtmlRenderer',
-      'html-comment'     => 'Cachitos\VarDebug\Renderer\BasicRenderer\HtmlCommentRenderer',
-      'plain-text'       => 'Cachitos\VarDebug\Renderer\BasicRenderer\PlainTextRenderer'
+      'ansi'             => 'Onedevs\QDump\Renderer\BasicRenderer\AnsiTextRenderer',
+      'console-log-json' => 'Onedevs\QDump\Renderer\ConsoleLogJsonRenderer',
+      'html'             => 'Onedevs\QDump\Renderer\BasicRenderer\HtmlRenderer',
+      'html-comment'     => 'Onedevs\QDump\Renderer\BasicRenderer\HtmlCommentRenderer',
+      'plain-text'       => 'Onedevs\QDump\Renderer\BasicRenderer\PlainTextRenderer'
    ];
 
 

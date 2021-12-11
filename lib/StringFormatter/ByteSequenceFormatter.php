@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Cachitos\VarDebug\StringFormatter;
+namespace Onedevs\QDump\StringFormatter;
 
 
 class ByteSequenceFormatter extends AbstractStringFormatter {

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Cachitos\VarDebug\StringFormatter;
+namespace Onedevs\QDump\StringFormatter;
 
 
 abstract class AbstractStringFormatter {

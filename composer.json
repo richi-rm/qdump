@@ -1,23 +1,23 @@
 {
-   "name": "cachitos/vardebug",
+   "name": "onedevs/qdump",
    "description": "Improved var_dump()",
-   "version": "0.4.11-alpha",
+   "version": "0.5.4-prealpha",
    "type": "library",
-   "keywords": ["debug", "debugging", "var_dump", "var_export", "vardebug", "vardebugger"],
-   "homepage": "https://github.com/richirm77/vardebug",
+   "keywords": ["debug", "debugging", "dump", "print_r", "qdump", "var_dump", "var_export"],
+   "homepage": "https://github.com/onedevs-tech/qdump",
    "license": "GPL-3.0-or-later",
    "authors": [
       {
-         "name": "Ricardo Ruiz Martínez",
-         "email": "richiruizmartinez@gmail.com"
+         "name": "onedevs.tech",
+         "email": "onedevs.tech@gmail.com"
       }
    ],
    "autoload": {
       "psr-4": {
-         "Cachitos\\VarDebug\\": "lib/"
+         "Onedevs\\QDump\\": "lib/"
       }
    },   
    "require": {
-      "php": ">=7.0"
+      "php": ">=7.4"
    }
 }

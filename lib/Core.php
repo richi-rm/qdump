@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Cachitos\VarDebug;
+namespace Onedevs\QDump;
 
 
 class Core {

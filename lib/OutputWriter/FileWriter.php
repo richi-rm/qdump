@@ -1,10 +1,10 @@
 <?php
 
 
-namespace Cachitos\VarDebug\OutputWriter;
+namespace Onedevs\QDump\OutputWriter;
 
 
-use Cachitos\VarDebug\Context;
+use Onedevs\QDump\Context;
 
 
 class FileWriter implements OutputWriterInterface {

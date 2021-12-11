@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Cachitos\VarDebug\Renderer;
+namespace Onedevs\QDump\Renderer;
 
 
 class ConsoleLogJsonRenderer {

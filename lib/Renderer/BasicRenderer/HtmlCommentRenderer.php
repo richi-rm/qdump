@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Cachitos\VarDebug\Renderer\BasicRenderer;
+namespace Onedevs\QDump\Renderer\BasicRenderer;
 
 
 class HtmlCommentRenderer extends BasicRenderer {

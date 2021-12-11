@@ -1,11 +1,11 @@
 <?php
 
 
-namespace Cachitos\VarDebug\Renderer\BasicRenderer;
+namespace Onedevs\QDump\Renderer\BasicRenderer;
 
 
-use Cachitos\VarDebug\Renderer\BasicRenderer\HtmlCommentRenderer;
-use Cachitos\VarDebug\Renderer\BasicRenderer\HtmlRenderer;
+use Onedevs\QDump\Renderer\BasicRenderer\HtmlCommentRenderer;
+use Onedevs\QDump\Renderer\BasicRenderer\HtmlRenderer;
 
 
 class BasicRenderer {
@@ -14,11 +14,11 @@ class BasicRenderer {
     * String formatters.
     */
    const STRING_FORMATTERS = [
-      'ascii'      => 'Cachitos\VarDebug\StringFormatter\AsciiFormatter',
-      'bytes'      => 'Cachitos\VarDebug\StringFormatter\ByteSequenceFormatter',
-      'iso-8859-1' => 'Cachitos\VarDebug\StringFormatter\ISO88591Formatter',
-      'json'       => 'Cachitos\VarDebug\StringFormatter\JsonFormatter',
-      'utf-8'      => 'Cachitos\VarDebug\StringFormatter\UTF8Formatter'
+      'ascii'      => 'Onedevs\QDump\StringFormatter\AsciiFormatter',
+      'bytes'      => 'Onedevs\QDump\StringFormatter\ByteSequenceFormatter',
+      'iso-8859-1' => 'Onedevs\QDump\StringFormatter\ISO88591Formatter',
+      'json'       => 'Onedevs\QDump\StringFormatter\JsonFormatter',
+      'utf-8'      => 'Onedevs\QDump\StringFormatter\UTF8Formatter'
    ];
 
 

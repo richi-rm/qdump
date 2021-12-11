@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Cachitos\VarDebug\OutputWriter;
+namespace Onedevs\QDump\OutputWriter;
 
 
 class StdoutWriter implements OutputWriterInterface {
