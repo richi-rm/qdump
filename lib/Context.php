@@ -31,7 +31,17 @@ class Context {
       $this->context['php_version'] = phpversion();
       $this->context['server_api_name'] = php_sapi_name();
       $this->context['docker_environment'] = file_exists('/.dockerenv');
-      $this->context['operating_system'] = PHP_OS;
+      $os = \PHP_OS;
+      if ($os === 'Linux') {
+         $os_file = '/etc/os-release';
+         if (\file_exists($os_file) && \is_readable($os_file)) {
+            $matches = [];
+            if (preg_match('/^PRETTY_NAME="(.*)"$/m', \file_get_contents($os_file), $matches)) {
+               $os = $matches[1];
+            }
+         }
+      }
+      $this->context['operating_system'] = $os;
 
       // HTTP request variables
       $this->context['remote_address'] = '';
