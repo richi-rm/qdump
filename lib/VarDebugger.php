@@ -154,12 +154,13 @@ class VarDebugger {
 
 
    /**
-    * Main public method: inspect the passed variable and send the result to
-    * the output.
+    * Inspect the passed variable and send the result to the output.
+    * Returns a string with the dump.
     *
     * @param $var variable to inspect
+    * @return string 
     */
-   public function dump($var = null, &$output = null)
+   public function dump($var = null)
    {
       $written = '';
 
@@ -183,11 +184,9 @@ class VarDebugger {
       //
       $written .= $this->output_writer->write($capture);
 
-      // output
-      //
-      $output = $written;
-
       $this->capture_sequence_number++;
+
+      return $written;
    }
 
 
