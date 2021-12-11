@@ -21,7 +21,7 @@ class HtmlRenderer extends BasicRenderer {
    .vardebug-method        { color: #008000; font-weight: bold; }
    .vardebug-modifier      { font-style: italic; }
    .vardebug-name          { color: #008000; }
-   .vardebug-namespace     { color: #004000; }
+   .vardebug-namespace     { color: #006000; }
    .vardebug-property      { color: #008000; }
    .vardebug-resource-type { color: #ff00ff; }
    .vardebug-scalar        { color: #0080ff; font-weight: bold; }
