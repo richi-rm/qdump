@@ -255,7 +255,7 @@ class VarDebugger {
          }
 
          elseif (preg_match('/^sl:([0-9]+)$/', $option, $matches)) {
-            $config['render-config']['max-length'] = (int)trim($matches[1]);
+            $config['render-config']['max-length'] = (int)$matches[1];
          }
 
          elseif ($option === 'sl:unlimited') {
