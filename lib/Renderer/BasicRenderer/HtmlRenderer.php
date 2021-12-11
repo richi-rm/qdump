@@ -11,24 +11,24 @@ class HtmlRenderer extends BasicRenderer {
     */
    const CSS_STYLES = <<<HTML
 <style type="text/css">
-   .vardebug-pre-header    { color: #a0a0a0; background-color: #f0f0f0; padding: 10px; font-size: 11pt; margin: 5px; }
-   .vardebug-pre-capture   { color: black; background-color: #f0f0f0; padding: 10px; font-size: 11pt; margin: 5px; }
-   .vardebug-class         { color: #008000; font-weight: bold; }
-   .vardebug-cycle         { color: #ff0000; }
-   .vardebug-enum          { color: #008000; font-weight: bold; }
-   .vardebug-fileline      { color: #a0a0a0; text-decoration: underline; }
-   .vardebug-key           { color: #d08000; }
-   .vardebug-method        { color: #008000; font-weight: bold; }
-   .vardebug-modifier      { font-style: italic; }
-   .vardebug-name          { color: #008000; }
-   .vardebug-namespace     { color: #006000; }
-   .vardebug-property      { color: #008000; }
-   .vardebug-resource-type { color: #ff00ff; }
-   .vardebug-scalar        { color: #0080ff; font-weight: bold; }
-   .vardebug-time          { color: #a0a0a0; }
-   .vardebug-type          { font-style: italic; }
-   .vardebug-uninitialized { font-style: italic; }
-   .vardebug-unknown       { color: #ff0000; }
+   .qdump-pre-header    { color: #a0a0a0; background-color: #f0f0f0; padding: 10px; font-size: 11pt; margin: 5px; }
+   .qdump-pre-capture   { color: black; background-color: #f0f0f0; padding: 10px; font-size: 11pt; margin: 5px; }
+   .qdump-class         { color: #008000; font-weight: bold; }
+   .qdump-cycle         { color: #ff0000; }
+   .qdump-enum          { color: #008000; font-weight: bold; }
+   .qdump-fileline      { color: #a0a0a0; text-decoration: underline; }
+   .qdump-key           { color: #d08000; }
+   .qdump-method        { color: #008000; font-weight: bold; }
+   .qdump-modifier      { font-style: italic; }
+   .qdump-name          { color: #008000; }
+   .qdump-namespace     { color: #006000; }
+   .qdump-property      { color: #008000; }
+   .qdump-resource-type { color: #ff00ff; }
+   .qdump-scalar        { color: #0080ff; font-weight: bold; }
+   .qdump-time          { color: #a0a0a0; }
+   .qdump-type          { font-style: italic; }
+   .qdump-uninitialized { font-style: italic; }
+   .qdump-unknown       { color: #ff0000; }
 </style>
 HTML;
 
@@ -39,25 +39,25 @@ HTML;
     * @var array
     */
    protected $prefixes = [
-      'header'        => "\n" . '<pre class="vardebug vardebug-pre-header">',
-      'capture'       => "\n" . '<pre class="vardebug vardebug-pre-capture">',
+      'header'        => "\n" . '<pre class="qdump qdump-pre-header">',
+      'capture'       => "\n" . '<pre class="qdump qdump-pre-capture">',
 
-      'class'         => '<span class="vardebug vardebug-class">',
-      'cycle'         => '<span class="vardebug vardebug-cycle">',
-      'enum'          => '<span class="vardebug vardebug-enum">',
-      'file(line)'    => '<span class="vardebug vardebug-fileline">',
-      'key'           => '<span class="vardebug vardebug-key">',
-      'method'        => '<span class="vardebug vardebug-method">',
-      'modifier'      => '<span class="vardebug vardebug-modifier">',
-      'name'          => '<span class="vardebug vardebug-name">',
-      'namespace'     => '<span class="vardebug vardebug-namespace">',
-      'property'      => '<span class="vardebug vardebug-property">',
-      'resource-type' => '<span class="vardebug vardebug-resource-type">',
-      'scalar'        => '<span class="vardebug vardebug-scalar">',
-      'time'          => '<span class="vardebug vardebug-time">',
-      'type'          => '<span class="vardebug vardebug-type">',
-      'uninitialized' => '<span class="vardebug vardebug-uninitialized">',
-      'unknown'       => '<span class="vardebug vardebug-unknown">'
+      'class'         => '<span class="qdump qdump-class">',
+      'cycle'         => '<span class="qdump qdump-cycle">',
+      'enum'          => '<span class="qdump qdump-enum">',
+      'file(line)'    => '<span class="qdump qdump-fileline">',
+      'key'           => '<span class="qdump qdump-key">',
+      'method'        => '<span class="qdump qdump-method">',
+      'modifier'      => '<span class="qdump qdump-modifier">',
+      'name'          => '<span class="qdump qdump-name">',
+      'namespace'     => '<span class="qdump qdump-namespace">',
+      'property'      => '<span class="qdump qdump-property">',
+      'resource-type' => '<span class="qdump qdump-resource-type">',
+      'scalar'        => '<span class="qdump qdump-scalar">',
+      'time'          => '<span class="qdump qdump-time">',
+      'type'          => '<span class="qdump qdump-type">',
+      'uninitialized' => '<span class="qdump qdump-uninitialized">',
+      'unknown'       => '<span class="qdump qdump-unknown">'
    ];
 
 

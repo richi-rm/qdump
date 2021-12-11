@@ -9,7 +9,7 @@ class JsonFormatter extends AbstractStringFormatter {
    /**
     * Replacement token for character 0x7f.
     */
-   const REPLACEMENT_TOKEN_0x7f = '__vardebug.replacement_token_for_character_0x7f__';
+   const REPLACEMENT_TOKEN_0x7f = '__qdump.replacement_token_for_character_0x7f__';
 
 
    /**

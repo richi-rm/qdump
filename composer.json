@@ -4,7 +4,7 @@
    "version": "0.5.4-prealpha",
    "type": "library",
    "keywords": ["debug", "debugging", "dump", "print_r", "qdump", "var_dump", "var_export"],
-   "homepage": "https://github.com/onedevs-tech/qdump",
+   "homepage": "https://onedevs.tech/qdump",
    "license": "GPL-3.0-or-later",
    "authors": [
       {

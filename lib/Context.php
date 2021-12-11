@@ -177,7 +177,7 @@ class Context {
       //
       $dir = '/tmp';
       if (is_dir($dir) && is_writable($dir)) {
-         $file = tempnam($dir, 'vardebug.get_user_name.');
+         $file = tempnam($dir, 'qdump.get_user_name.');
          file_put_contents($file, '<?php $user_name = get_current_user(); ?>', LOCK_EX);
          include_once $file;
          unlink($file);

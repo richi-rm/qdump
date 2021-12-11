@@ -31,7 +31,7 @@ class Core {
     *
     * @var string
     */
-   protected $this_array_is_being_iterated = '__vardebug.this_array_is_being_iterated__';
+   protected $this_array_is_being_iterated = '__qdump.this_array_is_being_iterated__';
 
 
    /**

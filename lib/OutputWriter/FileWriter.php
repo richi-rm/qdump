@@ -10,9 +10,9 @@ use Onedevs\QDump\Context;
 class FileWriter implements OutputWriterInterface {
 
    /**
-    * VarDebug file extensions corresponding to each render type.
+    * QDump file extensions corresponding to each render type.
     */
-   const VARDEBUG_FILE_EXTENSIONS = [
+   const QDUMP_FILE_EXTENSIONS = [
       'ansi'             => '.ansi.txt',
       'console-log-json' => '.js.html',
       'html'             => '.html',
@@ -97,39 +97,39 @@ class FileWriter implements OutputWriterInterface {
 
 
    /**
-    * Returns the name of the next output file. Example: vardebug.1.420954
+    * Returns the name of the next output file. Example: qdump.1.420954
     *
     * @return string
     */
    protected function get_next_output_file_name()
    {
-      // look for vardebug files
+      // look for qdump files
       //
-      $vardebug_files = glob($this->output_dir_path . 'vardebug.*');
+      $qdump_files = glob($this->output_dir_path . 'qdump.*');
 
-      // no vardebug files
+      // no qdump files
       //
-      if (empty($vardebug_files)) {
-         return 'vardebug.1.' . $this->get_random_token();
+      if (empty($qdump_files)) {
+         return 'qdump.1.' . $this->get_random_token();
       }
 
-      // there are vardebug files
+      // there are qdump files
       //
       $sequence = [];
-      foreach ($vardebug_files as $vardebug_file) {
-         $vardebug_file = explode('.', basename($vardebug_file), 3);
-         $sequence[] = (int)$vardebug_file[1];
+      foreach ($qdump_files as $qdump_file) {
+         $qdump_file = explode('.', basename($qdump_file), 3);
+         $sequence[] = (int)$qdump_file[1];
       }
       sort($sequence);
 
-      return 'vardebug.' . (end($sequence)+1) . '.' . $this->get_random_token();
+      return 'qdump.' . (end($sequence)+1) . '.' . $this->get_random_token();
    }
 
 
    /**
     * Returns a token made up of random numeric characters. The random token is
-    * appended to the name of the vardebug file to avoid problems of
-    * overwriting the same file by concurrent vardebug requests or executions.
+    * appended to the name of the qdump file to avoid problems of
+    * overwriting the same file by concurrent qdump requests or executions.
     *
     * @return string
     */
@@ -141,7 +141,7 @@ class FileWriter implements OutputWriterInterface {
 
 
    /**
-    * Write $string to the vardebug file.
+    * Write $string to the qdump file.
     *
     * @param string $string string to write
     * @return string the written output
@@ -152,7 +152,7 @@ class FileWriter implements OutputWriterInterface {
          return '';
       }
       file_put_contents(
-         $this->output_dir_path . $this->output_file_name . self::VARDEBUG_FILE_EXTENSIONS[$this->render_type],
+         $this->output_dir_path . $this->output_file_name . self::QDUMP_FILE_EXTENSIONS[$this->render_type],
          $string,
          FILE_APPEND | LOCK_EX
       );

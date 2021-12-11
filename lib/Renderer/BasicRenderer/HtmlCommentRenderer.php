@@ -12,8 +12,8 @@ class HtmlCommentRenderer extends BasicRenderer {
     * @var array
     */
    protected $prefixes = [
-      'header'        => "\n" . '<!-- VarDebug' . "\n",
-      'capture'       => "\n" . '<!-- VarDebug' . "\n",
+      'header'        => "\n" . '<!-- QDump' . "\n",
+      'capture'       => "\n" . '<!-- QDump' . "\n",
 
       'class'         => '',
       'cycle'         => '',

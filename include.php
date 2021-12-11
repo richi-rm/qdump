@@ -18,4 +18,4 @@ include 'lib/OutputWriter/NullWriter.php';
 include 'lib/OutputWriter/StdoutWriter.php';
 include 'lib/Context.php';
 include 'lib/Core.php';
-include 'lib/VarDebugger.php';
+include 'lib/QDumper.php';

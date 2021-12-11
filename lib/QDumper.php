@@ -7,7 +7,7 @@ namespace Onedevs\QDump;
 use Onedevs\QDump\Renderer\BasicRenderer\HtmlRenderer;
 
 
-class VarDebugger {
+class QDumper {
 
    /**
     * Byte formats.
@@ -23,7 +23,7 @@ class VarDebugger {
          'max-depth' => 3
       ],
       'filewriter-config' => [
-         'file' => '/tmp/vardebug/*username*'
+         'file' => '/tmp/qdump/*username*'
       ],
       'render-config'    => [
          'byte-format'   => 'hexlc',
@@ -33,7 +33,7 @@ class VarDebugger {
          'string-format' => 'utf-8',
          'verbose'       => false
       ],
-      'vardebugger-config' => [
+      'qdumper-config' => [
          'output-type' => 'stdout',
          'render-type' => 'html',
          'verbose'     => false
@@ -138,14 +138,14 @@ class VarDebugger {
 
       $this->core = new Core($this->config['core-config']);
 
-      $renderer_class = self::RENDERERS[$this->config['vardebugger-config']['render-type']];
+      $renderer_class = self::RENDERERS[$this->config['qdumper-config']['render-type']];
       $this->renderer = new $renderer_class($this->config['render-config']);
 
-      $output_writer_class = self::OUTPUT_WRITERS[$this->config['vardebugger-config']['output-type']];
-      if ($this->config['vardebugger-config']['output-type'] === 'file') {
+      $output_writer_class = self::OUTPUT_WRITERS[$this->config['qdumper-config']['output-type']];
+      if ($this->config['qdumper-config']['output-type'] === 'file') {
          $this->output_writer = new $output_writer_class(
             $this->config['filewriter-config']['file'],
-            $this->config['vardebugger-config']['render-type']
+            $this->config['qdumper-config']['render-type']
          );
       } else {
          $this->output_writer = new $output_writer_class();
@@ -200,7 +200,7 @@ class VarDebugger {
    {
       $config = self::DEFAULT_CONFIG;
       if ($this->context->sapiIsCli()) {
-         $config['vardebugger-config']['render-type'] = 'ansi';
+         $config['qdumper-config']['render-type'] = 'ansi';
       }
 
       if (!is_string($options)) {
@@ -230,7 +230,7 @@ class VarDebugger {
          //
 
          elseif (preg_match('/^file:(.*)$/', $option, $matches)) {
-            $config['vardebugger-config']['output-type'] = 'file';
+            $config['qdumper-config']['output-type'] = 'file';
             $config['filewriter-config']['file'] = trim($matches[1]);
          }
 
@@ -271,23 +271,23 @@ class VarDebugger {
 
          elseif ($option === 'verbose') {
             $config['render-config']['verbose'] = true;
-            $config['vardebugger-config']['verbose'] = true;
+            $config['qdumper-config']['verbose'] = true;
          }
 
          //
-         // vardebugger config
+         // qdumper config
          //
 
          elseif (in_array($option, array_keys(self::OUTPUT_WRITERS))) {
-            $config['vardebugger-config']['output-type'] = $option;
+            $config['qdumper-config']['output-type'] = $option;
          }
 
          elseif (in_array($option, array_keys(self::RENDERERS))) {
-            $config['vardebugger-config']['render-type'] = $option;
+            $config['qdumper-config']['render-type'] = $option;
          }
 
          elseif ($option === 'plaintext') {
-            $config['vardebugger-config']['render-type'] = 'plain-text';
+            $config['qdumper-config']['render-type'] = 'plain-text';
          }
 
       } // foreach
@@ -305,10 +305,10 @@ class VarDebugger {
    protected function initial_write(): string
    {
       $written = '';
-      if ($this->config['vardebugger-config']['render-type'] === 'html') {
+      if ($this->config['qdumper-config']['render-type'] === 'html') {
          $written .= $this->output_writer->write("\n" . HtmlRenderer::CSS_STYLES . "\n");
       }
-      if ($this->config['vardebugger-config']['verbose']) {
+      if ($this->config['qdumper-config']['verbose']) {
          $header_lines = [$this->context->getEnvironmentInfo()];
          if (!$this->context->sapiIsCli()) {
             $header_lines[] = $this->context->getRequestInfo();

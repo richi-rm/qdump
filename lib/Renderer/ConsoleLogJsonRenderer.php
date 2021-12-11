@@ -11,7 +11,7 @@ class ConsoleLogJsonRenderer {
     *
     * @var string
     */
-   protected $replacement_token_for_character_0x7f = '__vardebug.replacement_token_for_character_0x7f__';
+   protected $replacement_token_for_character_0x7f = '__qdump.replacement_token_for_character_0x7f__';
 
 
    /**
@@ -74,11 +74,11 @@ class ConsoleLogJsonRenderer {
    {
       if ($file_line === null) {
          $r = '<script>' .
-              'console.log("VarDebug ' . $capture_sequence_number . ')");' .
+              'console.log("QDump ' . $capture_sequence_number . ')");' .
               'console.log(';
       } else {
          $r = '<script>' .
-              'console.log("VarDebug ' . $capture_sequence_number . ') ' . $file_line . ' ' . $time . '");' .
+              'console.log("QDump ' . $capture_sequence_number . ') ' . $file_line . ' ' . $time . '");' .
               'console.log(';
       }
       return $r;
@@ -113,7 +113,7 @@ class ConsoleLogJsonRenderer {
     */
    public function renderHeader($header_lines)
    {
-      $header = '<script>console.log("VarDebug");';
+      $header = '<script>console.log("QDump");';
       foreach ($header_lines as $header_line) {
          $header .= 'console.log(' . json_encode($header_line) . ');';
       }
