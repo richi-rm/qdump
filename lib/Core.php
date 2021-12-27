@@ -91,7 +91,7 @@ class Core {
       if (\is_array($var)) {
          $size = \count($var);
          $r = ['type' => 'array', 'size' => $size];
-         if (\isset($var[$this->this_array_is_being_iterated])) {
+         if (isset($var[$this->this_array_is_being_iterated])) {
             $r['size'] = $size - 1;
             $r['cycle'] = true;
             return $r;
@@ -109,7 +109,7 @@ class Core {
                $r['elements'][$array_key] = $this->inspect($array_value, $depth + 1);
             }
          }
-         \unset($var[$this->this_array_is_being_iterated]);
+         unset($var[$this->this_array_is_being_iterated]);
          return $r;
       }
 
@@ -148,26 +148,26 @@ class Core {
          // cycle
          //
          if (\in_array($r['id'], \array_keys($this->ascending_objects_being_inspected))) {
-            \unset($r['file(line)']);
-            \unset($r['namespace']);
-            \unset($r['class']);
-            \unset($r['constants']);
-            \unset($r['properties']);
-            \unset($r['methods']);
+            unset($r['file(line)']);
+            unset($r['namespace']);
+            unset($r['class']);
+            unset($r['constants']);
+            unset($r['properties']);
+            unset($r['methods']);
             $r['cycle'] = true;
             return $r;
          }
 
          if ($depth >= $this->config['max-depth']) {
-            \unset($r['constants']);
-            \unset($r['properties']);
-            \unset($r['methods']);
+            unset($r['constants']);
+            unset($r['properties']);
+            unset($r['methods']);
             return $r;
          }
 
          // recursive inspection of constants
          //
-         if (\isset($r['constants'])) {
+         if (isset($r['constants'])) {
             foreach ($r['constants'] as &$constant) {
                $constant['value'] = $this->inspect($constant['value'], $depth + 1);
             }
@@ -175,23 +175,23 @@ class Core {
 
          // recursive inspection of properties
          //
-         if (\isset($r['properties'])) {
+         if (isset($r['properties'])) {
             $this->ascending_objects_being_inspected[$r['id']] = true;
             foreach ($r['properties'] as &$property) {
                if (\array_key_exists('value', $property)) {
                   $property['value'] = $this->inspect($property['value'], $depth + 1);
                }
             }
-            \unset($this->ascending_objects_being_inspected[$r['id']]);
+            unset($this->ascending_objects_being_inspected[$r['id']]);
          }
 
          // recursive inspection of method parameter defaults
          //
-         if (\isset($r['methods'])) {
+         if (isset($r['methods'])) {
             foreach ($r['methods'] as &$method) {
-               if (\isset($method['parameters'])) {
+               if (isset($method['parameters'])) {
                   foreach ($method['parameters'] as &$parameter) {
-                     if (\isset($parameter['default-value']) && \array_key_exists('value', $parameter['default-value'])) {
+                     if (isset($parameter['default-value']) && \array_key_exists('value', $parameter['default-value'])) {
                         $parameter['default-value']['value'] = $this->inspect($parameter['default-value']['value'], $depth + 1);
                      }
                   }
@@ -318,7 +318,7 @@ class Core {
 
          // type
          //
-         if (!\isset($property['dynamic'])) {
+         if (!isset($property['dynamic'])) {
             if ($refl_property->hasType()) {
                if ($refl_property->getType()->allowsNull()) {
                   $property['type']['null'] = true;

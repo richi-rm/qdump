@@ -132,7 +132,7 @@ class BasicRenderer {
 
       // unknown
       //
-      if (!\is_array($core_var) || !\isset($core_var['type'])) {
+      if (!\is_array($core_var) || !isset($core_var['type'])) {
          $r .= $this->p('unknown') . '(unknown)' . $this->s('unknown');
          return $r;
       }
@@ -203,14 +203,14 @@ class BasicRenderer {
 
          // cycle
          //
-         if (\isset($core_var['cycle'])) {
+         if (isset($core_var['cycle'])) {
             $r .= ' ' . $this->p('cycle') . '(CYCLE ' . $core_var['type'] . ')' . $this->s('cycle');
             return $r;
          }
 
          // elements
          //
-         if (\isset($core_var['elements'])) {
+         if (isset($core_var['elements'])) {
             if ($this->config['sort']) {
                \ksort($core_var['elements'], \SORT_NATURAL | \SORT_FLAG_CASE);
             }
@@ -240,7 +240,7 @@ class BasicRenderer {
                $this->p('enum') . $core_var['enum'] . $this->s('enum') .
                '::' .
                $this->p('name') . $core_var['case'] . $this->s('name');
-         if (\isset($core_var['backing-value'])) {
+         if (isset($core_var['backing-value'])) {
             $r .= ' = ' . $this->renderCoreVar($core_var['backing-value'], $depth + 1);
          }
          if ($this->config['verbose']) {
@@ -259,7 +259,7 @@ class BasicRenderer {
 
          // cycle
          //
-         if (\isset($core_var['cycle'])) {
+         if (isset($core_var['cycle'])) {
             $r .= ' ' . $this->p('cycle') . '(CYCLE ' . $core_var['type'] . ')' . $this->s('cycle');
             return $r;
          }
@@ -275,7 +275,7 @@ class BasicRenderer {
 
          // constants
          //
-         if (\isset($core_var['constants'])) {
+         if (isset($core_var['constants'])) {
 
             // sort constants
             //
@@ -325,7 +325,7 @@ class BasicRenderer {
 
          // properties
          //
-         if (\isset($core_var['properties'])) {
+         if (isset($core_var['properties'])) {
 
             // sort properties
             //
@@ -341,7 +341,7 @@ class BasicRenderer {
                // private static properties
                //
                foreach ($properties as $property) {
-                  if (\isset($property['static']) && $property['access'] === 'private') {
+                  if (isset($property['static']) && $property['access'] === 'private') {
                      $r .= $this->render_property($property, $depth);
                   }
                }
@@ -349,7 +349,7 @@ class BasicRenderer {
                // protected static properties
                //
                foreach ($properties as $property) {
-                  if (\isset($property['static']) && $property['access'] === 'protected') {
+                  if (isset($property['static']) && $property['access'] === 'protected') {
                      $r .= $this->render_property($property, $depth);
                   }
                }
@@ -357,7 +357,7 @@ class BasicRenderer {
                // public static properties
                //
                foreach ($properties as $property) {
-                  if (\isset($property['static']) && $property['access'] === 'public') {
+                  if (isset($property['static']) && $property['access'] === 'public') {
                      $r .= $this->render_property($property, $depth);
                   }
                }
@@ -365,7 +365,7 @@ class BasicRenderer {
                // private properties
                //
                foreach ($properties as $property) {
-                  if (!\isset($property['static']) && $property['access'] === 'private') {
+                  if (!isset($property['static']) && $property['access'] === 'private') {
                      $r .= $this->render_property($property, $depth);
                   }
                }
@@ -373,7 +373,7 @@ class BasicRenderer {
                // protected properties
                //
                foreach ($properties as $property) {
-                  if (!\isset($property['static']) && $property['access'] === 'protected') {
+                  if (!isset($property['static']) && $property['access'] === 'protected') {
                      $r .= $this->render_property($property, $depth);
                   }
                }
@@ -381,7 +381,7 @@ class BasicRenderer {
                // non-dynamic public properties
                //
                foreach ($properties as $property) {
-                  if (!\isset($property['dynamic']) && !\isset($property['static']) && $property['access'] === 'public') {
+                  if (!isset($property['dynamic']) && !isset($property['static']) && $property['access'] === 'public') {
                      $r .= $this->render_property($property, $depth);
                   }
                }
@@ -389,7 +389,7 @@ class BasicRenderer {
                // dynamic properties
                //
                foreach ($properties as $property) {
-                  if (\isset($property['dynamic'])) {
+                  if (isset($property['dynamic'])) {
                      $r .= $this->render_property($property, $depth);
                   }
                }
@@ -423,7 +423,7 @@ class BasicRenderer {
       //
       if ($core_var['type'] === 'resource') {
          $r .= $this->p('type') . $core_var['type'] . $this->s('type');
-         if (\isset($core_var['id'])) {
+         if (isset($core_var['id'])) {
             $r .= ' ' . '#' . $core_var['id'];
          }
          $r .= ' ' . $this->p('resource-type') . $core_var['resource-type'] . $this->s('resource-type');
@@ -483,14 +483,14 @@ class BasicRenderer {
 
       // left string
       //
-      $left_string = (\isset($property['static']) ? '::' : '->') .
-                     (\isset($property['dynamic']) ? '(dynamic) ' : '') .
+      $left_string = (isset($property['static']) ? '::' : '->') .
+                     (isset($property['dynamic']) ? '(dynamic) ' : '') .
                      $property['access'] .
-                     (\isset($property['static']) ? ' static' : '') .
-                     (\isset($property['readonly']) ? ' readonly' : '');
-      if (\isset($property['type'])) {
+                     (isset($property['static']) ? ' static' : '') .
+                     (isset($property['readonly']) ? ' readonly' : '');
+      if (isset($property['type'])) {
          $type = '';
-         if (\isset($property['type']['null'])) {
+         if (isset($property['type']['null'])) {
             $type .= '?';
          }
          $type .= $property['type']['name'];
@@ -503,20 +503,20 @@ class BasicRenderer {
       //
       $r = "\n" .
            $left_blanks .
-           (\isset($property['static']) ? '::' : '->');
-      if (\isset($property['dynamic'])) {
+           (isset($property['static']) ? '::' : '->');
+      if (isset($property['dynamic'])) {
          $r .= $this->p('modifier') . '(dynamic)' . $this->s('modifier') . ' ';
       }
       $r .= $this->p('modifier') . $property['access'] . $this->s('modifier');
-      if (\isset($property['static'])) {
+      if (isset($property['static'])) {
          $r .= ' ' . $this->p('modifier') . 'static' . $this->s('modifier');
       }
-      if (\isset($property['readonly'])) {
+      if (isset($property['readonly'])) {
          $r .= ' ' . $this->p('modifier') . 'readonly' . $this->s('modifier');
       }
-      if (\isset($property['type'])) {
+      if (isset($property['type'])) {
          $r_type = $this->p('type');
-         if (\isset($property['type']['null'])) {
+         if (isset($property['type']['null'])) {
             $r_type .= '?';
          }
          $r_type .= $property['type']['name'];
@@ -524,7 +524,7 @@ class BasicRenderer {
          $r .= ' ' . $r_type;
       }
       $r .= ' ' . $this->p('name') . '$' . $property['name'] . $this->s('name');
-      if (\isset($property['value'])) {
+      if (isset($property['value'])) {
          $r .= ' = ' . $this->renderCoreVar($property['value'], $depth + 1);
       } else {
          $r .= ' ' . $this->p('uninitialized') . '(uninitialized)' . $this->s('uninitialized');

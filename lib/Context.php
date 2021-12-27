@@ -56,14 +56,14 @@ class Context {
          $this->context['remote_address'] = $_SERVER['REMOTE_ADDR'];
          $this->context['request_method'] = $_SERVER['REQUEST_METHOD'];
          $protocol = 'http';
-         if (\isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') {
+         if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') {
             $protocol = 'https';
          }
          $this->context['protocol'] = $protocol;
          $this->context['host_port'] = $_SERVER['HTTP_HOST'];
          $this->context['request_uri'] = $_SERVER['REQUEST_URI'];
          $ajax = false;
-         if (\isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest') {
+         if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest') {
             $ajax = true;
          }
          $this->context['ajax'] = $ajax;

@@ -109,7 +109,7 @@ class FileWriter implements OutputWriterInterface {
 
       // no qdump files
       //
-      if (\empty($qdump_files)) {
+      if (empty($qdump_files)) {
          return 'qdump.1.' . $this->get_random_token();
       }
 
