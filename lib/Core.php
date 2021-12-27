@@ -99,8 +99,12 @@ class Core {
          if ($size < 1) {
             return $r;
          }
-         if ($depth >= $this->config['max-depth']) {
-            return $r;
+         // depth
+         if ($this->config['max-depth'] >= 0) {
+            // maximum depth has been indicated
+            if ($depth >= $this->config['max-depth']) {
+               return $r;
+            }
          }
          // recursive inspection of elements
          $var[$this->this_array_is_being_iterated] = true;
@@ -158,11 +162,16 @@ class Core {
             return $r;
          }
 
-         if ($depth >= $this->config['max-depth']) {
-            unset($r['constants']);
-            unset($r['properties']);
-            unset($r['methods']);
-            return $r;
+         // depth
+         //
+         if ($this->config['max-depth'] >= 0) {
+            // maximum depth has been indicated
+            if ($depth >= $this->config['max-depth']) {
+               unset($r['constants']);
+               unset($r['properties']);
+               unset($r['methods']);
+               return $r;
+            }
          }
 
          // recursive inspection of constants
