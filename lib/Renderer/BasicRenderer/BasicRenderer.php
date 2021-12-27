@@ -28,12 +28,12 @@ class BasicRenderer {
     * @var array
     */
    protected $config = [
-      'byte-format'   => null, // byte format
-      'expand-arrays' => null, // expand arrays
-      'max-length'    => null, // maximum visible string length
-      'sort'          => null, // order constants, properties and methods
-      'string-format' => null, // string format
-      'verbose'       => null  // verbose
+      'byte-format'       => null, // byte format
+      'expand-arrays'     => null, // expand arrays
+      'max-string-length' => null, // maximum visible string length
+      'sort'              => null, // order constants, properties and methods
+      'string-format'     => null, // string format
+      'verbose'           => null  // verbose
    ];
 
 
@@ -60,7 +60,7 @@ class BasicRenderer {
    {
       $this->config = $config;
       $string_formatter_class = self::STRING_FORMATTERS[$config['string-format']];
-      $this->string_formatter = new $string_formatter_class($config['byte-format'], $config['max-length']);
+      $this->string_formatter = new $string_formatter_class($config['byte-format'], $config['max-string-length']);
    }
 
 

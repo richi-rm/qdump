@@ -76,8 +76,8 @@ class AsciiFormatter extends AbstractStringFormatter {
 
       // shorten
       //
-      if ($this->max_length >= 0 && $length > $this->max_length) {
-         $string = \substr($string, 0, $this->max_length) . '...';
+      if ($this->max_string_length >= 0 && $length > $this->max_string_length) {
+         $string = \substr($string, 0, $this->max_string_length) . '...';
       }
 
       // escape

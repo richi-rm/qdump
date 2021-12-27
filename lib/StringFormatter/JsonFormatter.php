@@ -35,8 +35,8 @@ class JsonFormatter extends AbstractStringFormatter {
 
       // shorten
       //
-      if ($this->max_length >= 0 && $length > $this->max_length) {
-         $string = \mb_substr($string, 0, $this->max_length) . '...';
+      if ($this->max_string_length >= 0 && $length > $this->max_string_length) {
+         $string = \mb_substr($string, 0, $this->max_string_length) . '...';
       }
 
       $string = \str_replace("\x7f", self::REPLACEMENT_TOKEN_0x7f, $string);

@@ -19,19 +19,19 @@ abstract class AbstractStringFormatter {
     *
     * @var int
     */
-   protected $max_length = null;
+   protected $max_string_length = null;
 
 
    /**
     * Constructor.
     *
     * @param string $byte_format byte format
-    * @param int $max_length string max length
+    * @param int $max_string_length maximum string length
     */
-   public function __construct($byte_format, $max_length)
+   public function __construct($byte_format, $max_string_length)
    {
       $this->byte_format = $byte_format;
-      $this->max_length = $max_length;
+      $this->max_string_length = $max_string_length;
    }
 
 

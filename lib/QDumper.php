@@ -25,13 +25,13 @@ class QDumper {
       'filewriter-config' => [
          'file' => '/tmp/qdump/*username*'
       ],
-      'render-config'    => [
-         'byte-format'   => 'hexlc',
-         'expand-arrays' => false,
-         'max-length'    => 100,
-         'sort'          => true,
-         'string-format' => 'utf-8',
-         'verbose'       => false
+      'render-config'        => [
+         'byte-format'       => 'hexlc',
+         'expand-arrays'     => false,
+         'max-string-length' => 100,
+         'sort'              => true,
+         'string-format'     => 'utf-8',
+         'verbose'           => false
       ],
       'qdumper-config' => [
          'output-type' => 'stdout',

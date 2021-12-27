@@ -76,8 +76,8 @@ class UTF8Formatter extends AbstractStringFormatter {
 
       // shorten
       //
-      if ($this->max_length >= 0 && $length > $this->max_length) {
-         $string = \mb_substr($string, 0, $this->max_length) . '...';
+      if ($this->max_string_length >= 0 && $length > $this->max_string_length) {
+         $string = \mb_substr($string, 0, $this->max_string_length) . '...';
       }
 
       // escape
