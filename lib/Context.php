@@ -28,15 +28,15 @@ class Context {
    public function __construct()
    {
       $this->start_time = $this->get_now_time();
-      $this->context['php_version'] = phpversion();
-      $this->context['server_api_name'] = php_sapi_name();
-      $this->context['docker_environment'] = file_exists('/.dockerenv');
+      $this->context['php_version'] = \phpversion();
+      $this->context['server_api_name'] = \php_sapi_name();
+      $this->context['docker_environment'] = \file_exists('/.dockerenv');
       $os = \PHP_OS;
       if ($os === 'Linux') {
          $os_file = '/etc/os-release';
          if (\file_exists($os_file) && \is_readable($os_file)) {
             $matches = [];
-            if (preg_match('/^PRETTY_NAME="(.*)"$/m', \file_get_contents($os_file), $matches)) {
+            if (\preg_match('/^PRETTY_NAME="(.*)"$/m', \file_get_contents($os_file), $matches)) {
                $os = $matches[1];
             }
          }
@@ -56,14 +56,14 @@ class Context {
          $this->context['remote_address'] = $_SERVER['REMOTE_ADDR'];
          $this->context['request_method'] = $_SERVER['REQUEST_METHOD'];
          $protocol = 'http';
-         if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') {
+         if (\isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') {
             $protocol = 'https';
          }
          $this->context['protocol'] = $protocol;
          $this->context['host_port'] = $_SERVER['HTTP_HOST'];
          $this->context['request_uri'] = $_SERVER['REQUEST_URI'];
          $ajax = false;
-         if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest') {
+         if (\isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest') {
             $ajax = true;
          }
          $this->context['ajax'] = $ajax;
@@ -78,7 +78,7 @@ class Context {
     */
    protected function get_now_time()
    {
-      $time = explode(' ', microtime(), 2);
+      $time = \explode(' ', \microtime(), 2);
       return (float)$time[0] + (float)$time[1];
    }
 
@@ -90,7 +90,7 @@ class Context {
     */
    public function getElapsedTime()
    {
-      return number_format($this->get_now_time() - $this->start_time, 6) . ' s';
+      return \number_format($this->get_now_time() - $this->start_time, 6) . ' s';
    }
 
 
@@ -147,7 +147,7 @@ class Context {
     */
    public function getTraceFileLine()
    {
-      $callers = debug_backtrace();
+      $callers = \debug_backtrace();
       return $callers[1]['file'] . '(' . $callers[1]['line'] . ')';
    }
 
@@ -161,26 +161,26 @@ class Context {
    {
       // posix solution
       //
-      if (extension_loaded('posix')) {
-         return posix_getpwuid(posix_geteuid())['name'];
+      if (\extension_loaded('posix')) {
+         return \posix_getpwuid(\posix_geteuid())['name'];
       }
 
-      // exec() solution
+      // \exec() solution
       //
-      if (function_exists('exec')) {
+      if (\function_exists('exec')) {
          $user_name = [];
-         exec('whoami', $user_name);
+         \exec('whoami', $user_name);
          return $user_name[0];
       }
 
       // temporary file solution
       //
       $dir = '/tmp';
-      if (is_dir($dir) && is_writable($dir)) {
-         $file = tempnam($dir, 'qdump.get_user_name.');
-         file_put_contents($file, '<?php $user_name = get_current_user(); ?>', LOCK_EX);
+      if (\is_dir($dir) && \is_writable($dir)) {
+         $file = \tempnam($dir, 'qdump.get_user_name.');
+         \file_put_contents($file, '<?php $user_name = \\get_current_user(); ?>', \LOCK_EX);
          include_once $file;
-         unlink($file);
+         \unlink($file);
          return $user_name;
       }
 

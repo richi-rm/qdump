@@ -67,25 +67,25 @@ class FileWriter implements OutputWriterInterface {
       if ($output_dir_path === '') {
          $output_dir_path = './';
       } else {
-         $output_dir_path = rtrim($output_dir_path, '/') . '/';
+         $output_dir_path = \rtrim($output_dir_path, '/') . '/';
       }
 
       $username = Context::getUserName();
       if ($username === -1) {
          $username = 'common';
       }
-      $output_dir_path = str_replace('*username*', $username, $output_dir_path);
+      $output_dir_path = \str_replace('*username*', $username, $output_dir_path);
 
-      if (is_dir($output_dir_path) && is_writable($output_dir_path)) {
+      if (\is_dir($output_dir_path) && \is_writable($output_dir_path)) {
          $this->output_dir_can_write = true;
          $this->output_dir_path = $output_dir_path;
          $this->output_file_name = $this->get_next_output_file_name();
          return;
       }
 
-      @mkdir($output_dir_path, 0777, true);
+      @\mkdir($output_dir_path, 0777, true);
 
-      if (is_dir($output_dir_path) && is_writable($output_dir_path)) {
+      if (\is_dir($output_dir_path) && \is_writable($output_dir_path)) {
          $this->output_dir_can_write = true;
          $this->output_dir_path = $output_dir_path;
          $this->output_file_name = $this->get_next_output_file_name();
@@ -105,11 +105,11 @@ class FileWriter implements OutputWriterInterface {
    {
       // look for qdump files
       //
-      $qdump_files = glob($this->output_dir_path . 'qdump.*');
+      $qdump_files = \glob($this->output_dir_path . 'qdump.*');
 
       // no qdump files
       //
-      if (empty($qdump_files)) {
+      if (\empty($qdump_files)) {
          return 'qdump.1.' . $this->get_random_token();
       }
 
@@ -117,12 +117,12 @@ class FileWriter implements OutputWriterInterface {
       //
       $sequence = [];
       foreach ($qdump_files as $qdump_file) {
-         $qdump_file = explode('.', basename($qdump_file), 3);
+         $qdump_file = \explode('.', \basename($qdump_file), 3);
          $sequence[] = (int)$qdump_file[1];
       }
-      sort($sequence);
+      \sort($sequence);
 
-      return 'qdump.' . (end($sequence)+1) . '.' . $this->get_random_token();
+      return 'qdump.' . (\end($sequence)+1) . '.' . $this->get_random_token();
    }
 
 
@@ -135,8 +135,8 @@ class FileWriter implements OutputWriterInterface {
     */
    protected function get_random_token()
    {
-      return rand(0, 9) . rand(0, 9) . rand(0, 9) .
-             rand(0, 9) . rand(0, 9) . rand(0, 9);
+      return \rand(0, 9) . \rand(0, 9) . \rand(0, 9) .
+             \rand(0, 9) . \rand(0, 9) . \rand(0, 9);
    }
 
 
@@ -151,10 +151,10 @@ class FileWriter implements OutputWriterInterface {
       if (!$this->output_dir_can_write) {
          return '';
       }
-      file_put_contents(
+      \file_put_contents(
          $this->output_dir_path . $this->output_file_name . self::QDUMP_FILE_EXTENSIONS[$this->render_type],
          $string,
-         FILE_APPEND | LOCK_EX
+         \FILE_APPEND | \LOCK_EX
       );
       return $string;
    }

@@ -20,33 +20,33 @@ class AsciiFormatter extends AbstractStringFormatter {
     */
    protected function escape(&$string)
    {
-      $string = addcslashes($string, '\\"');
+      $string = \addcslashes($string, '\\"');
 
-      $string = str_replace("\x09", "\\t", $string);
-      $string = str_replace("\x0a", "\\n", $string);
-      $string = str_replace("\x0b", "\\v", $string);
-      $string = str_replace("\x0c", "\\f", $string);
-      $string = str_replace("\x0d", "\\r", $string);
-      $string = str_replace("\x1b", "\\e", $string);
+      $string = \str_replace("\x09", "\\t", $string);
+      $string = \str_replace("\x0a", "\\n", $string);
+      $string = \str_replace("\x0b", "\\v", $string);
+      $string = \str_replace("\x0c", "\\f", $string);
+      $string = \str_replace("\x0d", "\\r", $string);
+      $string = \str_replace("\x1b", "\\e", $string);
 
       if (0) { }
       elseif ($this->byte_format == 'hexlc') {
          for ($c=0; $c<=0x1f; $c++) {
-            $string = str_replace(chr($c), "\\x" . strtolower(dechex($c)), $string);
+            $string = \str_replace(\chr($c), "\\x" . \strtolower(\dechex($c)), $string);
          }
-         $string = str_replace(chr(0x7f), "\\x7f", $string);
+         $string = \str_replace(\chr(0x7f), "\\x7f", $string);
       }
       elseif ($this->byte_format == 'hexuc') {
          for ($c=0; $c<=0x1f; $c++) {
-            $string = str_replace(chr($c), "\\X" . strtoupper(dechex($c)), $string);
+            $string = \str_replace(\chr($c), "\\X" . \strtoupper(\dechex($c)), $string);
          }
-         $string = str_replace(chr(0x7f), "\\X7F", $string);
+         $string = \str_replace(\chr(0x7f), "\\X7F", $string);
       }
       else {
          for ($c=0; $c<=0x1f; $c++) {
-            $string = str_replace(chr($c), "\\" . decoct($c), $string);
+            $string = \str_replace(\chr($c), "\\" . \decoct($c), $string);
          }
-         $string = str_replace(chr(0x7f), "\\177", $string);
+         $string = \str_replace(\chr(0x7f), "\\177", $string);
       }
    }
 
@@ -65,19 +65,19 @@ class AsciiFormatter extends AbstractStringFormatter {
 
       // clean up ASCII
       //
-      $substitute_character = mb_substitute_character();
-      mb_substitute_character(ord('?'));
-      $string = mb_convert_encoding($string, 'ASCII', 'ASCII');
-      mb_substitute_character($substitute_character);
+      $substitute_character = \mb_substitute_character();
+      \mb_substitute_character(\ord('?'));
+      $string = \mb_convert_encoding($string, 'ASCII', 'ASCII');
+      \mb_substitute_character($substitute_character);
 
       // string length
       //
-      $length = strlen($string);
+      $length = \strlen($string);
 
       // shorten
       //
       if ($this->max_length >= 0 && $length > $this->max_length) {
-         $string = substr($string, 0, $this->max_length) . '...';
+         $string = \substr($string, 0, $this->max_length) . '...';
       }
 
       // escape

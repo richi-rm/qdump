@@ -203,13 +203,13 @@ class QDumper {
          $config['qdumper-config']['render-type'] = 'ansi';
       }
 
-      if (!is_string($options)) {
+      if (!\is_string($options)) {
          return $config;
       }
 
-      foreach (explode(',', $options) as $option) {
+      foreach (\explode(',', $options) as $option) {
 
-         $option = trim($option);
+         $option = \trim($option);
 
          if (0) { }
 
@@ -217,28 +217,28 @@ class QDumper {
          // core config
          //
 
-         elseif (preg_match('/^d:([0-9]+)$/', $option, $matches)) {
+         elseif (\preg_match('/^max-depth:([0-9]+)$/', $option, $matches)) {
             $config['core-config']['max-depth'] = (int)$matches[1];
          }
 
-         elseif ($option === 'd:unlimited') {
-            $config['core-config']['max-depth'] = \PHP_INT_MAX;
+         elseif ($option === 'max-depth:unlimited') {
+            $config['core-config']['max-depth'] = -1;
          }
 
          //
          // filewriter config
          //
 
-         elseif (preg_match('/^file:(.*)$/', $option, $matches)) {
+         elseif (\preg_match('/^file:(.*)$/', $option, $matches)) {
             $config['qdumper-config']['output-type'] = 'file';
-            $config['filewriter-config']['file'] = trim($matches[1]);
+            $config['filewriter-config']['file'] = \trim($matches[1]);
          }
 
          //
          // render config
          //
 
-         elseif (in_array($option, self::BYTE_FORMATS)) {
+         elseif (\in_array($option, self::BYTE_FORMATS)) {
             $config['render-config']['byte-format'] = $option;
             if ($option === 'bits') {
                $config['render-config']['string-format'] = 'bytes';
@@ -253,19 +253,19 @@ class QDumper {
             $config['render-config']['expand-arrays'] = true;
          }
 
-         elseif (preg_match('/^sl:([0-9]+)$/', $option, $matches)) {
-            $config['render-config']['max-length'] = (int)$matches[1];
+         elseif (\preg_match('/^max-string-length:([0-9]+)$/', $option, $matches)) {
+            $config['render-config']['max-string-length'] = (int)$matches[1];
          }
 
-         elseif ($option === 'sl:unlimited') {
-            $config['render-config']['max-length'] = -1;
+         elseif ($option === 'max-string-length:unlimited') {
+            $config['render-config']['max-string-length'] = -1;
          }
 
          elseif ($option === 'no-sort') {
             $config['render-config']['sort'] = false;
          }
 
-         elseif (in_array($option, self::STRING_FORMATS)) {
+         elseif (\in_array($option, self::STRING_FORMATS)) {
             $config['render-config']['string-format'] = $option;
          }
 
@@ -278,11 +278,11 @@ class QDumper {
          // qdumper config
          //
 
-         elseif (in_array($option, array_keys(self::OUTPUT_WRITERS))) {
+         elseif (\in_array($option, \array_keys(self::OUTPUT_WRITERS))) {
             $config['qdumper-config']['output-type'] = $option;
          }
 
-         elseif (in_array($option, array_keys(self::RENDERERS))) {
+         elseif (\in_array($option, \array_keys(self::RENDERERS))) {
             $config['qdumper-config']['render-type'] = $option;
          }
 

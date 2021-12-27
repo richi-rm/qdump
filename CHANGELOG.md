@@ -1,6 +1,46 @@
 # VARDEBUG CHANGELOG
 
-Tags: Added | Changed | Upgraded | Deprecated | Fixed | Removed | Security | Yanked
+Tags: Added | Changed | Deprecated | Fixed | Removed | Security | Upgraded | Yanked
+
+
+## [v0.5.5-prealpha] - 2021-12-27
+
+### Added
+
+ - Añadida barra invertida \ a todas las funciones y constantes de PHP.
+
+
+## [v0.5.4-prealpha] - 2021-12-11
+
+### Changed
+
+ - Profundidad por defecto: 3 (0, 1 y 2 completo, 3 recortado).
+ - Eliminada opción sort. Añadida opción no-sort. Ahora sort está a true por
+   defecto.
+ - Renderizado por defecto: HTML.
+ - Cambiado el namespace Cachitos por Onedevs.
+ - Cambiado el nombre del proyecto de VarDebug a QDump.
+
+### Fixed
+
+ - Escapados los caracteres HTML cuando el renderizado es html y los comentarios
+   HTML cuando el renderizado es html-comment.
+
+### Upgraded
+
+ - Mejorada la detección de la distribución de Linux en donde se está ejecutando
+   PHP.
+
+
+## [v0.5.3-prealpha] - 2021-12-10
+
+### Added
+
+ - Añadido opción max-depth.
+
+### Changed
+
+ - Ahora dump() devuelve directamente el volcado, no en una variable.
 
 
 ## [v0.5.2-prealpha] - 2021-12-09

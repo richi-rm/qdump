@@ -26,22 +26,22 @@ class JsonFormatter extends AbstractStringFormatter {
 
       // clean up UTF-8
       //
-      $substitute_character = mb_substitute_character();
-      mb_substitute_character(ord('?'));
-      $string = mb_convert_encoding($string, 'UTF-8', 'UTF-8');
-      mb_substitute_character($substitute_character);
+      $substitute_character = \mb_substitute_character();
+      \mb_substitute_character(\ord('?'));
+      $string = \mb_convert_encoding($string, 'UTF-8', 'UTF-8');
+      \mb_substitute_character($substitute_character);
 
-      $length = mb_strlen($string);
+      $length = \mb_strlen($string);
 
       // shorten
       //
       if ($this->max_length >= 0 && $length > $this->max_length) {
-         $string = mb_substr($string, 0, $this->max_length) . '...';
+         $string = \mb_substr($string, 0, $this->max_length) . '...';
       }
 
-      $string = str_replace("\x7f", self::REPLACEMENT_TOKEN_0x7f, $string);
-      $string = json_encode($string);
-      $string = str_replace(self::REPLACEMENT_TOKEN_0x7f, '\\u007f', $string);
+      $string = \str_replace("\x7f", self::REPLACEMENT_TOKEN_0x7f, $string);
+      $string = \json_encode($string);
+      $string = \str_replace(self::REPLACEMENT_TOKEN_0x7f, '\\u007f', $string);
 
       return $string;
    }

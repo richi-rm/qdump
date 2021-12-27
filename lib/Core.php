@@ -64,34 +64,34 @@ class Core {
 
       // bool
       //
-      if (is_bool($var)) {
+      if (\is_bool($var)) {
          return ['type' => 'bool', 'value' => ( $var === false ? 'false' : 'true' )];
       }
 
       // int
       //
-      if (is_int($var)) {
-         return ['type' => 'int', 'value' => strval($var)];
+      if (\is_int($var)) {
+         return ['type' => 'int', 'value' => \strval($var)];
       }
 
       // float
       //
-      if (is_float($var)) {
-         return ['type' => 'float', 'value' => strval($var)];
+      if (\is_float($var)) {
+         return ['type' => 'float', 'value' => \strval($var)];
       }
 
       // string
       //
-      if (is_string($var)) {
+      if (\is_string($var)) {
          return ['type' => 'string', 'value' => $var];
       }
 
       // array
       //
-      if (is_array($var)) {
-         $size = count($var);
+      if (\is_array($var)) {
+         $size = \count($var);
          $r = ['type' => 'array', 'size' => $size];
-         if (isset($var[$this->this_array_is_being_iterated])) {
+         if (\isset($var[$this->this_array_is_being_iterated])) {
             $r['size'] = $size - 1;
             $r['cycle'] = true;
             return $r;
@@ -109,24 +109,24 @@ class Core {
                $r['elements'][$array_key] = $this->inspect($array_value, $depth + 1);
             }
          }
-         unset($var[$this->this_array_is_being_iterated]);
+         \unset($var[$this->this_array_is_being_iterated]);
          return $r;
       }
 
       // enum case
       //
-      if (PHP_VERSION_ID >= 80100) {
+      if (\PHP_VERSION_ID >= 80100) {
          if ($var instanceof \UnitEnum) {
             $refl_enum = new \ReflectionEnum($var);
             $file_path = $refl_enum->getFileName();
             $start_line = $refl_enum->getStartLine();
             $file_line = ($file_path === false ? null : $file_path . '(' . $start_line . ')');
             $namespace = $refl_enum->getNamespaceName();
-            if (strlen($namespace) > 0) {
+            if (\strlen($namespace) > 0) {
                $namespace .= '\\';
             }
-            $enum = explode('\\', $refl_enum->getName());
-            $enum = end($enum);
+            $enum = \explode('\\', $refl_enum->getName());
+            $enum = \end($enum);
             $r = ['type' => 'enumcase', 'file(line)' => $file_line, 'namespace' => $namespace, 'enum' => $enum, 'case' => $var->name];
             if ($var instanceof \BackedEnum) {
                $r['backing-type'] = $refl_enum->getBackingType()->getName();
@@ -139,7 +139,7 @@ class Core {
 
       // object
       //
-      if (is_object($var)) {
+      if (\is_object($var)) {
 
          // initial inspection
          //
@@ -147,27 +147,27 @@ class Core {
 
          // cycle
          //
-         if (in_array($r['id'], array_keys($this->ascending_objects_being_inspected))) {
-            unset($r['file(line)']);
-            unset($r['namespace']);
-            unset($r['class']);
-            unset($r['constants']);
-            unset($r['properties']);
-            unset($r['methods']);
+         if (\in_array($r['id'], \array_keys($this->ascending_objects_being_inspected))) {
+            \unset($r['file(line)']);
+            \unset($r['namespace']);
+            \unset($r['class']);
+            \unset($r['constants']);
+            \unset($r['properties']);
+            \unset($r['methods']);
             $r['cycle'] = true;
             return $r;
          }
 
          if ($depth >= $this->config['max-depth']) {
-            unset($r['constants']);
-            unset($r['properties']);
-            unset($r['methods']);
+            \unset($r['constants']);
+            \unset($r['properties']);
+            \unset($r['methods']);
             return $r;
          }
 
          // recursive inspection of constants
          //
-         if (isset($r['constants'])) {
+         if (\isset($r['constants'])) {
             foreach ($r['constants'] as &$constant) {
                $constant['value'] = $this->inspect($constant['value'], $depth + 1);
             }
@@ -175,23 +175,23 @@ class Core {
 
          // recursive inspection of properties
          //
-         if (isset($r['properties'])) {
+         if (\isset($r['properties'])) {
             $this->ascending_objects_being_inspected[$r['id']] = true;
             foreach ($r['properties'] as &$property) {
-               if (array_key_exists('value', $property)) {
+               if (\array_key_exists('value', $property)) {
                   $property['value'] = $this->inspect($property['value'], $depth + 1);
                }
             }
-            unset($this->ascending_objects_being_inspected[$r['id']]);
+            \unset($this->ascending_objects_being_inspected[$r['id']]);
          }
 
          // recursive inspection of method parameter defaults
          //
-         if (isset($r['methods'])) {
+         if (\isset($r['methods'])) {
             foreach ($r['methods'] as &$method) {
-               if (isset($method['parameters'])) {
+               if (\isset($method['parameters'])) {
                   foreach ($method['parameters'] as &$parameter) {
-                     if (isset($parameter['default-value']) && array_key_exists('value', $parameter['default-value'])) {
+                     if (\isset($parameter['default-value']) && \array_key_exists('value', $parameter['default-value'])) {
                         $parameter['default-value']['value'] = $this->inspect($parameter['default-value']['value'], $depth + 1);
                      }
                   }
@@ -203,10 +203,10 @@ class Core {
 
       // resource
       //
-      if (is_resource($var)) {
-         $r = ['type' => 'resource', 'resource-type' => get_resource_type($var)];
-         if (PHP_VERSION_ID >= 80000) {
-            $r['id'] = get_resource_id($var);
+      if (\is_resource($var)) {
+         $r = ['type' => 'resource', 'resource-type' => \get_resource_type($var)];
+         if (\PHP_VERSION_ID >= 80000) {
+            $r['id'] = \get_resource_id($var);
          }
          return $r;
       }
@@ -244,20 +244,20 @@ class Core {
       // namespace
       //
       $namespace = $refl_object->getNamespaceName();
-      $r['namespace'] = $namespace . (strlen($namespace) > 0 ? '\\' : '');
+      $r['namespace'] = $namespace . (\strlen($namespace) > 0 ? '\\' : '');
 
       // class
       //
-      $class = explode('\\', $refl_object->getName());
-      $class = end($class);
-      if (substr($class, 0, 15) === 'class@anonymous') {
+      $class = \explode('\\', $refl_object->getName());
+      $class = \end($class);
+      if (\substr($class, 0, 15) === 'class@anonymous') {
          $class = 'class@anonymous';
       }
       $r['class'] = $class;
 
       // object id
       //
-      $r['id'] = spl_object_id($object);
+      $r['id'] = \spl_object_id($object);
 
       // constants
       //
@@ -304,7 +304,7 @@ class Core {
 
          // readonly
          //
-         if (PHP_VERSION_ID >= 80100) {
+         if (\PHP_VERSION_ID >= 80100) {
             if ($refl_property->isReadOnly()) {
                $property['readonly'] = true;
             }
@@ -318,7 +318,7 @@ class Core {
 
          // type
          //
-         if (!isset($property['dynamic'])) {
+         if (!\isset($property['dynamic'])) {
             if ($refl_property->hasType()) {
                if ($refl_property->getType()->allowsNull()) {
                   $property['type']['null'] = true;
@@ -390,7 +390,7 @@ class Core {
             }
             $parameters[] = $parameter;
          }
-         if (count($parameters) > 0) {
+         if (\count($parameters) > 0) {
             $method['parameters'] = $parameters;
          }
 
@@ -431,8 +431,8 @@ class Core {
     */
    protected function is_dynamic($object, $property_name)
    {
-      return  array_key_exists($property_name, get_object_vars($object)) &&
-             !array_key_exists($property_name, get_class_vars(get_class($object)));
+      return  \array_key_exists($property_name, \get_object_vars($object)) &&
+             !\array_key_exists($property_name, \get_class_vars(\get_class($object)));
    }
 
 }
