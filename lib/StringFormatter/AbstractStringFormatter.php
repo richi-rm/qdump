@@ -17,7 +17,7 @@ abstract class AbstractStringFormatter {
    /**
     * Maximum visible string length.
     *
-    * @var int
+    * @var int|string
     */
    protected $max_string_length = null;
 
@@ -26,7 +26,7 @@ abstract class AbstractStringFormatter {
     * Constructor.
     *
     * @param string $byte_format byte format
-    * @param int $max_string_length maximum string length
+    * @param int|string $max_string_length maximum string length
     */
    public function __construct($byte_format, $max_string_length)
    {

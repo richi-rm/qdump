@@ -5,20 +5,20 @@ namespace Onedevs\QDump\StringFormatter;
 
 
 /**
- * ISO-8859-1:
+ * ISO-8859-1 (1 byte):
  *    00..1F : control characters
  *    20..7E : printable characters
  *    7F..A0 : control character
  *    A1..FF : printable characters
  */
-class ISO88591Formatter extends AbstractStringFormatter {
+class ISO88591ToUTF8Formatter extends AbstractStringFormatter {
 
    /**
-    * Escapes the control characters and " and \
+    * Escapes control characters and " and \
     *
     * @param string &$string
     */
-   protected function escape(&$string)
+   protected function escape_control_chars(&$string)
    {
       $string = \addcslashes($string, '\\"');
 
@@ -30,6 +30,7 @@ class ISO88591Formatter extends AbstractStringFormatter {
       $string = \str_replace("\x1b", "\\e", $string);
 
       if (0) { }
+      // hexadecimal lower case
       elseif ($this->byte_format == 'hexlc') {
          for ($c=0; $c<=0x1f; $c++) {
             $string = \str_replace(\chr($c), "\\x" . \strtolower(\dechex($c)), $string);
@@ -39,6 +40,7 @@ class ISO88591Formatter extends AbstractStringFormatter {
          }
          $string = \str_replace(\chr(0xad), "\\xad", $string);
       }
+      // hexadecimal upper case
       elseif ($this->byte_format == 'hexuc') {
          for ($c=0; $c<=0x1f; $c++) {
             $string = \str_replace(\chr($c), "\\X" . \strtoupper(\dechex($c)), $string);
@@ -48,6 +50,7 @@ class ISO88591Formatter extends AbstractStringFormatter {
          }
          $string = \str_replace(\chr(0xad), "\\XAD", $string);
       }
+      // octal
       else {
          for ($c=0; $c<=0x1f; $c++) {
             $string = \str_replace(\chr($c), "\\" . \decoct($c), $string);
@@ -78,17 +81,30 @@ class ISO88591Formatter extends AbstractStringFormatter {
 
       // shorten
       //
-      if ($this->max_string_length >= 0 && $length > $this->max_string_length) {
-         $string = \substr($string, 0, $this->max_string_length) . '...';
+      if (\is_int($this->max_string_length)) {
+         if ($this->max_string_length >= 0) {
+            if ($length > $this->max_string_length) {
+               $string = \substr($string, 0, $this->max_string_length) . '...';
+            }
+         }
+         else {
+            if ($length > \abs($this->max_string_length)) {
+               $string = '...' . \substr($string, $this->max_string_length);
+            }
+         }
       }
 
-      // escape
+      // escape control chars
       //
-      $this->escape($string);
+      $this->escape_control_chars($string);
 
-      // convert to UTF-8 to display the characters
+      // convert:
+      // the string is assumed to be ISO-8859-1 and converted to UTF-8
       //
+      $substitute_character = \mb_substitute_character();
+      \mb_substitute_character(\ord('?'));
       $string = \mb_convert_encoding($string, 'UTF-8', 'ISO-8859-1');
+      \mb_substitute_character($substitute_character);
 
       // double quotation marks
       //

@@ -14,11 +14,11 @@ namespace Onedevs\QDump\StringFormatter;
 class UTF8Formatter extends AbstractStringFormatter {
 
    /**
-    * Escapes the control characters and " and \
+    * Escapes control characters and " and \
     *
     * @param string &$string
     */
-   protected function escape(&$string)
+   protected function escape_control_chars(&$string)
    {
       $string = \addcslashes($string, '\\"');
 
@@ -30,18 +30,21 @@ class UTF8Formatter extends AbstractStringFormatter {
       $string = \str_replace("\x1b", "\\e", $string);
 
       if (0) { }
+      // hexadecimal lower case
       elseif ($this->byte_format == 'hexlc') {
          for ($c=0; $c<=0x1f; $c++) {
             $string = \str_replace(\chr($c), "\\x" . \strtolower(\dechex($c)), $string);
          }
          $string = \str_replace(\chr(0x7f), "\\x7f", $string);
       }
+      // hexadecimal upper case
       elseif ($this->byte_format == 'hexuc') {
          for ($c=0; $c<=0x1f; $c++) {
             $string = \str_replace(\chr($c), "\\X" . \strtoupper(\dechex($c)), $string);
          }
          $string = \str_replace(\chr(0x7f), "\\X7F", $string);
       }
+      // octal
       else {
          for ($c=0; $c<=0x1f; $c++) {
             $string = \str_replace(\chr($c), "\\" . \decoct($c), $string);
@@ -54,6 +57,8 @@ class UTF8Formatter extends AbstractStringFormatter {
    /**
     * Returns a shortened and formatted UTF-8 version of $raw_string.
     * Returns the length of the string in $length.
+    * 
+    * The string is assumed to be valid UTF-8.
     *
     * @param string $raw_string
     * @param int &$length
@@ -63,26 +68,28 @@ class UTF8Formatter extends AbstractStringFormatter {
    {
       $string = $raw_string;
 
-      // clean up UTF-8
-      //
-      $substitute_character = \mb_substitute_character();
-      \mb_substitute_character(\ord('?'));
-      $string = \mb_convert_encoding($string, 'UTF-8', 'UTF-8');
-      \mb_substitute_character($substitute_character);
-
       // string length
       //
       $length = \mb_strlen($string);
 
       // shorten
       //
-      if ($this->max_string_length >= 0 && $length > $this->max_string_length) {
-         $string = \mb_substr($string, 0, $this->max_string_length) . '...';
+      if (\is_int($this->max_string_length)) {
+         if ($this->max_string_length >= 0) {
+            if ($length > $this->max_string_length) {
+               $string = \mb_substr($string, 0, $this->max_string_length) . '...';
+            }
+         }
+         else {
+            if ($length > \abs($this->max_string_length)) {
+               $string = '...' . \mb_substr($string, $this->max_string_length);
+            }
+         }
       }
 
-      // escape
+      // escape control chars
       //
-      $this->escape($string);
+      $this->escape_control_chars($string);
 
       // double quotation marks
       //

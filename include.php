@@ -2,9 +2,9 @@
 
 
 include 'lib/StringFormatter/AbstractStringFormatter.php';
-include 'lib/StringFormatter/AsciiFormatter.php';
+include 'lib/StringFormatter/AsciiToUTF8Formatter.php';
 include 'lib/StringFormatter/ByteSequenceFormatter.php';
-include 'lib/StringFormatter/ISO88591Formatter.php';
+include 'lib/StringFormatter/ISO88591ToUTF8Formatter.php';
 include 'lib/StringFormatter/JsonFormatter.php';
 include 'lib/StringFormatter/UTF8Formatter.php';
 include 'lib/Renderer/BasicRenderer/BasicRenderer.php';

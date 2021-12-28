@@ -253,12 +253,8 @@ class QDumper {
             $config['render-config']['expand-arrays'] = true;
          }
 
-         elseif (\preg_match('/^max-string-length:([0-9]+)$/', $option, $matches)) {
-            $config['render-config']['max-string-length'] = (int)$matches[1];
-         }
-
-         elseif ($option === 'max-string-length:unlimited') {
-            $config['render-config']['max-string-length'] = -1;
+         elseif (\preg_match('/^max-string-length:(unlimited|[+-]?[0-9]+)$/', $option, $matches)) {
+            $config['render-config']['max-string-length'] = ( $matches[1] === 'unlimited' ? $matches[1] : (int)$matches[1] );
          }
 
          elseif ($option === 'no-sort') {

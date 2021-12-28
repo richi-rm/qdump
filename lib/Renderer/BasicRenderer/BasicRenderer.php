@@ -14,9 +14,9 @@ class BasicRenderer {
     * String formatters.
     */
    const STRING_FORMATTERS = [
-      'ascii'      => 'Onedevs\QDump\StringFormatter\AsciiFormatter',
+      'ascii'      => 'Onedevs\QDump\StringFormatter\AsciiToUTF8Formatter',
       'bytes'      => 'Onedevs\QDump\StringFormatter\ByteSequenceFormatter',
-      'iso-8859-1' => 'Onedevs\QDump\StringFormatter\ISO88591Formatter',
+      'iso-8859-1' => 'Onedevs\QDump\StringFormatter\ISO88591ToUTF8Formatter',
       'json'       => 'Onedevs\QDump\StringFormatter\JsonFormatter',
       'utf-8'      => 'Onedevs\QDump\StringFormatter\UTF8Formatter'
    ];
