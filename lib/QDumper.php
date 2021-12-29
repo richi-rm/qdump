@@ -228,12 +228,8 @@ class QDumper {
             $config['core-config']['byte-format'] = 'hexlc';
          }
 
-         elseif (\preg_match('/^max-depth:([0-9]+)$/', $option, $matches)) {
-            $config['core-config']['max-depth'] = (int)$matches[1];
-         }
-
-         elseif ($option === 'max-depth:unlimited') {
-            $config['core-config']['max-depth'] = -1;
+         elseif (\preg_match('/^max-depth:(unlimited|[+]?[0-9]+)$/', $option, $matches)) {
+            $config['core-config']['max-depth'] = ( $matches[1] === 'unlimited' ? $matches[1] : (int)$matches[1] );
          }
 
          elseif (\preg_match('/^max-string-length:(unlimited|[+-]?[0-9]+)$/', $option, $matches)) {

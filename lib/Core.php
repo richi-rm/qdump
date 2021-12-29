@@ -125,7 +125,7 @@ class Core {
             return $r;
          }
          // depth
-         if ($this->config['max-depth'] >= 0) {
+         if (\is_int($this->config['max-depth'])) {
             // maximum depth has been indicated
             if ($depth >= $this->config['max-depth']) {
                return $r;
@@ -187,7 +187,7 @@ class Core {
 
          // depth
          //
-         if ($this->config['max-depth'] >= 0) {
+         if (\is_int($this->config['max-depth'])) {
             // maximum depth has been indicated
             if ($depth >= $this->config['max-depth']) {
                unset($r['constants']);
