@@ -15,6 +15,7 @@ class HtmlCommentRenderer extends BasicRenderer {
       'header'        => "\n" . '<!-- QDump' . "\n",
       'capture'       => "\n" . '<!-- QDump' . "\n",
 
+      'abstract'      => '',
       'class'         => '',
       'cycle'         => '',
       'enum'          => '',
@@ -43,6 +44,7 @@ class HtmlCommentRenderer extends BasicRenderer {
       'header'        => '-->' . "\n",
       'capture'       => "\n" . '-->' . "\n",
 
+      'abstract'      => '',
       'class'         => '',
       'cycle'         => '',
       'enum'          => '',

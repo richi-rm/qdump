@@ -264,13 +264,10 @@ class BasicRenderer {
             return $r;
          }
 
-         // namespace, class and file(line)
+         // class and ascentor classes
          //
-         $r .= ' ' .
-               $this->p('namespace') . $core_var['namespace'] . $this->s('namespace') .
-               $this->p('class') . $core_var['class'] . $this->s('class');
-         if ($this->config['verbose']) {
-            $r .= ' ' . $this->p('file(line)') . $core_var['file(line)'] . $this->s('file(line)');
+         foreach ($core_var['classes'] as $class) {
+            $r .= $this->render_class($class, $depth);
          }
 
          // constants
@@ -433,6 +430,34 @@ class BasicRenderer {
       // unknown
       //
       $r .= $this->p('unknown') . '(unknown)' . $this->s('unknown');
+      return $r;
+   }
+
+
+   /**
+    * Render a class.
+    *
+    * @param array $class
+    * @param int $depth depth level starting from 0
+    * @return string
+    */
+   protected function render_class($class, $depth)
+   {
+      $left_blanks = '';
+      for ($d=0; $d<=$depth; $d++) {
+         $left_blanks .= \str_repeat(' ', $this->left_pad_length[$d]);
+      }
+      $r = "\n" .
+           $left_blanks .
+           $this->p('namespace') . $class['namespace'] . $this->s('namespace') .
+           $this->p('class') . $class['class'] . $this->s('class');
+      if (isset($class['abstract'])) {
+         $r .= ' ' . $this->p('abstract') . '(abstract)' . $this->s('abstract');
+      }
+      if ($this->config['verbose']) {
+         $r .= ' ' . $this->p('file(line)') . $class['file(line)'] . $this->s('file(line)');
+      }
+
       return $r;
    }
 

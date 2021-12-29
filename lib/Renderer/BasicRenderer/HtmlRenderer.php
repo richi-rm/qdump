@@ -13,6 +13,7 @@ class HtmlRenderer extends BasicRenderer {
 <style type="text/css">
    .qdump-pre-header    { color: #a0a0a0; background-color: #f0f0f0; padding: 10px; font-size: 11pt; margin: 5px; }
    .qdump-pre-capture   { color: black; background-color: #f0f0f0; padding: 10px; font-size: 11pt; margin: 5px; }
+   .qdump-abstract      { font-style: italic; }
    .qdump-class         { color: #008000; font-weight: bold; }
    .qdump-cycle         { color: #ff0000; }
    .qdump-enum          { color: #008000; font-weight: bold; }
@@ -42,6 +43,7 @@ HTML;
       'header'        => "\n" . '<pre class="qdump qdump-pre-header">',
       'capture'       => "\n" . '<pre class="qdump qdump-pre-capture">',
 
+      'abstract'      => '<span class="qdump qdump-abstract">',
       'class'         => '<span class="qdump qdump-class">',
       'cycle'         => '<span class="qdump qdump-cycle">',
       'enum'          => '<span class="qdump qdump-enum">',
@@ -70,6 +72,7 @@ HTML;
       'header'        => '</pre>' . "\n",
       'capture'       => '</pre>' . "\n",
 
+      'abstract'      => '</span>',
       'class'         => '</span>',
       'cycle'         => '</span>',
       'enum'          => '</span>',

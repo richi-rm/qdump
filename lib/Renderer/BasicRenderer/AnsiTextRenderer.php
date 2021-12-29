@@ -46,6 +46,7 @@ class AnsiTextRenderer extends BasicRenderer {
       'header'        => "\n" . self::ANSI_CODES['blue_bri'] . '---' . "\n",
       'capture'       => "\n",
 
+      'abstract'      => self::ANSI_CODES['italic'],
       'class'         => self::ANSI_CODES['bold'] . self::ANSI_CODES['green_bri'],
       'cycle'         => self::ANSI_CODES['red_bri'],
       'enum'          => self::ANSI_CODES['bold'] . self::ANSI_CODES['green_bri'],
@@ -74,6 +75,7 @@ class AnsiTextRenderer extends BasicRenderer {
       'header'        => '---' . self::ANSI_CODES['reset'] . "\n",
       'capture'       => "\n",
 
+      'abstract'      => self::ANSI_CODES['reset'],
       'class'         => self::ANSI_CODES['reset'],
       'cycle'         => self::ANSI_CODES['reset'],
       'enum'          => self::ANSI_CODES['reset'],

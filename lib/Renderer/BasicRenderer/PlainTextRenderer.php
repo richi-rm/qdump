@@ -15,6 +15,7 @@ class PlainTextRenderer extends BasicRenderer {
       'header'        => "\n" . '---' . "\n",
       'capture'       => "\n" . '',
 
+      'abstract'      => '',
       'class'         => '',
       'cycle'         => '',
       'enum'          => '',
@@ -43,6 +44,7 @@ class PlainTextRenderer extends BasicRenderer {
       'header'        => '---' . "\n",
       'capture'       => "\n",
 
+      'abstract'      => '',
       'class'         => '',
       'cycle'         => '',
       'enum'          => '',

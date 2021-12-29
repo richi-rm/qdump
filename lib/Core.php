@@ -152,9 +152,7 @@ class Core {
          // cycle
          //
          if (\in_array($r['id'], \array_keys($this->ascending_objects_being_inspected))) {
-            unset($r['file(line)']);
-            unset($r['namespace']);
-            unset($r['class']);
+            unset($r['classes']);
             unset($r['constants']);
             unset($r['properties']);
             unset($r['methods']);
@@ -227,6 +225,71 @@ class Core {
 
 
    /**
+    * Returns an array with the ancestor classes of the given class.
+    *
+    * @param string class
+    * @return array
+    */
+   protected function inspect_ancestor_classes(string $class): array
+   {
+      $classes = [
+         0 => $this->inspect_class($class)
+      ];
+
+      do {
+         $parent_class = \get_parent_class($class);
+         if ($parent_class === false) {
+            break;
+         }
+         $classes[] = $this->inspect_class($parent_class);
+         $class = $parent_class;
+      } while (true);
+
+      $classes = \array_reverse($classes);
+
+      return $classes;
+   }
+
+
+   /**
+    * Inspect the given class.
+    *
+    * @param string class
+    * @return array
+    */
+   protected function inspect_class(string $class): array
+   {
+      $refl_class = new \ReflectionClass($class);
+
+      // file(line)
+      $file_path = $refl_class->getFileName();
+      $file_line = ( $file_path === false ? '' : $file_path . '(' . $refl_class->getStartLine() . ')' );
+
+      // namespace
+      $namespace = $refl_class->getNamespaceName();
+      $namespace = ( \strlen($namespace) > 0 ? $namespace . '\\' : '' );
+
+      // class
+      $class = \explode('\\', $refl_class->getName());
+      $class = \end($class);
+      if (\substr($class, 0, 15) === 'class@anonymous') {
+         $class = 'class@anonymous';
+      }
+
+      $r = [
+         'file(line)' => $file_line,
+         'namespace' => $namespace,
+         'class' => $class
+      ];
+      if ($refl_class->isAbstract()) {
+         $r['abstract'] = true;
+      }
+
+      return $r;
+   }
+
+
+   /**
     * Inspect an object and return the information found as an array.
     *
     * @var object $object
@@ -236,37 +299,20 @@ class Core {
    {
       $r = [
          'type' => 'object',
-         'file(line)' => null,
-         'namespace' => null,
-         'class' => null,
-         'id' => null
+         'id' => null,
+         'classes' => []
       ];
-
-      $refl_object = new \ReflectionObject($object);
-
-      // file(line)
-      //
-      $file_path = $refl_object->getFileName();
-      $start_line = $refl_object->getStartLine();
-      $r['file(line)'] = ($file_path === false ? null : $file_path . '(' . $start_line . ')');
-
-      // namespace
-      //
-      $namespace = $refl_object->getNamespaceName();
-      $r['namespace'] = $namespace . (\strlen($namespace) > 0 ? '\\' : '');
-
-      // class
-      //
-      $class = \explode('\\', $refl_object->getName());
-      $class = \end($class);
-      if (\substr($class, 0, 15) === 'class@anonymous') {
-         $class = 'class@anonymous';
-      }
-      $r['class'] = $class;
 
       // object id
       //
       $r['id'] = \spl_object_id($object);
+
+      // \ReflectionObject is used instead of \ReflectionClass to be able to capture dynamic properties
+      $refl_object = new \ReflectionObject($object);
+
+      // classes
+      //
+      $r['classes'] = $this->inspect_ancestor_classes(\get_class($object));
 
       // constants
       //
