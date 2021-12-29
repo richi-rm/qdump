@@ -20,17 +20,17 @@ class QDumper {
     */
    protected const DEFAULT_CONFIG = [
       'core-config' => [
-         'max-depth' => 2
+         'byte-format'       => 'hexlc',
+         'max-depth'         => 2,
+         'max-string-length' => 100,
+         'string-format'     => 'utf-8'
       ],
       'filewriter-config' => [
          'file' => '/tmp/qdump/*username*'
       ],
       'render-config'        => [
-         'byte-format'       => 'hexlc',
          'expand-arrays'     => false,
-         'max-string-length' => 100,
          'sort'              => true,
-         'string-format'     => 'utf-8',
          'verbose'           => false
       ],
       'qdumper-config' => [
@@ -217,12 +217,31 @@ class QDumper {
          // core config
          //
 
+         elseif (\in_array($option, self::BYTE_FORMATS)) {
+            $config['core-config']['byte-format'] = $option;
+            if ($option === 'bits') {
+               $config['core-config']['string-format'] = 'bytes';
+            }
+         }
+
+         elseif ($option === 'hex') {
+            $config['core-config']['byte-format'] = 'hexlc';
+         }
+
          elseif (\preg_match('/^max-depth:([0-9]+)$/', $option, $matches)) {
             $config['core-config']['max-depth'] = (int)$matches[1];
          }
 
          elseif ($option === 'max-depth:unlimited') {
             $config['core-config']['max-depth'] = -1;
+         }
+
+         elseif (\preg_match('/^max-string-length:(unlimited|[+-]?[0-9]+)$/', $option, $matches)) {
+            $config['core-config']['max-string-length'] = ( $matches[1] === 'unlimited' ? $matches[1] : (int)$matches[1] );
+         }
+
+         elseif (\in_array($option, self::STRING_FORMATS)) {
+            $config['core-config']['string-format'] = $option;
          }
 
          //
@@ -238,31 +257,12 @@ class QDumper {
          // render config
          //
 
-         elseif (\in_array($option, self::BYTE_FORMATS)) {
-            $config['render-config']['byte-format'] = $option;
-            if ($option === 'bits') {
-               $config['render-config']['string-format'] = 'bytes';
-            }
-         }
-
-         elseif ($option === 'hex') {
-            $config['render-config']['byte-format'] = 'hexlc';
-         }
-
          elseif ($option === 'expand-arrays') {
             $config['render-config']['expand-arrays'] = true;
          }
 
-         elseif (\preg_match('/^max-string-length:(unlimited|[+-]?[0-9]+)$/', $option, $matches)) {
-            $config['render-config']['max-string-length'] = ( $matches[1] === 'unlimited' ? $matches[1] : (int)$matches[1] );
-         }
-
          elseif ($option === 'no-sort') {
             $config['render-config']['sort'] = false;
-         }
-
-         elseif (\in_array($option, self::STRING_FORMATS)) {
-            $config['render-config']['string-format'] = $option;
          }
 
          elseif ($option === 'verbose') {

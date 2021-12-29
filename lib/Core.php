@@ -7,6 +7,18 @@ namespace Onedevs\QDump;
 class Core {
 
    /**
+    * String formatters.
+    */
+   const STRING_FORMATTERS = [
+      'ascii'      => 'Onedevs\QDump\StringFormatter\AsciiToUTF8Formatter',
+      'bytes'      => 'Onedevs\QDump\StringFormatter\ByteSequenceFormatter',
+      'iso-8859-1' => 'Onedevs\QDump\StringFormatter\ISO88591ToUTF8Formatter',
+      'json'       => 'Onedevs\QDump\StringFormatter\JsonFormatter',
+      'utf-8'      => 'Onedevs\QDump\StringFormatter\UTF8Formatter'
+   ];
+
+
+   /**
     * Variable to detect cycles in objects. It is an associative array in which
     * the keys are the ids of the objects being inspected.
     *
@@ -21,7 +33,10 @@ class Core {
     * @var array
     */
    protected $config = [
-      'max-depth' => null // maximum inspection depth
+      'byte-format'       => null, // byte format
+      'max-depth'         => null, // maximum inspection depth
+      'max-string-length' => null, // maximum visible string length
+      'string-format'     => null  // string format
    ];
 
 
@@ -35,6 +50,12 @@ class Core {
 
 
    /**
+    * String formatter.
+    */
+   protected $string_formatter = null;
+
+
+   /**
     * Constructor.
     *
     * @param array $config
@@ -42,6 +63,8 @@ class Core {
    public function __construct($config)
    {
       $this->config = $config;
+      $string_formatter_class = self::STRING_FORMATTERS[$config['string-format']];
+      $this->string_formatter = new $string_formatter_class($config['byte-format'], $config['max-string-length']);
    }
 
 
@@ -83,7 +106,9 @@ class Core {
       // string
       //
       if (\is_string($var)) {
-         return ['type' => 'string', 'value' => $var];
+         $length = 0;
+         $string_formatted = $this->string_formatter->format($var, $length);
+         return ['type' => 'string', 'length' => $length, 'value' => $string_formatted];
       }
 
       // array

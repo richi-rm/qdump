@@ -11,29 +11,14 @@ use Onedevs\QDump\Renderer\BasicRenderer\HtmlRenderer;
 class BasicRenderer {
 
    /**
-    * String formatters.
-    */
-   const STRING_FORMATTERS = [
-      'ascii'      => 'Onedevs\QDump\StringFormatter\AsciiToUTF8Formatter',
-      'bytes'      => 'Onedevs\QDump\StringFormatter\ByteSequenceFormatter',
-      'iso-8859-1' => 'Onedevs\QDump\StringFormatter\ISO88591ToUTF8Formatter',
-      'json'       => 'Onedevs\QDump\StringFormatter\JsonFormatter',
-      'utf-8'      => 'Onedevs\QDump\StringFormatter\UTF8Formatter'
-   ];
-
-
-   /**
     * Renderer configuration.
     *
     * @var array
     */
    protected $config = [
-      'byte-format'       => null, // byte format
-      'expand-arrays'     => null, // expand arrays
-      'max-string-length' => null, // maximum visible string length
-      'sort'              => null, // order constants, properties and methods
-      'string-format'     => null, // string format
-      'verbose'           => null  // verbose
+      'expand-arrays' => null, // expand arrays
+      'sort'          => null, // order constants, properties and methods
+      'verbose'       => null  // verbose
    ];
 
 
@@ -46,12 +31,6 @@ class BasicRenderer {
 
 
    /**
-    * String formatter.
-    */
-   protected $string_formatter = null;
-
-
-   /**
     * Constructor.
     *
     * @param array $config
@@ -59,8 +38,6 @@ class BasicRenderer {
    public function __construct($config)
    {
       $this->config = $config;
-      $string_formatter_class = self::STRING_FORMATTERS[$config['string-format']];
-      $this->string_formatter = new $string_formatter_class($config['byte-format'], $config['max-string-length']);
    }
 
 
@@ -171,21 +148,18 @@ class BasicRenderer {
       // string
       //
       if ($core_var['type'] === 'string') {
-         $length = 0;
-         $string_formatted = $this->string_formatter->format($core_var['value'], $length);
-
          // escape some sequences
          //
+         $string = $core_var['value'];
          if (0) { }
          elseif ($this instanceof HtmlCommentRenderer) {
-            $string_formatted = \str_replace(['<!--', '-->'], ['[!--', '--]'], $string_formatted);
+            $string = \str_replace(['<!--', '-->'], ['[!--', '--]'], $string);
          }
          elseif ($this instanceof HtmlRenderer) {
-            $string_formatted = \htmlspecialchars($string_formatted, \ENT_NOQUOTES);
+            $string = \htmlspecialchars($string, \ENT_NOQUOTES);
          }
-
-         $r .= $this->p('type') . $core_var['type'] . '(' . $length . ')' . $this->s('type') . ' ' .
-               $this->p('scalar') . $string_formatted . $this->s('scalar');
+         $r .= $this->p('type') . $core_var['type'] . '(' . $core_var['length'] . ')' . $this->s('type') . ' ' .
+               $this->p('scalar') . $string . $this->s('scalar');
          return $r;
       }
 
