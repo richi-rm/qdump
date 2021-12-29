@@ -20,7 +20,7 @@ class QDumper {
     */
    protected const DEFAULT_CONFIG = [
       'core-config' => [
-         'max-depth' => 3
+         'max-depth' => 2
       ],
       'filewriter-config' => [
          'file' => '/tmp/qdump/*username*'
