@@ -65,7 +65,7 @@ class Core {
       // bool
       //
       if (\is_bool($var)) {
-         return ['type' => 'bool', 'value' => ( $var === false ? 'false' : 'true' )];
+         return ['type' => 'bool', 'value' => ( $var ? 'true' : 'false' )];
       }
 
       // int
