@@ -244,136 +244,71 @@ class BasicRenderer {
             $r .= $this->render_class($class, $depth);
          }
 
+         //
+         // build array of items
+         //
+
+         $items = [];
+
          // constants
          //
          if (isset($core_var['constants'])) {
 
-            // sort constants
-            //
-            if ($this->config['sort']) {
+            foreach ($core_var['constants'] as $constant) {
 
-               // sort
-               //
-               $constants = [];
-               foreach ($core_var['constants'] as $constant) {
-                  $constants[$constant['name']] = $constant;
-               }
-               \ksort($constants, \SORT_NATURAL | \SORT_FLAG_CASE);
+               $key = '';
 
-               // private constants
-               //
-               foreach ($constants as $constant) {
-                  if ($constant['access'] === 'private') {
-                     $r .= $this->render_constant($constant, $depth);
-                  }
+               if ($constant['access'] === 'public') {
+                  $key .= '_access:0';
+               } elseif ($constant['access'] === 'protected') {
+                  $key .= '_access:1';
+               } else {
+                  $key .= '_access:2';
                }
 
-               // protected constants
-               //
-               foreach ($constants as $constant) {
-                  if ($constant['access'] === 'protected') {
-                     $r .= $this->render_constant($constant, $depth);
-                  }
-               }
+               $key .= '_item_type:0';
 
-               // public constants
-               //
-               foreach ($constants as $constant) {
-                  if ($constant['access'] === 'public') {
-                     $r .= $this->render_constant($constant, $depth);
-                  }
-               }
+               $key .= '_' . $constant['name'];
 
-            // don't sort constants
-            //
-            } else {
-
-               foreach ($core_var['constants'] as $constant) {
-                  $r .= $this->render_constant($constant, $depth);
-               }
+               $items[$key] = $constant;
 
             }
+
          }
 
          // properties
          //
          if (isset($core_var['properties'])) {
 
-            // sort properties
-            //
-            if ($this->config['sort']) {
+            foreach ($core_var['properties'] as $property) {
 
-               // sort
+               $key = '';
+
+               if ($property['access'] === 'public') {
+                  $key .= '_access:0';
+               } elseif ($property['access'] === 'protected') {
+                  $key .= '_access:1';
+               } else {
+                  $key .= '_access:2';
+               }
+
+               $key .= '_item_type:1';
+
+               // static > readoly > normal > dynamic:
                //
-               $properties = [];
-               foreach ($core_var['properties'] as $property) {
-                  $properties[$property['name']] = $property;
-               }
-               \ksort($properties, \SORT_NATURAL | \SORT_FLAG_CASE);
-
-               // private static properties
-               //
-               foreach ($properties as $property) {
-                  if (isset($property['static']) && $property['access'] === 'private') {
-                     $r .= $this->render_property($property, $depth);
-                  }
+               if (isset($property['static'])) {
+                  $key .= '_group:0';
+               } elseif (isset($property['readonly'])) {
+                  $key .= '_group:1';
+               } elseif (isset($property['dynamic'])) {
+                  $key .= '_group:3';
+               } else {
+                  $key .= '_group:2';
                }
 
-               // protected static properties
-               //
-               foreach ($properties as $property) {
-                  if (isset($property['static']) && $property['access'] === 'protected') {
-                     $r .= $this->render_property($property, $depth);
-                  }
-               }
+               $key .= '_' . $property['name'];
 
-               // public static properties
-               //
-               foreach ($properties as $property) {
-                  if (isset($property['static']) && $property['access'] === 'public') {
-                     $r .= $this->render_property($property, $depth);
-                  }
-               }
-
-               // private properties
-               //
-               foreach ($properties as $property) {
-                  if (!isset($property['static']) && $property['access'] === 'private') {
-                     $r .= $this->render_property($property, $depth);
-                  }
-               }
-
-               // protected properties
-               //
-               foreach ($properties as $property) {
-                  if (!isset($property['static']) && $property['access'] === 'protected') {
-                     $r .= $this->render_property($property, $depth);
-                  }
-               }
-
-               // non-dynamic public properties
-               //
-               foreach ($properties as $property) {
-                  if (!isset($property['dynamic']) && !isset($property['static']) && $property['access'] === 'public') {
-                     $r .= $this->render_property($property, $depth);
-                  }
-               }
-
-               // dynamic properties
-               //
-               foreach ($properties as $property) {
-                  if (isset($property['dynamic'])) {
-                     $r .= $this->render_property($property, $depth);
-                  }
-               }
-
-            // don't sort properties
-            //
-            } else {
-
-               foreach ($core_var['properties'] as $property) {
-                  $r .= $this->render_property($property, $depth);
-               }
+               $items[$key] = $property;
 
             }
 
@@ -383,32 +318,48 @@ class BasicRenderer {
          //
          if (isset($core_var['methods'])) {
 
-            // sort methods
-            //
-            if ($this->config['sort']) {
+            foreach ($core_var['methods'] as $method) {
 
-               // sort
-               //
-               $methods = [];
-               foreach ($core_var['methods'] as $method) {
-                  $methods[$method['name']] = $method;
-               }
-               \ksort($methods, \SORT_NATURAL | \SORT_FLAG_CASE);
+               $key = '';
 
-               foreach ($methods as $method) {
-                  $r .= $this->render_method($method, $depth);
+               if ($method['access'] === 'public') {
+                  $key .= '_access:0';
+               } elseif ($method['access'] === 'protected') {
+                  $key .= '_access:1';
+               } else {
+                  $key .= '_access:2';
                }
 
-            // don't sort methods
-            //
-            } else {
+               $key .= '_item_type:2';
 
-               foreach ($core_var['methods'] as $method) {
-                  $r .= $this->render_method($method, $depth);
-               }
+               $key .= ( isset($method['static']) ? '_group:0' : '_group:1' );
+
+               $key .= '_' . $method['name'];
+
+               $items[$key] = $method;
 
             }
 
+         }
+
+         // sort array of items
+         //
+         \ksort($items, \SORT_NATURAL | \SORT_FLAG_CASE);
+
+         // render items
+         //
+         foreach ($items as $key => $item) {
+            switch (\substr($key, 20, 1)) {
+               case '0':
+                  $r .= $this->render_constant($item, $depth);
+                  break;
+               case '1':
+                  $r .= $this->render_property($item, $depth);
+                  break;
+               case '2':
+                  $r .= $this->render_method($item, $depth);
+                  break;
+            }
          }
 
          return $r;
