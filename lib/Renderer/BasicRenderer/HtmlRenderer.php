@@ -22,7 +22,7 @@ class HtmlRenderer extends BasicRenderer {
    .qdump-method        { color: #008000; }
    .qdump-modifier      { font-style: italic; }
    .qdump-name          { color: #008000; }
-   .qdump-namespace     { color: #006000; }
+   .qdump-namespace     { color: #008000; }
    .qdump-property      { color: #008000; }
    .qdump-resource-type { color: #ff00ff; }
    .qdump-scalar        { color: #0080ff; font-weight: bold; }

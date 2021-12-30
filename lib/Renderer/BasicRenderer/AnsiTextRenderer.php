@@ -55,7 +55,7 @@ class AnsiTextRenderer extends BasicRenderer {
       'method'        => self::ANSI_CODES['green_bri'],
       'modifier'      => self::ANSI_CODES['italic'],
       'name'          => self::ANSI_CODES['green_bri'],
-      'namespace'     => self::ANSI_CODES['green'],
+      'namespace'     => self::ANSI_CODES['green_bri'],
       'property'      => self::ANSI_CODES['green_bri'],
       'resource-type' => self::ANSI_CODES['magenta_bri'],
       'scalar'        => self::ANSI_CODES['bold'] . self::ANSI_CODES['cyan_bri'],
