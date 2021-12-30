@@ -52,7 +52,7 @@ class AnsiTextRenderer extends BasicRenderer {
       'enum'          => self::ANSI_CODES['bold'] . self::ANSI_CODES['green_bri'],
       'file(line)'    => self::ANSI_CODES['underline'] . self::ANSI_CODES['black_bri'],
       'key'           => self::ANSI_CODES['yellow_bri'],
-      'method'        => self::ANSI_CODES['bold'] . self::ANSI_CODES['green_bri'],
+      'method'        => self::ANSI_CODES['green_bri'],
       'modifier'      => self::ANSI_CODES['italic'],
       'name'          => self::ANSI_CODES['green_bri'],
       'namespace'     => self::ANSI_CODES['green'],

@@ -19,7 +19,7 @@ class HtmlRenderer extends BasicRenderer {
    .qdump-enum          { color: #008000; font-weight: bold; }
    .qdump-fileline      { color: #a0a0a0; text-decoration: underline; }
    .qdump-key           { color: #d08000; }
-   .qdump-method        { color: #008000; font-weight: bold; }
+   .qdump-method        { color: #008000; }
    .qdump-modifier      { font-style: italic; }
    .qdump-name          { color: #008000; }
    .qdump-namespace     { color: #006000; }
