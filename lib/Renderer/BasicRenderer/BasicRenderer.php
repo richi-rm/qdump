@@ -252,8 +252,9 @@ class BasicRenderer {
             //
             if ($this->config['sort']) {
 
-               $constants = [];
                // sort
+               //
+               $constants = [];
                foreach ($core_var['constants'] as $constant) {
                   $constants[$constant['name']] = $constant;
                }
@@ -302,8 +303,9 @@ class BasicRenderer {
             //
             if ($this->config['sort']) {
 
-               $properties = [];
                // sort
+               //
+               $properties = [];
                foreach ($core_var['properties'] as $property) {
                   $properties[$property['name']] = $property;
                }
@@ -379,14 +381,36 @@ class BasicRenderer {
 
          // methods
          //
-/*
-         foreach ($core_var['methods'] as $method) {
-            $r .= "\n" .
-                  \str_repeat($this->level_prefix, $depth + 1) . '->' .
-                   $this->p('access') . $property['access'] . $this->s('access') . ' ' .
-                   $this->p('method') . $method['name'] . '()' . $this->s('method');
+         if (isset($core_var['methods'])) {
+
+            // sort methods
+            //
+            if ($this->config['sort']) {
+
+               // sort
+               //
+               $methods = [];
+               foreach ($core_var['methods'] as $method) {
+                  $methods[$method['name']] = $method;
+               }
+               \ksort($methods, \SORT_NATURAL | \SORT_FLAG_CASE);
+
+               foreach ($methods as $method) {
+                  $r .= $this->render_method($method, $depth);
+               }
+
+            // don't sort methods
+            //
+            } else {
+
+               foreach ($core_var['methods'] as $method) {
+                  $r .= $this->render_method($method, $depth);
+               }
+
+            }
+
          }
-*/
+
          return $r;
       }
 
@@ -459,6 +483,32 @@ class BasicRenderer {
            $this->p('name') . $constant['name'] . $this->s('name') .
            ' = ' .
            $this->renderCoreVar($constant['value'], $depth + 1);
+
+      return $r;
+   }
+
+
+   /**
+    * Render a method.
+    *
+    * @param array $method
+    * @param int $depth depth level starting from 0
+    * @return string
+    */
+   protected function render_method($method, $depth)
+   {
+      $left_blanks = '';
+      for ($d=0; $d<=$depth; $d++) {
+         $left_blanks .= \str_repeat(' ', $this->left_pad_length[$d]);
+      }
+      $r = "\n" .
+           $left_blanks .
+           (isset($method['static']) ? '::' : '->') .
+           $this->p('modifier') . $method['access'] . $this->s('modifier');
+      if (isset($method['static'])) {
+         $r .= ' ' . $this->p('modifier') . 'static' . $this->s('modifier');
+      }
+      $r .= ' ' . $this->p('method') . $method['name'] . '()' . $this->s('method');
 
       return $r;
    }
