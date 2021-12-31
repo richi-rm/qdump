@@ -240,8 +240,15 @@ class BasicRenderer {
 
          // class and ascentor classes
          //
-         foreach ($core_var['classes'] as $class) {
-            $r .= $this->render_class($class, $depth);
+         foreach ($core_var['classes'] as $inheritance_index => $class) {
+            $r .= $this->render_class($class, $inheritance_index, $depth);
+         }
+
+         // ancestor classes
+         //
+         $ancestor_classes = [];
+         foreach ($core_var['classes'] as $inheritance_index => $class) {
+            $ancestor_classes[$inheritance_index] = $class['class'];
          }
 
          //
@@ -259,18 +266,26 @@ class BasicRenderer {
                $key = '';
 
                if ($constant['access'] === 'public') {
-                  $key .= '_access:0';
+                  $key .= '_access0';
                } elseif ($constant['access'] === 'protected') {
-                  $key .= '_access:1';
+                  $key .= '_access1';
                } else {
-                  $key .= '_access:2';
+                  $key .= '_access2';
                }
 
-               $key .= '_item_type:0';
+               $key .= '_declaringclass' . \str_pad(
+                  \array_search($constant['declaring-class'], $ancestor_classes),
+                  6, '0', \STR_PAD_LEFT
+               );
+
+               $key .= '_itemtype0';
 
                $key .= '_' . $constant['name'];
 
-               $items[$key] = $constant;
+               $items[$key] = [
+                  'type' => 'constant',
+                  'data' => $constant
+               ];
 
             }
 
@@ -285,30 +300,38 @@ class BasicRenderer {
                $key = '';
 
                if ($property['access'] === 'public') {
-                  $key .= '_access:0';
+                  $key .= '_access0';
                } elseif ($property['access'] === 'protected') {
-                  $key .= '_access:1';
+                  $key .= '_access1';
                } else {
-                  $key .= '_access:2';
+                  $key .= '_access2';
                }
 
-               $key .= '_item_type:1';
+               $key .= '_declaringclass' . \str_pad(
+                  \array_search($property['declaring-class'], $ancestor_classes),
+                  6, '0', \STR_PAD_LEFT
+               );
+
+               $key .= '_itemtype1';
 
                // static > readoly > normal > dynamic:
                //
                if (isset($property['static'])) {
-                  $key .= '_group:0';
+                  $key .= '_group0';
                } elseif (isset($property['readonly'])) {
-                  $key .= '_group:1';
+                  $key .= '_group1';
                } elseif (isset($property['dynamic'])) {
-                  $key .= '_group:3';
+                  $key .= '_group3';
                } else {
-                  $key .= '_group:2';
+                  $key .= '_group2';
                }
 
                $key .= '_' . $property['name'];
 
-               $items[$key] = $property;
+               $items[$key] = [
+                  'type' => 'property',
+                  'data' => $property
+               ];
 
             }
 
@@ -323,20 +346,28 @@ class BasicRenderer {
                $key = '';
 
                if ($method['access'] === 'public') {
-                  $key .= '_access:0';
+                  $key .= '_access0';
                } elseif ($method['access'] === 'protected') {
-                  $key .= '_access:1';
+                  $key .= '_access1';
                } else {
-                  $key .= '_access:2';
+                  $key .= '_access2';
                }
 
-               $key .= '_item_type:2';
+               $key .= '_declaringclass' . \str_pad(
+                  \array_search($method['declaring-class'], $ancestor_classes),
+                  6, '0', \STR_PAD_LEFT
+               );
 
-               $key .= ( isset($method['static']) ? '_group:0' : '_group:1' );
+               $key .= '_itemtype2';
+
+               $key .= ( isset($method['static']) ? '_group0' : '_group1' );
 
                $key .= '_' . $method['name'];
 
-               $items[$key] = $method;
+               $items[$key] = [
+                  'type' => 'method',
+                  'data' => $method
+               ];
 
             }
 
@@ -349,15 +380,15 @@ class BasicRenderer {
          // render items
          //
          foreach ($items as $key => $item) {
-            switch (\substr($key, 20, 1)) {
-               case '0':
-                  $r .= $this->render_constant($item, $depth);
+            switch ($item['type']) {
+               case 'constant':
+                  $r .= $this->render_constant($item['data'], $ancestor_classes, $depth);
                   break;
-               case '1':
-                  $r .= $this->render_property($item, $depth);
+               case 'property':
+                  $r .= $this->render_property($item['data'], $ancestor_classes, $depth);
                   break;
-               case '2':
-                  $r .= $this->render_method($item, $depth);
+               case 'method':
+                  $r .= $this->render_method($item['data'], $ancestor_classes, $depth);
                   break;
             }
          }
@@ -387,10 +418,11 @@ class BasicRenderer {
     * Render a class.
     *
     * @param array $class
+    * @param int $inheritance_index
     * @param int $depth depth level starting from 0
     * @return string
     */
-   protected function render_class($class, $depth)
+   protected function render_class($class, $inheritance_index, $depth)
    {
       $left_blanks = '';
       for ($d=0; $d<=$depth; $d++) {
@@ -398,8 +430,9 @@ class BasicRenderer {
       }
       $r = "\n" .
            $left_blanks .
+           $inheritance_index . ' ' .
            $this->p('namespace') . $class['namespace'] . $this->s('namespace') .
-           $this->p('class') . $class['class'] . $this->s('class');
+           $this->p('class') . $class['classname'] . $this->s('class');
       if (isset($class['abstract'])) {
          $r .= ' ' . $this->p('abstract') . '(abstract)' . $this->s('abstract');
       }
@@ -415,19 +448,27 @@ class BasicRenderer {
     * Render a constant and its value.
     *
     * @param array $constant
+    * @param array $ancestor_classes
     * @param int $depth depth level starting from 0
     * @return string
     */
-   protected function render_constant($constant, $depth)
+   protected function render_constant($constant, $ancestor_classes, $depth)
    {
       $left_blanks = '';
       for ($d=0; $d<=$depth; $d++) {
          $left_blanks .= \str_repeat(' ', $this->left_pad_length[$d]);
       }
-      $left_string = '::' . $constant['access'] . ' const ' . $constant['name'] . ' = ';
+      $declaring_class_index = \array_search($constant['declaring-class'], $ancestor_classes);
+      $left_string = $declaring_class_index . ' ' .
+                     '::' .
+                     $constant['access'] . ' ' .
+                     'const' . ' ' .
+                     $constant['name'] . ' ' .
+                     '=' . ' ';
       $this->left_pad_length[$depth+1] = \mb_strlen($left_string);
       $r = "\n" .
            $left_blanks .
+           $declaring_class_index . ' ' .
            '::' .
            $this->p('modifier') . $constant['access'] . $this->s('modifier') . ' ' .
            $this->p('modifier') . 'const' . $this->s('modifier') . ' ' .
@@ -443,22 +484,26 @@ class BasicRenderer {
     * Render a method.
     *
     * @param array $method
+    * @param array $ancestor_classes
     * @param int $depth depth level starting from 0
     * @return string
     */
-   protected function render_method($method, $depth)
+   protected function render_method($method, $ancestor_classes, $depth)
    {
       $left_blanks = '';
       for ($d=0; $d<=$depth; $d++) {
          $left_blanks .= \str_repeat(' ', $this->left_pad_length[$d]);
       }
+      $declaring_class_index = \array_search($method['declaring-class'], $ancestor_classes);
       $r = "\n" .
            $left_blanks .
+           $declaring_class_index . ' ' .
            (isset($method['static']) ? '::' : '->') .
            $this->p('modifier') . $method['access'] . $this->s('modifier');
       if (isset($method['static'])) {
          $r .= ' ' . $this->p('modifier') . 'static' . $this->s('modifier');
       }
+      $r .= ' ' . $this->p('modifier') . 'function' . $this->s('modifier');
       $r .= ' ' . $this->p('method') . $method['name'] . '()' . $this->s('method');
 
       return $r;
@@ -469,10 +514,11 @@ class BasicRenderer {
     * Render a property and its value.
     *
     * @param array $property
+    * @param array $ancestor_classes
     * @param int $depth depth level starting from 0
     * @return string
     */
-   protected function render_property($property, $depth)
+   protected function render_property($property, $ancestor_classes, $depth)
    {
       // left blanks
       //
@@ -481,9 +527,14 @@ class BasicRenderer {
          $left_blanks .= \str_repeat(' ', $this->left_pad_length[$d]);
       }
 
+      // declaring class index
+      //
+      $declaring_class_index = \array_search($property['declaring-class'], $ancestor_classes);
+
       // left string
       //
-      $left_string = (isset($property['static']) ? '::' : '->') .
+      $left_string = $declaring_class_index . ' ' .
+                     (isset($property['static']) ? '::' : '->') .
                      (isset($property['dynamic']) ? '(dynamic) ' : '') .
                      $property['access'] .
                      (isset($property['static']) ? ' static' : '') .
@@ -503,6 +554,7 @@ class BasicRenderer {
       //
       $r = "\n" .
            $left_blanks .
+           $declaring_class_index . ' ' .
            (isset($property['static']) ? '::' : '->');
       if (isset($property['dynamic'])) {
          $r .= $this->p('modifier') . '(dynamic)' . $this->s('modifier') . ' ';

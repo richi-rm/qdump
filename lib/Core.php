@@ -258,7 +258,7 @@ class Core {
    protected function inspect_ancestor_classes(string $class): array
    {
       $classes = [
-         0 => $this->inspect_class($class)
+         1 => $this->inspect_class($class)
       ];
 
       do {
@@ -270,7 +270,7 @@ class Core {
          $class = $parent_class;
       } while (true);
 
-      $classes = \array_reverse($classes);
+      $classes = \array_combine(\array_keys($classes), \array_reverse($classes));
 
       return $classes;
    }
@@ -290,21 +290,22 @@ class Core {
       $file_path = $refl_class->getFileName();
       $file_line = ( $file_path === false ? '' : $file_path . '(' . $refl_class->getStartLine() . ')' );
 
+      // class
+      $class = $refl_class->getName();
+
       // namespace
       $namespace = $refl_class->getNamespaceName();
       $namespace = ( \strlen($namespace) > 0 ? $namespace . '\\' : '' );
 
-      // class
-      $class = \explode('\\', $refl_class->getName());
-      $class = \end($class);
-      if (\substr($class, 0, 15) === 'class@anonymous') {
-         $class = 'class@anonymous';
-      }
+      // classname
+      $classname = \explode('\\', $class);
+      $classname = \end($classname);
 
       $r = [
          'file(line)' => $file_line,
-         'namespace' => $namespace,
-         'class' => $class
+         'class'      => $class,
+         'namespace'  => $namespace,
+         'classname'  => $classname
       ];
       if ($refl_class->isAbstract()) {
          $r['abstract'] = true;
@@ -342,7 +343,17 @@ class Core {
       // constants
       //
       foreach ($refl_object->getConstants() as $name => $value) {
+
+         $constant = [];
+
          $refl_constant = new \ReflectionClassConstant($object, $name);
+
+         // declaring class
+         //
+         $constant['declaring-class'] = $refl_constant->getDeclaringClass()->getName();
+
+         // access
+         //
          if ($refl_constant->isPrivate()) {
             $access = 'private';
          } elseif ($refl_constant->isProtected()) {
@@ -350,7 +361,17 @@ class Core {
          } else {
             $access = 'public';
          }
-         $r['constants'][] = ['access' => $access, 'name' => $name, 'value' => $value];
+         $constant['access'] = $access;
+
+         // name
+         //
+         $constant['name'] = $name;
+
+         // value
+         //
+         $constant['value'] = $value;
+
+         $r['constants'][] = $constant;
       }
 
       // properties
@@ -360,6 +381,10 @@ class Core {
          $property = [];
 
          $refl_property->setAccessible(true);
+
+         // declaring class
+         //
+         $property['declaring-class'] = $refl_property->getDeclaringClass()->getName();
 
          // access
          //
@@ -423,6 +448,10 @@ class Core {
       foreach ($refl_object->getMethods() as $refl_method) {
 
          $method = [];
+
+         // declaring class
+         //
+         $method['declaring-class'] = $refl_method->getDeclaringClass()->getName();
 
          // access
          //
