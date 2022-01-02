@@ -494,7 +494,9 @@ class BasicRenderer {
       for ($d=0; $d<=$depth; $d++) {
          $left_blanks .= \str_repeat(' ', $this->left_pad_length[$d]);
       }
+
       $declaring_class_index = \array_search($method['declaring-class'], $ancestor_classes);
+
       $r = "\n" .
            $left_blanks .
            $declaring_class_index . ' ' .
@@ -504,9 +506,57 @@ class BasicRenderer {
          $r .= ' ' . $this->p('modifier') . 'static' . $this->s('modifier');
       }
       $r .= ' ' . $this->p('modifier') . 'function' . $this->s('modifier');
-      $r .= ' ' . $this->p('method') . $method['name'] . '()' . $this->s('method');
+      $r .= ' ';
+      if (isset($method['reference'])) {
+         $r .= '&';
+      }
+      $r .= $this->p('method') . $method['name'] . '(' . $this->s('method') .
+            ( isset($method['parameters']) ? $this->render_parameters($method['parameters']) : '' ) .
+            $this->p('method') . ')' . $this->s('method');
+      if (isset($method['type'])) {
+         $return_type_str = $this->p('type');
+         if (isset($method['type']['null'])) {
+            $return_type_str .= '?';
+         }
+         $return_type_str .= $method['type']['name'] . $this->s('type');
+         $r .= ':' . ' ' . $return_type_str;
+      }
 
       return $r;
+   }
+
+
+   /**
+    * Render the parameters of a method.
+    *
+    * @param array $parameters
+    * @return string
+    */
+   protected function render_parameters($parameters)
+   {
+      $parameters_ = [];
+      foreach ($parameters as $parameter) {
+         $parameter_ = '';
+         if (isset($parameter['type'])) {
+            $parameter_ .= $this->p('type');
+            if (isset($parameter['type']['null'])) {
+               $parameter_ .= '?';
+            }
+            $parameter_ .= $parameter['type']['name'] . $this->s('type') . ' ';
+         }
+         if (isset($parameter['reference'])) {
+            $parameter_ .= '&';
+         }
+         if (isset($parameter['variadic'])) {
+            $parameter_ .= '...';
+         }
+         $parameter_ .= $this->p('name') . '$' . $parameter['name'] . $this->s('name');
+         $parameters_[] = $parameter_;
+      }
+
+      $parameters_ = \implode(', ', $parameters_);
+
+      return $parameters_;
    }
 
 

@@ -515,7 +515,7 @@ class Core {
             $method['static'] = true;
          }
 
-         // type (return type)
+         // return type
          //
          if ($refl_method->hasReturnType()) {
             if ($refl_method->getReturnType()->allowsNull()) {
