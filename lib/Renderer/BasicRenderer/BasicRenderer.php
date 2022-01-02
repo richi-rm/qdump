@@ -273,10 +273,22 @@ class BasicRenderer {
                   $key .= '_access2';
                }
 
-               $key .= '_declaringclass' . \str_pad(
-                  \array_search($constant['declaring-class'], $ancestor_classes),
-                  6, '0', \STR_PAD_LEFT
-               );
+               $declaring_class_order = 999999 - (int)\array_search($constant['declaring-class'], $ancestor_classes);
+
+               if ($declaring_class_order === 999999) {
+                  $declaring_class_refl = new \ReflectionClass($constant['declaring-class']);
+                  if ($declaring_class_refl->isInterface()) {
+                     foreach ($ancestor_classes as $ancestor_class_index => $ancestor_class) {
+                        $ancestor_class_refl = new \ReflectionClass($ancestor_class);
+                        if ($ancestor_class_refl->implementsInterface($constant['declaring-class'])) {
+                           $declaring_class_order = 999999 - $ancestor_class_index;
+                           break;
+                        }
+                     }
+                  }
+               }
+
+               $key .= '_declaringclass' . $declaring_class_order;
 
                $key .= '_itemtype0';
 
@@ -307,10 +319,8 @@ class BasicRenderer {
                   $key .= '_access2';
                }
 
-               $key .= '_declaringclass' . \str_pad(
-                  \array_search($property['declaring-class'], $ancestor_classes),
-                  6, '0', \STR_PAD_LEFT
-               );
+               $declaring_class_order = 999999 - (int)\array_search($property['declaring-class'], $ancestor_classes);
+               $key .= '_declaringclass' . $declaring_class_order;
 
                $key .= '_itemtype1';
 
@@ -353,10 +363,8 @@ class BasicRenderer {
                   $key .= '_access2';
                }
 
-               $key .= '_declaringclass' . \str_pad(
-                  \array_search($method['declaring-class'], $ancestor_classes),
-                  6, '0', \STR_PAD_LEFT
-               );
+               $declaring_class_order = 999999 - (int)\array_search($method['declaring-class'], $ancestor_classes);
+               $key .= '_declaringclass' . $declaring_class_order;
 
                $key .= '_itemtype2';
 
@@ -458,17 +466,39 @@ class BasicRenderer {
       for ($d=0; $d<=$depth; $d++) {
          $left_blanks .= \str_repeat(' ', $this->left_pad_length[$d]);
       }
-      $declaring_class_index = \array_search($constant['declaring-class'], $ancestor_classes);
-      $left_string = $declaring_class_index . ' ' .
+
+      $declaring_class_index_left_string = $declaring_class_index =
+         \array_search($constant['declaring-class'], $ancestor_classes);
+
+      if ($declaring_class_index === false) {
+         $declaring_class_refl = new \ReflectionClass($constant['declaring-class']);
+         if ($declaring_class_refl->isInterface()) {
+            foreach ($ancestor_classes as $ancestor_class_index => $ancestor_class) {
+               $ancestor_class_refl = new \ReflectionClass($ancestor_class);
+               if ($ancestor_class_refl->implementsInterface($constant['declaring-class'])) {
+                  $declaring_class_index_left_string =
+                     $ancestor_class_index . '(implements ' . $constant['declaring-class'] . ')';
+                  $declaring_class_index =
+                     $ancestor_class_index . '(' . $this->p('modifier') . 'implements' . $this->s('modifier') . ' ' .
+                     $this->p('name') . $constant['declaring-class'] . $this->s('name') . ')';
+                  break;
+               }
+            }
+         }
+      }
+
+      $left_string = $declaring_class_index_left_string .
                      '::' .
                      $constant['access'] . ' ' .
                      'const' . ' ' .
                      $constant['name'] . ' ' .
                      '=' . ' ';
+
       $this->left_pad_length[$depth+1] = \mb_strlen($left_string);
+
       $r = "\n" .
            $left_blanks .
-           $declaring_class_index . ' ' .
+           $declaring_class_index .
            '::' .
            $this->p('modifier') . $constant['access'] . $this->s('modifier') . ' ' .
            $this->p('modifier') . 'const' . $this->s('modifier') . ' ' .
@@ -542,7 +572,7 @@ class BasicRenderer {
 
       $r = "\n" .
            $left_blanks .
-           $declaring_class_index . ' ' .
+           $declaring_class_index .
            (isset($method['static']) ? '::' : '->') .
            $this->p('modifier') . $method['access'] . $this->s('modifier');
       if (isset($method['static'])) {
@@ -629,7 +659,7 @@ class BasicRenderer {
 
       // left string
       //
-      $left_string = $declaring_class_index . ' ' .
+      $left_string = $declaring_class_index .
                      (isset($property['static']) ? '::' : '->') .
                      (isset($property['dynamic']) ? '(dynamic) ' : '') .
                      $property['access'] .
@@ -650,7 +680,7 @@ class BasicRenderer {
       //
       $r = "\n" .
            $left_blanks .
-           $declaring_class_index . ' ' .
+           $declaring_class_index .
            (isset($property['static']) ? '::' : '->');
       if (isset($property['dynamic'])) {
          $r .= $this->p('modifier') . '(dynamic)' . $this->s('modifier') . ' ';
