@@ -481,6 +481,49 @@ class BasicRenderer {
 
 
    /**
+    * Renders the default value of a parameter.
+    *
+    * @param array $default_value
+    * @return string
+    */
+   protected function render_default_value($default_value)
+   {
+      if (\array_key_exists('constant', $default_value)) {
+         return $this->p('name') . $default_value['constant'] . $this->s('name');
+      }
+      $value = $default_value['value'];
+      if ($value['type'] === 'null') {
+         return $this->p('scalar') . $value['value'] . $this->s('scalar');
+      }
+      if ($value['type'] === 'bool') {
+         return $this->p('type') . $value['type'] . $this->s('type') . ' ' .
+                $this->p('scalar') . $value['value'] . $this->s('scalar');
+      }
+      if ($value['type'] === 'int') {
+         return $this->p('type') . $value['type'] . $this->s('type') . ' ' .
+                $this->p('scalar') . $value['value'] . $this->s('scalar');
+      }
+      if ($value['type'] === 'float') {
+         return $this->p('type') . $value['type'] . $this->s('type') . ' ' .
+                $this->p('scalar') . $value['value'] . $this->s('scalar');
+      }
+      if ($value['type'] === 'string') {
+         $string = $value['value'];
+         if (0) { }
+         elseif ($this instanceof HtmlCommentRenderer) {
+            $string = \str_replace(['<!--', '-->'], ['[!--', '--]'], $string);
+         }
+         elseif ($this instanceof HtmlRenderer) {
+            $string = \htmlspecialchars($string, \ENT_NOQUOTES);
+         }
+         return $this->p('type') . $value['type'] . '(' . $value['length'] . ')' . $this->s('type') . ' ' .
+                $this->p('scalar') . $string . $this->s('scalar');
+      }
+      return '*array*';
+   }
+
+
+   /**
     * Render a method.
     *
     * @param array $method
@@ -551,6 +594,9 @@ class BasicRenderer {
             $parameter_ .= '...';
          }
          $parameter_ .= $this->p('name') . '$' . $parameter['name'] . $this->s('name');
+         if (isset($parameter['default-value'])) {
+            $parameter_ .= ' ' . '=' . ' ' . $this->render_default_value($parameter['default-value']);
+         }
          $parameters_[] = $parameter_;
       }
 
