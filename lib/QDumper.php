@@ -154,13 +154,13 @@ class QDumper {
 
 
    /**
-    * Inspect the passed variable and send the result to the output.
+    * Inspect the passed variables and send the result to the output.
     * Returns a string with the dump.
     *
-    * @param $var variable to inspect
+    * @param $vars variables to inspect
     * @return string 
     */
-   public function dump($var = null)
+   public function dump(...$vars)
    {
       $written = '';
 
@@ -171,20 +171,24 @@ class QDumper {
          $this->first_dump_done = true;
       }
 
-      // capture
-      //
-      $capture = '';
-      $capture .= $this->renderer->preRender($this->capture_sequence_number,
-                                             $this->context->getTraceFileLine(),
-                                             $this->context->getElapsedTime());
-      $capture .= $this->renderer->renderCoreVar($this->core->inspect($var));
-      $capture .= $this->renderer->postRender();
+      foreach ($vars as $var) {
 
-      // dump
-      //
-      $written .= $this->output_writer->write($capture);
+         // capture
+         //
+         $capture = '';
+         $capture .= $this->renderer->preRender($this->capture_sequence_number,
+                                                $this->context->getTraceFileLine(),
+                                                $this->context->getElapsedTime());
+         $capture .= $this->renderer->renderCoreVar($this->core->inspect($var));
+         $capture .= $this->renderer->postRender();
 
-      $this->capture_sequence_number++;
+         // dump
+         //
+         $written .= $this->output_writer->write($capture);
+
+         $this->capture_sequence_number++;
+
+      }
 
       return $written;
    }
