@@ -521,7 +521,20 @@ class BasicRenderer {
       if (\array_key_exists('constant', $default_value)) {
          return $this->p('name') . $default_value['constant'] . $this->s('name');
       }
-      $value = $default_value['value'];
+      if (\array_key_exists('value', $default_value)) {
+         return $this->render_default_value_value($default_value['value']);
+      }
+   }
+
+
+   /**
+    * Renders the default value of a parameter.
+    *
+    * @param array $value
+    * @return string
+    */
+   protected function render_default_value_value($value)
+   {
       if ($value['type'] === 'null') {
          return $this->p('scalar') . $value['value'] . $this->s('scalar');
       }
@@ -549,7 +562,24 @@ class BasicRenderer {
          return $this->p('type') . $value['type'] . '(' . $value['length'] . ')' . $this->s('type') . ' ' .
                 $this->p('scalar') . $string . $this->s('scalar');
       }
-      return '*array*';
+      if ($value['type'] === 'array') {
+         $array_str = '[';
+         if ($value['size'] > 0) {
+            $elements = [];
+            if (isset($value['elements'])) {
+               foreach ($value['elements'] as $element_key => $element_value) {
+                  $element_key = ( \is_int($element_key) ? $element_key : "'" . \addcslashes($element_key, "'") . "'" );
+                  $element_key = $this->p('key') . $element_key . $this->s('key');
+                  $elements[] = $element_key . ' ' . '=>' . ' ' . $this->render_default_value_value($element_value);
+               }
+            } else {
+               $elements[] = '...';
+            }
+            $array_str .= implode(', ', $elements);
+         }
+         $array_str .= ']';
+         return $array_str;
+      }
    }
 
 
