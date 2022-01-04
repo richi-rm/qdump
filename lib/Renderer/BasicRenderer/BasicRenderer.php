@@ -613,9 +613,9 @@ class BasicRenderer {
       if (isset($method['reference'])) {
          $r .= '&';
       }
-      $r .= $this->p('method') . $method['name'] . '(' . $this->s('method') .
+      $r .= $this->p('method') . $method['name'] . $this->s('method') . '(' .
             ( isset($method['parameters']) ? $this->render_parameters($method['parameters']) : '' ) .
-            $this->p('method') . ')' . $this->s('method');
+            ')';
       if (isset($method['type'])) {
          $return_type_str = $this->p('type');
          if (!\strpos($method['type']['name'], '|')) {
