@@ -575,7 +575,7 @@ class BasicRenderer {
             } else {
                $elements[] = '...';
             }
-            $array_str .= implode(', ', $elements);
+            $array_str .= \implode(', ', $elements);
          }
          $array_str .= ']';
          return $array_str;
