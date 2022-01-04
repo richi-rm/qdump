@@ -492,7 +492,16 @@ class Core {
                if ($refl_parameter->getType()->allowsNull()) {
                   $parameter['type']['null'] = true;
                }
-               $parameter['type']['name'] = $refl_parameter->getType()->getName();
+               if ($refl_parameter->getType() instanceof \ReflectionNamedType) {
+                  $parameter['type']['name'] = $refl_parameter->getType()->getName();
+               } elseif ($refl_parameter->getType() instanceof \ReflectionUnionType) {
+                  $types = [];
+                  foreach ($refl_parameter->getType()->getTypes() as $type) {
+                     $types[] = $type->getName();
+                  }
+                  \sort($types, \SORT_NATURAL | \SORT_FLAG_CASE);
+                  $parameter['type']['name'] = \implode('|', $types);
+               }
             }
             if ($refl_parameter->isVariadic()) {
                $parameter['variadic'] = true;
@@ -518,10 +527,20 @@ class Core {
          // return type
          //
          if ($refl_method->hasReturnType()) {
-            if ($refl_method->getReturnType()->allowsNull()) {
+            $return_type = $refl_method->getReturnType();
+            if ($return_type->allowsNull()) {
                $method['type']['null'] = true;
             }
-            $method['type']['name'] = $refl_method->getReturnType()->getName();
+            if ($return_type instanceof \ReflectionNamedType) {
+               $method['type']['name'] = $return_type->getName();
+            } elseif ($return_type instanceof \ReflectionUnionType) {
+               $types = [];
+               foreach ($return_type->getTypes() as $type) {
+                  $types[] = $type->getName();
+               }
+               \sort($types, \SORT_NATURAL | \SORT_FLAG_CASE);
+               $method['type']['name'] = \implode('|', $types);
+            }
          }
 
          $r['methods'][] = $method;

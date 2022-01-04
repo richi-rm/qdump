@@ -618,8 +618,10 @@ class BasicRenderer {
             $this->p('method') . ')' . $this->s('method');
       if (isset($method['type'])) {
          $return_type_str = $this->p('type');
-         if (isset($method['type']['null'])) {
-            $return_type_str .= '?';
+         if (!\strpos($method['type']['name'], '|')) {
+            if (isset($method['type']['null'])) {
+               $return_type_str .= '?';
+            }
          }
          $return_type_str .= $method['type']['name'] . $this->s('type');
          $r .= ':' . ' ' . $return_type_str;
@@ -642,8 +644,10 @@ class BasicRenderer {
          $parameter_ = '';
          if (isset($parameter['type'])) {
             $parameter_ .= $this->p('type');
-            if (isset($parameter['type']['null'])) {
-               $parameter_ .= '?';
+            if (!\strpos($parameter['type']['name'], '|')) {
+               if (isset($parameter['type']['null'])) {
+                  $parameter_ .= '?';
+               }
             }
             $parameter_ .= $parameter['type']['name'] . $this->s('type') . ' ';
          }
