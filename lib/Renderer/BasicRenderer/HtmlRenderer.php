@@ -11,6 +11,7 @@ class HtmlRenderer extends BasicRenderer {
     */
    const CSS_STYLES = <<<HTML
 <style type="text/css">
+   .qdump               { font-family: monospace; }
    .qdump-pre-header    { color: #a0a0a0; background-color: #f0f0f0; padding: 10px; font-size: 11pt; margin: 5px; }
    .qdump-pre-capture   { color: black; background-color: #f0f0f0; padding: 10px; font-size: 11pt; margin: 5px; }
    .qdump-abstract      { font-style: italic; }
