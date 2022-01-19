@@ -193,7 +193,7 @@ class BasicRenderer {
                for ($d=0; $d<=$depth; $d++) {
                   $left_blanks .= \str_repeat(' ', $this->left_pad_length[$d]);
                }
-               $array_key_formatted = (\is_int($array_key) ? $array_key : "'" . \addcslashes($array_key, "'") . "'");
+               $array_key_formatted = ( \is_int($array_key) ? $array_key : "'" . \addcslashes($array_key, "'") . "'" );
                $left_string = '[' . $array_key_formatted . '] => ';
                $this->left_pad_length[$depth+1] = \mb_strlen($left_string);
                $r .= "\n" .
@@ -415,9 +415,219 @@ class BasicRenderer {
          return $r;
       }
 
+      // trace
+      //
+      if ($core_var['type'] === 'trace') {
+         $r .= $this->p('type') . $core_var['type'] . $this->s('type');
+         $left_blanks_1 = \str_repeat(' ', $this->left_pad_length[0]);
+         foreach ($core_var['trace'] as $stack_index => $line) {
+            $left_blanks_2 = $left_blanks_1 . \str_repeat(' ', \strlen($stack_index + 1)) . ' ';
+            $file_line = $line['file'] . '(' . $line['line'] . ')';
+            if ($file_line === '?(0)') {
+               $file_line = '?';
+            }
+            switch ($line['type']) {
+               case '::':
+               case '->':
+                  $r .= "\n" .
+                        $left_blanks_1 . ($stack_index + 1) . ' ' . $this->p('file(line)') . $file_line . $this->s('file(line)') . "\n" .
+                        $left_blanks_2 . $this->p('namespace') . $line['class']['namespace'] . $this->s('namespace') .
+                                         $this->p('class') . $line['class']['classname'] . $this->s('class') .
+                                         $line['type'] .
+                                         $this->render_call_method($line['function'], $line['args']);
+                  break;
+               case 'function':
+                  $r .= "\n" .
+                        $left_blanks_1 . ($stack_index + 1) . ' ' . $this->p('file(line)') . $file_line . $this->s('file(line)') . "\n" .
+                        $left_blanks_2 . $this->render_call_function($line['function'], $line['args']);
+                  break;
+            }
+         }
+         return $r;
+      }
+
       // unknown
       //
       $r .= $this->p('unknown') . '(unknown)' . $this->s('unknown');
+      return $r;
+   }
+
+
+   /**
+    * Render an argument.
+    *
+    * @param mixed $value
+    * @return string
+    */
+   protected function render_arg($value)
+   {
+      if ($value['type'] === 'null') {
+         return $this->p('scalar') . $value['value'] . $this->s('scalar');
+      }
+      if ($value['type'] === 'bool') {
+         return $this->p('type') . $value['type'] . $this->s('type') . ' ' .
+                $this->p('scalar') . $value['value'] . $this->s('scalar');
+      }
+      if ($value['type'] === 'int') {
+         return $this->p('type') . $value['type'] . $this->s('type') . ' ' .
+                $this->p('scalar') . $value['value'] . $this->s('scalar');
+      }
+      if ($value['type'] === 'float') {
+         return $this->p('type') . $value['type'] . $this->s('type') . ' ' .
+                $this->p('scalar') . $value['value'] . $this->s('scalar');
+      }
+      if ($value['type'] === 'string') {
+         $string = $value['value'];
+         if (0) { }
+         elseif ($this instanceof HtmlCommentRenderer) {
+            $string = \str_replace(['<!--', '-->'], ['[!--', '--]'], $string);
+         }
+         elseif ($this instanceof HtmlRenderer) {
+            $string = \htmlspecialchars($string, \ENT_NOQUOTES);
+         }
+         return $this->p('type') . $value['type'] . '(' . $value['length'] . ')' . $this->s('type') . ' ' .
+                $this->p('scalar') . $string . $this->s('scalar');
+      }
+      if ($value['type'] === 'array') {
+         return ( $value['size'] > 0 ? $this->p('type') . $value['type'] . '(' . $value['size'] . ')' . $this->s('type') : '[]' );
+      }
+      if ($value['type'] === 'enumcase') {
+         return $this->p('type') . $value['type'] . $this->s('type') . ' ' .
+                $this->p('namespace') . $value['namespace'] . $this->s('namespace') .
+                $this->p('enum') . $value['enum'] . $this->s('enum') .
+                '::' .
+                $this->p('name') . $value['case'] . $this->s('name');
+      }
+      if ($value['type'] === 'object') {
+         $class_index = \count($value['classes']);
+         $namespace = $value['classes'][$class_index]['namespace'];
+         $classname = $value['classes'][$class_index]['classname'];
+         return $this->p('type') . $value['type'] . $this->s('type') . ' ' .
+                $this->p('namespace') . $namespace . $this->s('namespace') .
+                $this->p('class') . $classname . $this->s('class');
+      }
+      if ($value['type'] === 'resource') {
+         $resource = $this->p('type') . $value['type'] . $this->s('type');
+         if (isset($value['id'])) {
+            $resource .= ' ' . '#' . $value['id'];
+         }
+         $resource .= ' ' . $this->p('resource-type') . $value['resource-type'] . $this->s('resource-type');
+         return $resource;
+      }
+   }
+
+
+   /**
+    * Renders a line of arguments.
+    *
+    * @param array $parameters inspected parameters
+    * @param array $args inspected arguments
+    * @return string
+    */
+   protected function render_args(array $parameters, array $args): string
+   {
+      $args_ = [];
+      foreach ($args as $i_arg => $arg) {
+         if (\array_key_exists($i_arg, $parameters)) {
+            $parameter = $parameters[$i_arg];
+            $parameter_str = '';
+            if (isset($parameter['type'])) {
+               $parameter_str .= $this->p('type');
+               if (!\strpos($parameter['type']['name'], '|')) {
+                  if (isset($parameter['type']['null'])) {
+                     $parameter_str .= '?';
+                  }
+               }
+               $parameter_str .= $parameter['type']['name'] . $this->s('type') . ' ';
+            }
+            if (isset($parameter['reference'])) {
+               $parameter_str .= '&';
+            }
+            if (isset($parameter['variadic'])) {
+               $parameter_str .= '...';
+            }
+            $parameter_str .= $this->p('name') . '$' . $parameter['name'] . $this->s('name');
+            $args_[] = $parameter_str .
+                       ' ' . '=' . ' ' .
+                       $this->render_arg($arg);
+         } else {
+            $args_[] = $this->render_arg($arg);
+         }
+      }
+
+      return \implode(', ', $args_);
+   }
+
+
+   /**
+    * Renders a call to a funcion.
+    *
+    * @param array|string $function inspected function
+    * @param array $args inspected arguments
+    * @return string
+    */
+   protected function render_call_function($function, array $args): string
+   {
+      if (\is_string($function)) {
+         $function = ['name' => $function];
+      }
+      $r = '';
+      if (isset($function['reference'])) {
+         $r .= '&';
+      }
+      $r .= $this->p('method') . $function['name'] . $this->s('method') .
+            '(' . $this->render_args(isset($function['parameters']) ? $function['parameters'] : [], $args) . ')';
+      if (isset($function['type'])) {
+         $return_type_str = $this->p('type');
+         if (!\strpos($function['type']['name'], '|')) {
+            if (isset($function['type']['null'])) {
+               $return_type_str .= '?';
+            }
+         }
+         $return_type_str .= $function['type']['name'] . $this->s('type');
+         $r .= ':' . ' ' . $return_type_str;
+      }      
+
+      return $r;
+   }
+
+
+   /**
+    * Renders a call to a method.
+    *
+    * @param array|string $method inspected method
+    * @param array $args inspected arguments
+    * @return string
+    */
+   protected function render_call_method($method, array $args): string
+   {
+      if (\is_string($method)) {
+         $method = ['name' => $method];
+      }
+      $r = '';
+      if (isset($method['access'])) {
+         $r .= $this->p('modifier') . $method['access'] . $this->s('modifier') . ' ';
+      }
+      if (isset($method['static'])) {
+         $r .= $this->p('modifier') . 'static' . $this->s('modifier') . ' ';
+      }
+      $r .= $this->p('modifier') . 'function' . $this->s('modifier') . ' ';
+      if (isset($method['reference'])) {
+         $r .= '&';
+      }
+      $r .= $this->p('method') . $method['name'] . $this->s('method') .
+            '(' . $this->render_args(isset($method['parameters']) ? $method['parameters'] : [], $args) . ')';
+      if (isset($method['type'])) {
+         $return_type_str = $this->p('type');
+         if (!\strpos($method['type']['name'], '|')) {
+            if (isset($method['type']['null'])) {
+               $return_type_str .= '?';
+            }
+         }
+         $return_type_str .= $method['type']['name'] . $this->s('type');
+         $r .= ':' . ' ' . $return_type_str;
+      }
+
       return $r;
    }
 
@@ -701,8 +911,10 @@ class BasicRenderer {
                      (isset($property['readonly']) ? ' readonly' : '');
       if (isset($property['type'])) {
          $type = '';
-         if (isset($property['type']['null'])) {
-            $type .= '?';
+         if (!\strpos($property['type']['name'], '|')) {
+            if (isset($property['type']['null'])) {
+               $type .= '?';
+            }
          }
          $type .= $property['type']['name'];
          $left_string .= ' ' . $type;
@@ -728,8 +940,10 @@ class BasicRenderer {
       }
       if (isset($property['type'])) {
          $r_type = $this->p('type');
-         if (isset($property['type']['null'])) {
-            $r_type .= '?';
+         if (!\strpos($property['type']['name'], '|')) {
+            if (isset($property['type']['null'])) {
+               $r_type .= '?';
+            }
          }
          $r_type .= $property['type']['name'];
          $r_type .= $this->s('type');

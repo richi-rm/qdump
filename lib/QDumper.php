@@ -313,4 +313,93 @@ class QDumper {
       }
       return $written;
    }
+
+
+   /**
+    * Dump the call stack.
+    */
+   public function trace()
+   {
+      $written = '';
+
+      if (!$this->first_dump_done) {
+         $written .= $this->initial_write();
+         $this->first_dump_done = true;
+      }
+
+      $trace = [
+         'type' => 'trace',
+         'trace' => \array_reverse(\debug_backtrace())
+      ];
+
+      foreach ($trace['trace'] as $i_line => &$line) {
+
+         // avoid possible warnings
+         //
+         if (!\array_key_exists('file', $line)) {
+            $line['file'] = '?';
+         }
+         if (!\array_key_exists('line', $line)) {
+            $line['line'] = 0;
+         }
+         if (!\array_key_exists('class', $line)) {
+            $line['class'] = '?';
+         }
+         if (!\array_key_exists('object', $line)) {
+            $line['object'] = null;
+         }
+         if (!\array_key_exists('type', $line)) {
+            $line['type'] = 'function';
+         }
+         if (!\array_key_exists('function', $line)) {
+            $line['function'] = '?';
+         }
+         $line['params'] = [];
+         if (!\array_key_exists('args', $line)) {
+            $line['args'] = [];
+         }
+
+         // function or object
+         //
+         switch ($line['type']) {
+            case '->':
+            case '::':
+               $line['class'] = $this->core->inspect_class($line['class']);
+               $refl_class = new \ReflectionClass($line['class']['class']);
+               foreach ($refl_class->getMethods() as $refl_method) {
+                  if ($refl_method->getName() === $line['function']) {
+                     $line['function'] = $this->core->inspect_method($refl_method);
+                     break;
+                  }
+               }
+               break;
+            case 'function':
+               if (\function_exists($line['function'])) {
+                  $line['function'] = $this->core->inspect_function(new \ReflectionFunction($line['function']));
+               }
+               break;
+         }
+
+         // inspect arguments
+         //
+         foreach ($line['args'] as &$arg) {
+            $arg = $this->core->inspect($arg);
+         }
+
+      }
+
+      $capture = '';
+      $capture .= $this->renderer->preRender($this->capture_sequence_number,
+                                             $this->context->getTraceFileLine(),
+                                             $this->context->getElapsedTime());
+      $capture .= $this->renderer->renderCoreVar($trace);
+      $capture .= $this->renderer->postRender();
+
+      $written .= $this->output_writer->write($capture);
+
+      $this->capture_sequence_number++;
+
+      return $written;
+   }
+
 }

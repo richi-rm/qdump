@@ -282,7 +282,7 @@ class Core {
     * @param string class
     * @return array
     */
-   protected function inspect_class(string $class): array
+   public function inspect_class(string $class): array
    {
       $refl_class = new \ReflectionClass($class);
 
@@ -312,6 +312,133 @@ class Core {
       }
 
       return $r;
+   }
+
+
+   /**
+    * Inspect the given ReflectionFunction.
+    *
+    * @param ReflectionFunction $refl_function
+    * @return array
+    */
+   public function inspect_function(\ReflectionFunction $refl_function): array
+   {
+      $function = [];
+
+      // name
+      //
+      $function['name'] = $refl_function->getName();
+
+      // parameters
+      //
+      $parameters = $this->inspect_parameters($refl_function->getParameters());
+      if (\count($parameters) > 0) {
+         $function['parameters'] = $parameters;
+      }
+
+      // returns reference
+      //
+      if ($refl_function->returnsReference()) {
+         $function['reference'] = true;
+      }
+
+      // return type
+      //
+      if ($refl_function->hasReturnType()) {
+         $return_type = $refl_function->getReturnType();
+         if ($return_type->allowsNull()) {
+            $function['type']['null'] = true;
+         }
+         if ($return_type instanceof \ReflectionNamedType) {
+            $function['type']['name'] = $return_type->getName();
+         } elseif ($return_type instanceof \ReflectionUnionType) {
+            $types = [];
+            foreach ($return_type->getTypes() as $type) {
+               $types[] = $type->getName();
+            }
+            \sort($types, \SORT_NATURAL | \SORT_FLAG_CASE);
+            $function['type']['name'] = \implode('|', $types);
+         }
+      }
+
+      return $function;
+   }
+
+
+   /**
+    * Inpect the given ReflectionMethod.
+    *
+    * @param ReflectionMethod $refl_method
+    * @return array
+    */
+   public function inspect_method(\ReflectionMethod $refl_method): array
+   {
+      $method = [];
+
+      // access
+      //
+      if ($refl_method->isPrivate()) {
+         $access = 'private';
+      } elseif ($refl_method->isProtected()) {
+         $access = 'protected';
+      } else {
+         $access = 'public';
+      }
+      $method['access'] = $access;
+
+      // declaring class
+      //
+      $method['declaring-class'] = $refl_method->getDeclaringClass()->getName();
+
+      // final
+      //
+      if ($refl_method->isFinal()) {
+         $method['final'] = true;
+      }
+
+      // name
+      //
+      $method['name'] = $refl_method->getName();
+
+      // parameters
+      //
+      $parameters = $this->inspect_parameters($refl_method->getParameters());
+      if (\count($parameters) > 0) {
+         $method['parameters'] = $parameters;
+      }
+
+      // reference
+      //
+      if ($refl_method->returnsReference()) {
+         $method['reference'] = true;
+      }
+
+      // static
+      //
+      if ($refl_method->isStatic()) {
+         $method['static'] = true;
+      }
+
+      // return type
+      //
+      if ($refl_method->hasReturnType()) {
+         $return_type = $refl_method->getReturnType();
+         if ($return_type->allowsNull()) {
+            $method['type']['null'] = true;
+         }
+         if ($return_type instanceof \ReflectionNamedType) {
+            $method['type']['name'] = $return_type->getName();
+         } elseif ($return_type instanceof \ReflectionUnionType) {
+            $types = [];
+            foreach ($return_type->getTypes() as $type) {
+               $types[] = $type->getName();
+            }
+            \sort($types, \SORT_NATURAL | \SORT_FLAG_CASE);
+            $method['type']['name'] = \implode('|', $types);
+         }
+      }
+
+      return $method;
    }
 
 
@@ -428,7 +555,16 @@ class Core {
                if ($refl_property->getType()->allowsNull()) {
                   $property['type']['null'] = true;
                }
-               $property['type']['name'] = $refl_property->getType()->getName();
+               if ($refl_property->getType() instanceof \ReflectionNamedType) {
+                  $property['type']['name'] = $refl_property->getType()->getName();
+               } elseif ($refl_property->getType() instanceof \ReflectionUnionType) {
+                  $types = [];
+                  foreach ($refl_property->getType()->getTypes() as $type) {
+                     $types[] = $type->getName();
+                  }
+                  \sort($types, \SORT_NATURAL | \SORT_FLAG_CASE);
+                  $property['type']['name'] = \implode('|', $types);
+               }
             }
          }
 
@@ -446,107 +582,55 @@ class Core {
       // methods
       //
       foreach ($refl_object->getMethods() as $refl_method) {
-
-         $method = [];
-
-         // declaring class
-         //
-         $method['declaring-class'] = $refl_method->getDeclaringClass()->getName();
-
-         // access
-         //
-         if ($refl_method->isPrivate()) {
-            $access = 'private';
-         } elseif ($refl_method->isProtected()) {
-            $access = 'protected';
-         } else {
-            $access = 'public';
-         }
-         $method['access'] = $access;
-
-         // final
-         //
-         if ($refl_method->isFinal()) {
-            $method['final'] = true;
-         }
-
-         // name
-         //
-         $method['name'] = $refl_method->getName();
-
-         // parameters
-         //
-         $parameters = [];
-         foreach ($refl_method->getParameters() as $refl_parameter) {
-            $parameter = [];
-            if ($refl_parameter->isDefaultValueAvailable()) {
-               $parameter['default-value'] = $refl_parameter->isDefaultValueConstant() ?
-                  [ 'constant' => $refl_parameter->getDefaultValueConstantName() ] :
-                  [ 'value' => $refl_parameter->getDefaultValue() ];
-            }
-            $parameter['name'] = $refl_parameter->getName();
-            if ($refl_parameter->isPassedByReference()) {
-               $parameter['reference'] = true;
-            }
-            if ($refl_parameter->hasType()) {
-               if ($refl_parameter->getType()->allowsNull()) {
-                  $parameter['type']['null'] = true;
-               }
-               if ($refl_parameter->getType() instanceof \ReflectionNamedType) {
-                  $parameter['type']['name'] = $refl_parameter->getType()->getName();
-               } elseif ($refl_parameter->getType() instanceof \ReflectionUnionType) {
-                  $types = [];
-                  foreach ($refl_parameter->getType()->getTypes() as $type) {
-                     $types[] = $type->getName();
-                  }
-                  \sort($types, \SORT_NATURAL | \SORT_FLAG_CASE);
-                  $parameter['type']['name'] = \implode('|', $types);
-               }
-            }
-            if ($refl_parameter->isVariadic()) {
-               $parameter['variadic'] = true;
-            }
-            $parameters[] = $parameter;
-         }
-         if (\count($parameters) > 0) {
-            $method['parameters'] = $parameters;
-         }
-
-         // reference
-         //
-         if ($refl_method->returnsReference()) {
-            $method['reference'] = true;
-         }
-
-         // static
-         //
-         if ($refl_method->isStatic()) {
-            $method['static'] = true;
-         }
-
-         // return type
-         //
-         if ($refl_method->hasReturnType()) {
-            $return_type = $refl_method->getReturnType();
-            if ($return_type->allowsNull()) {
-               $method['type']['null'] = true;
-            }
-            if ($return_type instanceof \ReflectionNamedType) {
-               $method['type']['name'] = $return_type->getName();
-            } elseif ($return_type instanceof \ReflectionUnionType) {
-               $types = [];
-               foreach ($return_type->getTypes() as $type) {
-                  $types[] = $type->getName();
-               }
-               \sort($types, \SORT_NATURAL | \SORT_FLAG_CASE);
-               $method['type']['name'] = \implode('|', $types);
-            }
-         }
-
-         $r['methods'][] = $method;
+         $r['methods'][] = $this->inspect_method($refl_method);
       }
 
       return $r;
+   }
+
+
+   /**
+    * Inspect the passed array of ReflectionParameters.
+    *
+    * @param array $refl_parameters
+    * @return array
+    */
+   protected function inspect_parameters(array $refl_parameters): array
+   {
+      $parameters = [];
+      foreach ($refl_parameters as $refl_parameter) {
+         $parameter = [];
+         if ($refl_parameter->isDefaultValueAvailable()) {
+            $parameter['default-value'] = $refl_parameter->isDefaultValueConstant() ?
+               [ 'constant' => $refl_parameter->getDefaultValueConstantName() ] :
+               [ 'value' => $refl_parameter->getDefaultValue() ];
+         }
+         $parameter['name'] = $refl_parameter->getName();
+         if ($refl_parameter->isPassedByReference()) {
+            $parameter['reference'] = true;
+         }
+         if ($refl_parameter->hasType()) {
+            if ($refl_parameter->getType()->allowsNull()) {
+               $parameter['type']['null'] = true;
+            }
+            if ($refl_parameter->getType() instanceof \ReflectionNamedType) {
+               $parameter['type']['name'] = $refl_parameter->getType()->getName();
+            } elseif ($refl_parameter->getType() instanceof \ReflectionUnionType) {
+               $types = [];
+               foreach ($refl_parameter->getType()->getTypes() as $type) {
+                  $types[] = $type->getName();
+               }
+               \sort($types, \SORT_NATURAL | \SORT_FLAG_CASE);
+               $parameter['type']['name'] = \implode('|', $types);
+            }
+         }
+         if ($refl_parameter->isVariadic()) {
+            $parameter['variadic'] = true;
+         }
+         $parameters[] = $parameter;
+      }
+
+      return $parameters;
    }
 
 
