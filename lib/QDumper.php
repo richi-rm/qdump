@@ -21,7 +21,7 @@ class QDumper {
    protected const DEFAULT_CONFIG = [
       'core-config' => [
          'byte-format'       => 'hexlc',
-         'max-depth'         => 2,
+         'max-depth'         => 3,
          'max-string-length' => 100,
          'string-format'     => 'utf-8'
       ],
