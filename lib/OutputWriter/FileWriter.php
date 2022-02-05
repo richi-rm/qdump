@@ -13,7 +13,7 @@ class FileWriter implements OutputWriterInterface {
     * QDump file extensions corresponding to each render type.
     */
    const QDUMP_FILE_EXTENSIONS = [
-      'ansi'             => '.ansi.txt',
+      'ansi'             => '.ansi',
       'console-log-json' => '.js.html',
       'html'             => '.html',
       'html-comment'     => '.comment.html',
