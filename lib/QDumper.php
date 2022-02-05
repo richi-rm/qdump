@@ -56,7 +56,6 @@ class QDumper {
     */
    protected const RENDERERS = [
       'ansi'             => 'Onedevs\QDump\Renderer\BasicRenderer\AnsiTextRenderer',
-      'console-log-json' => 'Onedevs\QDump\Renderer\ConsoleLogJsonRenderer',
       'html'             => 'Onedevs\QDump\Renderer\BasicRenderer\HtmlRenderer',
       'html-comment'     => 'Onedevs\QDump\Renderer\BasicRenderer\HtmlCommentRenderer',
       'plain-text'       => 'Onedevs\QDump\Renderer\BasicRenderer\PlainTextRenderer'

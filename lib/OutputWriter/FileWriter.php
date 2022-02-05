@@ -14,7 +14,6 @@ class FileWriter implements OutputWriterInterface {
     */
    const QDUMP_FILE_EXTENSIONS = [
       'ansi'             => '.ansi',
-      'console-log-json' => '.js.html',
       'html'             => '.html',
       'html-comment'     => '.comment.html',
       'plain-text'       => '.txt'
