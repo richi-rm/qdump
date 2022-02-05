@@ -28,7 +28,7 @@ To dump any expression or variable user the dump() method:
 $foo = 'bar';
 $qd->dump($foo);
 
-Yo can call dump() with more than one argument:
+You can also call dump() with more than one argument:
 
 $foo = 'bar';
 $baz = 'qux';
