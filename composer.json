@@ -4,12 +4,12 @@
    "version": "1.0.1-stable",
    "type": "library",
    "keywords": ["debug", "debugging", "dump", "print_r", "qdump", "var_dump", "var_export"],
-   "homepage": "https://onedevs.tech/qdump-doc",
+   "homepage": "https://doc.onedevs.tech/qdump",
    "license": "GPL-3.0-or-later",
    "authors": [
       {
-         "name": "onedevs.tech",
-         "email": "qdump@onedevs.tech"
+         "name": "Ricardo Ruiz Martínez",
+         "email": "richiruizmartinez@gmail.com"
       }
    ],
    "autoload": {
