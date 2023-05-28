@@ -2,4 +2,4 @@
 
 *Improved var_dump()* for PHP projects.
 
-Read the documentation (at the moment only in Spanish) at https://doc.onedevs.tech/qdump
+The documentation is in the doc/ folder. At the moment it is only in Spanish.

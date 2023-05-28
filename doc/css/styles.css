@@ -1,0 +1,137 @@
+@font-face {
+  font-family: lato;
+  src: url(../fonts/Lato-Regular.ttf);
+}
+
+body {
+   font-family: lato;
+   padding-bottom: 50px;
+}
+
+body > .title {
+   font-size: 4em;
+   margin-top: 40px;
+   text-align: center;
+}
+
+.motto {
+   font-style: italic;
+   line-height: 40px;
+   text-align: center;
+}
+
+.author {
+   text-align: center;
+   font-size: 0.8em;
+   font-style: italic;
+   color: #a0a0a0;
+}
+
+.last-update {
+   text-align: center;
+   font-size: 0.8em;
+   font-style: italic;
+   color: #c0c0c0;
+}
+
+.section {
+   margin-top: 40px;
+}
+
+.section > .title {
+   font-size: 20pt;
+   margin: 0 auto;
+   text-align: left;
+   width: 800px;
+   border-bottom: solid 1px #f0f0f0;
+   color: #a0a0a0;
+}
+
+.section > .paragraph {
+   margin: 0 auto;
+   text-align: left;
+   width: 800px;
+   margin-top: 20px;
+}
+
+.section > .highlighted {
+   margin: 0 auto;
+   text-align: center;
+   width: 758px;
+   margin-top: 20px;
+   border: solid 1px #808000;
+   background-color: #a0a000;
+   padding: 20px;
+   border-radius: 3px;
+   color: white;
+}
+
+.section > .code-wrapper {
+   background-color: #404040;
+   width: 800px;
+   margin: 20px auto 0 auto;
+   border-radius: 3px;
+}
+
+.code-wrapper > .code {
+   padding: 10px;
+   font-family: monospace;
+   color: white;
+   white-space: pre;
+}
+
+.code > .command {
+   color: #ffa020;
+}
+
+.code > .parameter {
+   color: #40f040;
+}
+
+.link {
+   color: #3030ff;
+   text-decoration: none;
+   cursor: pointer;
+}
+
+.link:hover {
+   text-decoration: underline;
+}
+
+.code > .link {
+   color: #c0c0ff;
+   text-decoration: none;
+}
+
+.code > .link:hover {
+   text-decoration: underline;
+}
+
+.code > .keyword {
+   color: white;
+   font-weight: bold;
+}
+
+.code > .variable {
+   color: #80ffff;
+}
+
+.code > .identifier {
+   color: #40f040;
+}
+
+.code > .literal {
+   color: #ffff80;
+}
+
+.code > .call {
+   color: #f0a0f0;
+}
+
+.paragraph .code {
+   font-family: monospace;
+   background-color: #606060;
+   color: white;
+   padding: 1px;
+   border-radius: 3px;
+}

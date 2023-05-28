@@ -1,0 +1,21 @@
+.qdump                     { font-family: monospace; }
+.qdump-pre-header          { color: #a0a0a0; background-color: #f0f0f0; padding: 10px; font-size: 11pt; }
+.qdump-pre-capture-wrapper { width: 800px; margin: 0 auto; }
+.qdump-pre-capture         { color: black; background-color: #f0f0f0; font-size: 11pt; padding: 10px; }
+.qdump-abstract            { font-style: italic; }
+.qdump-class               { color: #008000; font-weight: bold; }
+.qdump-cycle               { color: #ff0000; }
+.qdump-enum                { color: #008000; font-weight: bold; }
+.qdump-fileline            { color: #a0a0a0; text-decoration: underline; }
+.qdump-key                 { color: #d08000; }
+.qdump-method              { color: #008000; }
+.qdump-modifier            { font-style: italic; }
+.qdump-name                { color: #008000; }
+.qdump-namespace           { color: #008000; }
+.qdump-property            { color: #008000; }
+.qdump-resource-type       { color: #ff00ff; }
+.qdump-scalar              { color: #0080ff; font-weight: bold; }
+.qdump-time                { color: #a0a0a0; }
+.qdump-type                { font-style: italic; }
+.qdump-uninitialized       { font-style: italic; }
+.qdump-unknown             { color: #ff0000; }

@@ -1,0 +1,816 @@
+<!doctype html>
+<html lang="es">
+<head>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <title>QDump - PHP debugging</title>
+   <meta name="description" content="QDump library">
+   <meta name="author" content="Ricardo Ruiz Martínez">
+   <link rel="icon" href="favicon.png">
+   <link rel="stylesheet" href="css/styles.css">
+   <link rel="stylesheet" href="css/qdump.css">
+</head>
+<body>
+
+   <div class="title">
+      QDump
+   </div>
+   <div class="motto">
+      Librería para volcar variables y expresiones PHP
+   </div>
+   <div class="author">
+         por:
+         <a class="link" href="https://www.linkedin.com/in/ricardo-ruiz-mart%C3%ADnez-b686a1178/" target="_blank">Ricardo Ruiz Martínez</a>
+         -
+         <a class="link" href="mailto:richiruizmartinez@gmail.com">richiruizmartinez@gmail.com</a>
+   </div>
+   <br />
+   <div class="last-update">
+      Última actualización de este documento:<br>
+      Domingo 28 de mayo de 2023 13:56 CET
+   </div>
+
+   <div class="section">
+      <div class="title">
+         Introducción
+      </div>
+      <div class="paragraph">
+         <b>QDump</b> nace como proyecto personal para mejorar mi experiencia
+         de depuración de variables y expresiones PHP. ¿Cuántas veces te ha
+         pasado, por ejemplo, que has ejecutado <b>var_dump()</b> sobre una
+         variable que resulta ser un objeto muy grande y la petición se queda
+         "colgada"?
+      </div>
+      <div class="paragraph">
+         Con <b>QDump</b> se soluciona este problema, además de proveer de una
+         forma de volcar variables y expresiones más intuitiva y formateada que
+         la que ofrecen <b>var_dump()</b>, <b>var_export()</b> o
+         <b>print_r()</b>.
+      </div>
+      <div class="highlighted">
+         El principal propósito de <b>QDump</b> es facilitar la depuración de
+         objetos.
+      </div>
+      <div class="paragraph">
+         <b>QDump</b> provee dos métodos principales para depurar: <b>dump()</b> y
+         <b>trace()</b>.
+      </div>
+   </div>
+
+   <div class="section">
+      <div class="title">
+         Comentarios, bugs y sugerencias
+      </div>
+      <div class="paragraph">
+         Si te animas a probar la librería espero que te ayude en tus sesiones
+         de depuración.<br />
+         <br />
+         Siéntete libre de enviar a
+         <a class="link" href="mailto:richiruizmartinez@gmail.com">
+            richiruizmartinez@gmail.com
+         </a>
+         cualquier comentario, bug que encuentres o sugerencia.
+      </div>
+   </div>
+
+   <div class="section">
+      <div class="title">
+         Instalación con composer
+      </div>
+      <div class="paragraph">
+         <b>QDump</b> es una librería PHP alojada en <a class="link"
+         href="https://github.com/onedevs-tech/qdump"
+         target="_blank">github.com</a> y registrada en <a class="link"
+         href="https://packagist.org/packages/onedevs/qdump"
+         target="_blank">packagist.org</a>. Puedes instalarla en cualquier
+         proyecto usando composer, con el siguiente comando:
+      </div>
+      <div class="code-wrapper">
+         <div class="code">$ <span class="command">composer</span> <span class="command">require</span> <span class="parameter">onedevs/qdump:dev-main</span></div>
+      </div>
+   </div>
+
+   <div class="section">
+      <div class="title">
+         Instalación sin composer
+      </div>
+      <div class="paragraph">
+         Si no usas composer puedes descargar la librería directamente desde
+         <a class="link" href="https://github.com/onedevs-tech/qdump"
+         target="_blank">github.com</a>:
+      </div>
+      <div class="code-wrapper">
+         <div class="code"><a class="link" href="https://github.com/onedevs-tech/qdump" target="_blank">https://github.com/onedevs-tech/qdump</a></div>
+      </div>
+      <div class="paragraph">
+         Luego, en tu proyecto, tendrás que incluir el fichero
+         <b>include.php</b> localizado en la raíz de la librería, para poder
+         usarla:
+      </div>
+      <div class="code-wrapper">
+         <div class="code"><span class="keyword">include</span> <span class="literal">'qdump/include.php';</span></div>
+      </div>
+   </div>
+
+   <div class="section">
+      <div class="title">
+         Métodos dump() y trace()
+      </div>
+      <div class="paragraph">
+         <b>QDump</b> es fácil de usar, tan sólo tienes que instanciar un objeto
+         <b>QDumper</b> y después llamar al método <b>dump()</b> o al método
+         <b>trace()</b>. El objeto <b>QDumper</b> lo crearás normalmente al
+         principio de tu aplicación (por ejemplo en tu <b>index.php</b>), y las
+         llamadas a <span class="code">$qd->dump()</span> o
+         <span class="code">$qd->trace()</span> las situarás donde necesites.
+      </div>
+      <div class="code-wrapper">
+         <div class="code"><span class="variable">$qd</span> = <span class="keyword">new</span> <span class="identifier">Onedevs\QDump\QDumper()</span>;<br />...<br /><span class="call">$qd->dump(</span>&lt;variable o expresión PHP&gt;<span class="call">)</span>;<br /><br /><span class="call">$qd->trace()</span>;</div>
+      </div>
+      <div class="paragraph">
+         <ul>
+            <li><b>dump()</b> vuelca el valor de variables o expresiones en un
+                formato legible.</li>
+            <li><b>trace()</b> vuelca la pila de llamadas actual.</li>
+         </ul>
+         
+      </div>
+   </div>
+
+   <div class="section">
+      <div class="title">
+         Salida de dump() y trace()
+      </div>
+      <div class="paragraph">
+         Los métodos de <b>QDump</b> pueden enviar su salida a tres tipos de
+         salida distintos: salida estándar (el navegador o la consola), a un
+         fichero o a ningún sitio (haciendo que el objeto <b>QDumper</b>
+         devuelva el contenido de la salida en lugar de volcarlo).
+      </div>
+      <div class="paragraph">
+         El tipo de salida se configura en el constructor del objeto
+         <b>QDumper</b> y puede ser:
+         <ul>
+            <li><span class="code">stdout</span></li>
+            <li><span class="code">file</span></li>
+            <li><span class="code">no-dump</span></li>
+         </ul>
+      </div>
+      <div class="paragraph">
+         En el siguiente ejemplo inicializamos <b>QDump</b> indicándole que
+         queremos que envíe su salida a ficheros (más adelante veremos qué
+         ficheros).
+      </div>
+      <div class="code-wrapper">
+         <div class="code"><span class="variable">$qd</span> = <span class="keyword">new</span> <span class="identifier">Onedevs\QDump\QDumper(</span><span class="literal">'file'</span><span class="identifier">)</span>;<br />...<br /><span class="call">$qd->dump(</span>&lt;variable o expresión PHP&gt;<span class="call">)</span>;</div>
+      </div>
+      <div class="paragraph">
+         La salida por defecto es <span class="code">stdout</span>.
+      </div>
+      <div class="paragraph">
+         Si no quieres que <b>QDump</b> vuelque la salida en ningún sitio,
+         declaras en el constructor <span class="code">no-dump</span>. La salida
+         la podrás obtener, por ejemplo en la variable
+         <span class="code">$output</span>, del siguiente modo:
+      </div>
+      <div class="code-wrapper">
+         <div class="code"><span class="variable">$qd</span> = <span class="keyword">new</span> <span class="identifier">Onedevs\QDump\QDumper(</span><span class="literal">'no-dump'</span><span class="identifier">)</span>;<br />...<br /><span class="variable">$output</span> = <span class="call">$qd->dump(</span>&lt;variable o expresión PHP&gt;<span class="call">)</span>;</div>
+      </div>
+   </div>
+
+   <div class="section">
+      <div class="title">
+         Ejemplo de uso básico
+      </div>
+      <div class="paragraph">
+         Supongamos que queremos inspeccionar la variable
+         <span class="code">$a</span> del siguiente código:
+      </div>
+      <div class="code-wrapper">
+         <div class="code"><span class="variable">$a</span> = <span class="literal">7</span>;</div>
+      </div>
+      <div class="paragraph">
+         Escribiremos debajo lo siguiente:
+      </div>
+      <div class="code-wrapper">
+         <div class="code"><span class="variable">$a</span> = <span class="literal">7</span>;<br /><br /><span class="call">$qd->dump(</span><span class="variable">$a</span><span class="call">)</span>;</div>
+      </div>
+      <div class="paragraph">
+         La salida (en pantalla o consola) de <b>QDump</b>, si el tipo de salida
+         es <span class="code">stdout</span>, será:
+      </div>
+      <div class="qdump-pre-capture-wrapper">
+         <pre class="qdump qdump-pre-capture">1) <span class="qdump qdump-type">int</span> <span class="qdump qdump-scalar">7</span></pre>
+      </div>
+      <div class="paragraph">
+         En la anterior salida se muestra que <span class="code">$a</span> es
+         una variable de tipo <span class="code">int</span> cuyo valor es
+         <span class="code">7</span>.
+      </div>
+      <div class="paragraph">
+         También podemos volcar <b>varias variables o expresiones a la vez</b>,
+         <b>dump()</b> admite más de un parámetro. Ejemplo:
+      </div>
+      <div class="code-wrapper">
+         <div class="code"><span class="variable">$a</span> = <span class="literal">7</span>;<br /><span class="variable">$b</span> = <span class="literal">'foo'</span>;<br /><br /><span class="call">$qd->dump(</span><span class="variable">$a</span>, <span class="variable">$b</span><span class="call">)</span>;</div>
+      </div>
+      <div class="paragraph">
+         La salida de <b>QDump</b> correspondiente al ejemplo anterior será:
+      </div>
+      <div class="qdump-pre-capture-wrapper">
+         <pre class="qdump qdump-pre-capture">1) <span class="qdump qdump-type">int</span> <span class="qdump qdump-scalar">7</span></pre>
+         <pre class="qdump qdump-pre-capture">2) <span class="qdump qdump-type">string(3)</span> <span class="qdump qdump-scalar">"foo"</span></pre>
+      </div>
+      <div class="paragraph">
+         El número que antecede a la variable o expresión volcada es el orden
+         de captura: 1), 2), etc.
+      </div>
+   </div>
+
+   <div class="section">
+      <div class="title">
+         Volcado de cadenas
+      </div>
+      <div class="paragraph">
+         <b>dump()</b> también vuelca cadenas. Pero muchas veces ocurre que una
+         cadena de texto ocupa demasiado, y no queremos que la salida se nos
+         quede "colgada". Por eso es posible indicar una longitud máxima de
+         cadena en el constructor del objeto <b>QDumper</b>, usando el
+         parámetro <span class="code">max-string-length</span>. Ejemplo:
+      </div>
+      <div class="code-wrapper">
+         <div class="code"><span class="variable">$qd</span> = <span class="keyword">new</span> <span class="identifier">Onedevs\QDump\QDumper(</span><span class="literal">'max-string-length:10'</span><span class="identifier">)</span>;<br /><br /><span class="variable">$a</span> = <span class="literal">'éstas son algunas palabras de ejemplo'</span>;<br /><br /><span class="call">$qd->dump(</span><span class="variable">$a</span><span class="call">)</span>;</div>
+      </div>
+      <div class="paragraph">
+         La salida de dump() para el ejemplo anterior será:
+      </div>
+      <div class="qdump-pre-capture-wrapper">
+         <pre class="qdump qdump-pre-capture">1) <span class="qdump qdump-type">string(37)</span> <span class="qdump qdump-scalar">"éstas son ..."</span></pre>
+      </div>
+      <div class="paragraph">
+         También es posible volcar el final de las cadenas. Se hace indicando
+         un parámetro <span class="code">max-string-length</span> negativo:
+      </div>
+      <div class="code-wrapper">
+         <div class="code"><span class="variable">$qd</span> = <span class="keyword">new</span> <span class="identifier">Onedevs\QDump\QDumper(</span><span class="literal">'max-string-length:-3'</span><span class="identifier">)</span>;<br /><br /><span class="variable">$a</span> = <span class="literal">'éstas son algunas palabras de ejemplo'</span>;<br /><br /><span class="call">$qd->dump(</span><span class="variable">$a</span><span class="call">)</span>;</div>
+      </div>
+      <div class="paragraph">
+         La salida del ejemplo anterior es:
+      </div>
+      <div class="qdump-pre-capture-wrapper">
+         <pre class="qdump qdump-pre-capture">1) <span class="qdump qdump-type">string(37)</span> <span class="qdump qdump-scalar">"...plo"</span></pre>
+      </div>
+      <div class="paragraph">
+         También es posible indicar que no queremos recortar las cadenas. Para
+         ello usamos <span class="code">max-string-length:unlimited</span>. Por
+         defecto se muestran sólo los 100 primeros caracteres de las cadenas.
+      </div>
+   </div>
+
+   <div class="section">
+      <div class="title">
+         Volcado de cadenas en otras codificaciones
+      </div>
+      <div class="paragraph">
+         <b>QDump</b> trata <b>por defecto</b> a las cadenas como codificadas en
+         <b>UTF-8</b>. Pero podemos configurar esto haciendo que <b>QDump</b>
+         interprete las cadenas como de otra codificación, como ISO-8859-1.
+      </div>
+      <div class="paragraph">
+         Esta configuración se puede indicar en el constructor del objeto
+         <b>QDumper</b>. Las codificaciones disponibles son:
+         <ul>
+            <li><span class="code">ascii</span></li>
+            <li><span class="code">bytes</span></li>
+            <li><span class="code">iso-8859-1</span></li>
+            <li><span class="code">json</span></li>
+            <li><span class="code">utf-8</span></li>
+         </ul>
+      </div>
+      <div class="paragraph">
+         Ejemplo:
+      </div>
+      <div class="code-wrapper">
+         <div class="code"><span class="variable">$qd</span> = <span class="keyword">new</span> <span class="identifier">Onedevs\QDump\QDumper(</span><span class="literal">'ascii'</span><span class="identifier">)</span>;<br /><br /><span class="variable">$a</span> = <span class="literal">'éstas son algunas palabras de ejemplo'</span>;<br /><br /><span class="call">$qd->dump(</span><span class="variable">$a</span><span class="call">)</span>;</div>
+      </div>
+      <div class="paragraph">
+         En la salida del ejemplo anterior se puede ver cómo los dos bytes
+         necesarios para codificar el caracter <b>é</b> en UTF-8 no tienen
+         correspondencia en ASCII, por lo que se nota con signos de
+         interrogación:
+      </div>
+      <div class="qdump-pre-capture-wrapper">
+         <pre class="qdump qdump-pre-capture">1) <span class="qdump qdump-type">string(38)</span> <span class="qdump qdump-scalar">"??stas son algunas palabras de ejemplo"</span></pre>
+      </div>
+      <div class="paragraph">
+         En el siguiente ejemplo, si queremos convertir la cadena a formato
+         <b>json</b> podemos hacer lo siguiente:
+      </div>
+      <div class="code-wrapper">
+         <div class="code"><span class="variable">$qd</span> = <span class="keyword">new</span> <span class="identifier">Onedevs\QDump\QDumper(</span><span class="literal">'json'</span><span class="identifier">)</span>;<br /><br /><span class="variable">$a</span> = <span class="literal">'éstas son algunas palabras de ejemplo'</span>;<br /><br /><span class="call">$qd->dump(</span><span class="variable">$a</span><span class="call">)</span>;</div>
+      </div>
+      <div class="paragraph">
+         La salida del ejemplo anterior sería:
+      </div>
+      <div class="qdump-pre-capture-wrapper">
+         <pre class="qdump qdump-pre-capture">1) <span class="qdump qdump-type">string(37)</span> <span class="qdump qdump-scalar">"\u00e9stas son algunas palabras de ejemplo"</span></pre>
+      </div>
+   </div>
+
+   <div class="section">
+      <div class="title">
+         Volcado de cadenas como secuencias de bytes
+      </div>
+      <div class="paragraph">
+         A veces puede resultar útil saber el contenido exacto de una cadena, es
+         decir, saber cuánto valen cada uno de los octetos o bytes que la
+         componen. Es posible indicarle a <b>QDump</b> que muestre las cadenas
+         como secuencias de bytes. Para ello indicamos en el constructor del
+         objeto <b>QDumper</b> la opción <span class="code">bytes</span> más una
+         de las siguientes opciones:
+         <ul>
+            <li><span class="code">bits</span>: vuelca las cadenas como
+                secuencias de bytes representados por sus <b>bits</b>.</li>
+            <li><span class="code">decimal</span>: vuelca las cadenas como
+                secuencias de bytes representados en <b>notación decimal</b>.
+                </li>
+            <li><span class="code">hexlc</span>: vuelca las cadenas como
+                secuencias de bytes representados en <b>notación hexadecimal con
+                las letras en minúsculas</b>.</li>
+            <li><span class="code">hexuc</span>: vuelca las cadenas como
+                secuencias de bytes representados en <b>notación hexadecimal con
+                las letras en mayúsculas</b>.</li>
+            <li><span class="code">octal</span>: vuelca las cadenas como
+                secuencias de bytes representados en <b>notación octal</b>.</li>
+         </ul>
+      </div>
+      <div class="paragraph">
+         En el siguiente ejemplo volcamos una cadena como una secuencia de bytes
+         representada por caracteres hexadecimales con las letras en minúsculas:
+      </div>
+      <div class="code-wrapper">
+         <div class="code"><span class="variable">$qd</span> = <span class="keyword">new</span> <span class="identifier">Onedevs\QDump\QDumper(</span><span class="literal">'bytes,hexlc'</span><span class="identifier">)</span>;<br /><br /><span class="variable">$string</span> = <span class="literal">'esto es una prueba'</span>;<br /><br /><span class="call">$qd->dump(</span><span class="variable">$string</span><span class="call">)</span>;</div>
+      </div>
+   </div>
+
+   <div class="section">
+      <div class="title">
+         Volcado de arrays
+      </div>
+      <div class="paragraph">
+         <b>dump()</b> permite mostrar el contenido de arrays. Para ello es
+         necesario indicar en el constructor del objeto <b>QDumper</b> el
+         parámetro <span class="code">expand-arrays</span>.<br />
+         <br />
+         Supongamos el siguiente ejemplo:
+      </div>
+      <div class="code-wrapper">
+         <div class="code"><span class="variable">$a</span> = [<span class="literal">'foo'</span> => <span class="literal">'bar'</span>, <span class="literal">'baz'</span> => [<span class="literal">'qux'</span> => <span class="literal">'quux'</span>]];<br /><br /><span class="call">$qd->dump(</span><span class="variable">$a</span><span class="call">)</span>;</div>
+      </div>
+      <div class="paragraph">
+         La salida sería:
+      </div>
+      <div class="qdump-pre-capture-wrapper">
+         <pre class="qdump qdump-pre-capture">1) <span class="qdump qdump-type">array(2)</span>
+   [<span class="qdump qdump-key">'baz'</span>] => <span class="qdump qdump-type">array(1)</span>
+              [<span class="qdump qdump-key">'qux'</span>] => <span class="qdump qdump-type">string(4)</span> <span class="qdump qdump-scalar">"quux"</span>
+   [<span class="qdump qdump-key">'foo'</span>] => <span class="qdump qdump-type">string(3)</span> <span class="qdump qdump-scalar">"bar"</span></pre>
+      </div>
+      <div class="paragraph">
+         Nótese que el array mostrado está ordenado por sus claves. Si no
+         queremos ordenar los arrays lo indicamos con la opción
+         <span class="code">no-sort</span> en el constructor del objeto
+         <b>QDumper</b>.
+         <br />
+         <br />
+         Si no hubiésemos indicado <span class="code">expand-arrays</span> en el
+         constructor la salida correspondiente al ejemplo anterior hubiese sido:
+      </div>
+      <div class="qdump-pre-capture-wrapper">
+         <pre class="qdump qdump-pre-capture">1) <span class="qdump qdump-type">array(2)</span></pre>
+      </div>
+      <div class="paragraph">
+         De los arrays sólo se vuelca por defecto su tipo (array) y su tamaño.
+         Si quieres mostrar su contenido tendrás que usar la opción
+         <span class="code">expand-arrays</span>.
+      </div>
+   </div>
+
+   <div class="section">
+      <div class="title">
+         Volcado de objetos
+      </div>
+      <div class="paragraph">
+         La tarea más importante de <b>dump()</b> es la de volcar objetos.
+         <b>dump()</b> puede volcar objetos y no se queda bloqueado como
+         var_dump() si los objetos son grandes o contienen muchas referencias a
+         otros objetos.
+      </div>
+      <div class="paragraph">
+         Consideremos el siguiente ejemplo:
+      </div>
+      <div class="code-wrapper">
+         <div class="code"><span class="keyword">namespace</span> <span class="identifier">Name\Space</span>;
+
+<span class="keyword">class</span> <span class="identifier">A</span> {
+   <span class="keyword">public</span> <span class="keyword">int</span> <span class="variable">$prop_a</span>;
+}
+
+<span class="keyword">class</span> <span class="identifier">B</span> <span class="keyword">extends</span> <span class="identifier">A</span> {
+   <span class="keyword">public</span> <span class="keyword">function</span> <span class="identifier">method_b</span>() { }
+}
+
+<span class="keyword">class</span> <span class="identifier">C</span> <span class="keyword">extends</span> <span class="identifier">B</span> {
+   <span class="keyword">public</span> <span class="keyword">const</span> <span class="identifier">CONST_C</span> = <span class="literal">'C'</span>;
+}
+
+<span class="variable">$o</span> = <span class="keyword">new</span> <span class="identifier">C</span>;
+
+<span class="call">$qd->dump(</span><span class="variable">$o</span><span class="call">)</span>;</div>
+      </div>
+      <div class="paragraph">
+         La salida sería la siguiente:
+      </div>
+      <div class="qdump-pre-capture-wrapper">
+         <pre class="qdump qdump-pre-capture">1) <span class="qdump qdump-type">object</span> #8
+   1 <span class="qdump qdump-namespace">Name\Space\</span><span class="qdump qdump-class">A</span>
+   2 <span class="qdump qdump-namespace">Name\Space\</span><span class="qdump qdump-class">B</span>
+   3 <span class="qdump qdump-namespace">Name\Space\</span><span class="qdump qdump-class">C</span>
+   3::<span class="qdump qdump-modifier">public</span> <span class="qdump qdump-modifier">const</span> <span class="qdump qdump-name">CONST_C</span> = <span class="qdump qdump-type">string(1)</span> <span class="qdump qdump-scalar">"C"</span>
+   2-><span class="qdump qdump-modifier">public</span> <span class="qdump qdump-modifier">function</span> <span class="qdump qdump-method">method_b</span>()
+   1-><span class="qdump qdump-modifier">public</span> <span class="qdump qdump-type">int</span> <span class="qdump qdump-name">$prop_a</span> <span class="qdump qdump-uninitialized">(uninitialized)</span></pre>
+      </div>
+      <div class="paragraph">
+         La explicación de la salida anterior es:
+         <ul>
+            <li>La primera línea indica que el elemento volcado es un objeto
+                cuyo identificador interno es #8.</li>
+            <li>La segunda línea muestra la primera clase base en la cadena de
+                herencia de las clases del objeto, en este caso
+                <span class="code">Name\Space\A</span>. El número que antecede
+                al nombre de la clase (1) es la referencia que se usa más abajo
+                en las propiedades y métodos de la clase.</li>
+            <li>La tercera línea es similar a la anterior. Contiene la
+                referencia a la clase (2) y la segunda clase base en la cadena
+                de herencia de las clases del objeto
+                ( <span class="code">Name\Space\B</span> ).</li>
+            <li>La cuarta línea, al ser la última de su tipo, indica la clase
+                del objeto ( <span class="code">Name\Space\C</span> ). La
+                referencia a la clase es 3.</li>
+            <li>Las siguientes líneas contienen las constantes, propiedades y
+                métodos del objeto, en orden inverso al mostrado en las
+                clases (para mostrar primero las constantes, propiedades y
+                métodos más específicos del objeto).</li>
+            <li>La quinta línea indica que en la clase 3
+                ( <span class="code">Name\Space\C</span> ) hay una constante
+                pública llamada <span class="code">CONST_C</span> y su valor es
+                <span class="code">"C"</span>.</li>
+            <li>La sexta línea indica que el objeto dispone de un método público
+                no estático llamado <span class="code">method_b()</span> que
+                está declarado en la clase 2 (
+                <span class="code">Name\Space\B</span> ).</li>
+            <li>La última línea indica que el objeto dispone de una propiedad
+                pública no estática de tipo entero, y no inicializada, llamada
+                <span class="code">$prop_a</span>. La propiedad está declarada
+                en la clase referenciada como 1, es decir,
+                <span class="code">Name\Space\A</span>.</li>
+         </ul>
+      </div>
+      <div class="paragraph">
+         En resumen, la salida muestra que el objeto
+         <span class="code">$o</span> es de tipo
+         <span class="code">Name\Space\C</span>, clase que hereda de
+         <span class="code">Name\Space\B</span> y ésta a su vez de
+         <span class="code">Name\Space\A</span>, y que tiene disponible la
+         constante <span class="code">CONST_C</span>, el método
+         <span class="code">method_b()</span> y la propiedad
+         <span class="code">$prop_a</span>.
+      </div>
+   </div>
+
+   <div class="section">
+      <div class="title">
+         Referencias circulares
+      </div>
+      <div class="paragraph">
+         <b>QDump</b> es capaz de detectar referencias circulares tanto en
+         arrays como en objetos. Para ello avisa al usuario con la palabra
+         <b>CYCLE</b>.
+      </div>
+      <div class="paragraph">
+         Ejemplo:
+      </div>
+      <div class="code-wrapper">
+         <div class="code"><span class="variable">$qd</span> = <span class="keyword">new</span> <span class="identifier">Onedevs\QDump\QDumper</span>(<span class="literal">'expand-arrays'</span>);
+
+<span class="variable">$a</span> = [1, &<span class="variable">$a</span>];
+
+<span class="keyword">class</span> <span class="identifier">C</span> {
+   <span class="keyword">public</span> <span class="variable">$prop</span>;
+}
+
+<span class="variable">$o</span> = <span class="keyword">new</span> <span class="identifier">C</span>;
+<span class="variable">$o->prop</span> = <span class="variable">$o</span>;
+
+<span class="call">$qd->dump(</span><span class="variable">$a</span>, <span class="variable">$o</span><span class="call">)</span>;</div>
+      </div>
+      <div class="paragraph">
+         La salida del ejemplo anterior corresponde a un volcado de un array
+         que contiene una referencia a sí mismo (el array
+         <span class="code">$a</span>) así como de un objeto (el objeto
+         <span class="code">$o</span>) que también contiene una referencia a sí
+         mismo en su propiedad <span class="code">$prop</span>.
+      </div>
+      <div class="qdump-pre-capture-wrapper">
+<pre class="qdump qdump-pre-capture">1) <span class="qdump qdump-type">array(2)</span>
+   [<span class="qdump qdump-key">0</span>] => <span class="qdump qdump-type">int</span> <span class="qdump qdump-scalar">1</span>
+   [<span class="qdump qdump-key">1</span>] => <span class="qdump qdump-type">array(2)</span>
+          [<span class="qdump qdump-key">0</span>] => <span class="qdump qdump-type">int</span> <span class="qdump qdump-scalar">1</span>
+          [<span class="qdump qdump-key">1</span>] => <span class="qdump qdump-type">array(2)</span> <span class="qdump qdump-cycle">(CYCLE array)</span></pre>
+
+<pre class="qdump qdump-pre-capture">2) <span class="qdump qdump-type">object</span> #8
+   1 <span class="qdump qdump-namespace"></span><span class="qdump qdump-class">C</span>
+   1-><span class="qdump qdump-modifier">public</span> <span class="qdump qdump-name">$prop</span> = <span class="qdump qdump-type">object</span> #8 <span class="qdump qdump-cycle">(CYCLE object)</span></pre>         
+      </div>
+   </div>
+
+   <div class="section">
+      <div class="title">
+         Fijando la profundidad máxima
+      </div>
+      <div class="paragraph">
+         En muchas ocasiones nos topamos con objetos o arrays que anidan otros
+         objetos o arrays que a su vez también anidan objetos y arrays, y así
+         sucesivamente.<br />
+         <br />
+         Si queremos inspeccionar superficialmente un objeto o un array, y no
+         deseamos mostrar los detalles de sus subojetos y subarrays que pueda
+         contener usaremos la opción <span class="code">max-depth</span> en el
+         constructor del objeto <b>QDumper</b>.<br />
+         <br />
+         Ejemplo:
+      </div>
+      <div class="code-wrapper">
+         <div class="code"><span class="variable">$qd</span> = <span class="keyword">new</span> <span class="identifier">Onedevs\QDump\QDumper</span>(<span class="literal">'expand-arrays,max-depth:1'</span>);<br /><br /><span class="variable">$a</span> = [<span class="literal">'foo'</span> => <span class="literal">'bar'</span>, <span class="literal">'baz'</span> => [<span class="literal">'qux'</span> => <span class="literal">'quux'</span>]];<br /><br /><span class="call">$qd->dump(</span><span class="variable">$a</span><span class="call">)</span>;</div>
+      </div>
+      <div class="paragraph">
+         En el ejemplo anterior hemos fijado la profundidad máxima a 1. Esto
+         quiere decir que será mostrado en su totalidad el nivel 0 de objetos y
+         arrays, pero no el nivel 1, que será mostrado sólo superficialmente.
+         Niveles superiores de profundidad no serán mostrados.<br />
+         <br />
+         La salida del ejemplo anterior es:
+      </div>
+      <div class="qdump-pre-capture-wrapper">
+         <pre class="qdump qdump-pre-capture">1) <span class="qdump qdump-type">array(2)</span>
+   [<span class="qdump qdump-key">'baz'</span>] => <span class="qdump qdump-type">array(1)</span>
+   [<span class="qdump qdump-key">'foo'</span>] => <span class="qdump qdump-type">string(3)</span> <span class="qdump qdump-scalar">"bar"</span></pre>
+      </div>
+      <div class="paragraph">
+         Como se puede ver, se muestran todos los elementos del array
+         <span class="code">$a</span>, pero los del array
+         <span class="code">'baz'</span> no se muestran expandidos, porque la
+         profundidad máxima está fijada a 1.<br />
+         <br />
+         Lo mismo ocurre con objetos.<br />
+         <br />
+         La profundidad máxima por defecto es 3.
+      </div>
+   </div>
+
+   <div class="section">
+      <div class="title">
+         Tipos de renderizado
+      </div>
+      <div class="paragraph">
+         Por defecto, <b>QDump</b> renderiza salida
+         <span class="code">html</span>, apta para ser volcada al navegador,
+         pero también puede renderizar otras salidas:
+         <ul>
+            <li><span class="code">ansi</span>: la salida será formateada con
+                secuencias de escape ANSI. Tipo de renderizado indicado para
+                cuando estamos trabajando en modo consola.</li>
+            <li><span class="code">html</span>: es la salida por defecto.</li>
+            <li><span class="code">html-comment</span>: la salida estará toda
+                dentro de comentarios HTML, no mostrándose en el navegador
+                directamente, sino sólo cuando exploremos el código fuente de la
+                página.</li>
+            <li><span class="code">plain-text</span>: salida en texto plano.
+                </li>
+         </ul>
+      </div>
+      <div class="paragraph">
+         Para indicar el tipo de renderizado usamos como siempre el parámetro
+         correspondiente en el constructor del objeto <b>QDumper</b>:
+      </div>
+      <div class="code-wrapper">
+         <div class="code"><span class="variable">$qd</span> = <span class="keyword">new</span> <span class="identifier">Onedevs\QDump\QDumper</span>(<span class="literal">'ansi'</span>);</div>
+      </div>
+   </div>
+
+   <div class="section">
+      <div class="title">
+         Volcado de la salida en ficheros
+      </div>
+      <div class="paragraph">
+         Al principio de esta documentación vimos que <b>QDump</b> puede enviar
+         su salida a tres tipos de salida distintos:
+         <span class="code">stdout</span> (es la salida por defecto),
+         <span class="code">file</span> y <span class="code">no-dump</span>.
+         <br /><br />
+         Si indicamos en el constructor del objeto <b>QDumper</b> el parámetro
+         <span class="code">file</span> estaremos indicando que queremos que la
+         salida se vuelque a un fichero:
+      </div>
+      <div class="code-wrapper">
+         <div class="code"><span class="variable">$qd</span> = <span class="keyword">new</span> <span class="identifier">Onedevs\QDump\QDumper</span>(<span class="literal">'ansi,file'</span>);</div>
+      </div>
+      <div class="paragraph">
+         Según lo declarado en el ejemplo anterior, cualquier volcado con
+         <b>dump()</b> o <b>trace()</b> del objeto <span class="code">$qd</span>
+         irá por defecto al fichero
+         <span class="code">/tmp/qdump/www-data/qdump.X.YYYYYY.ansi</span>.
+         <br /><br />
+         El volcado de la salida en ficheros puede resultar útil cuando, por
+         ejemplo, estás depurando llamadas Ajax en el lado del servidor.
+      </div>
+      <div class="paragraph">
+         <b>QDump</b> vuelca la salida en la carpeta por defecto
+         <span class="code">/tmp/qdump</span>. Y dentro de esta carpeta, en una
+         subcarpeta cuyo nombre es igual al nombre de usuario del proceso
+         ejecutando el script PHP (en el ejemplo
+         <span class="code">www-data</span>).<br />
+         <br />
+         El nombre del fichero es
+         <span class="code">qdump.X.YYYYYY.extensión</span>, siendo <b>X</b> el
+         número de ejecución, <b>YYYYYY</b> un token numérico aleatorio de 6
+         dígitos para evitar problemas con ejecuciones concurrentes y
+         <b>extensión</b> una de las extensiones siguientes:
+         <ul>
+            <li><span class="code">.ansi</span>: extensión para tipos de
+                renderizado ANSI.</li>
+            <li><span class="code">.html</span>: extensión para tipos de
+                renderizado HTML.</li>
+            <li><span class="code">.comment.html</span>: extensión para tipos de
+                renderizado comentario HTML.</li>
+            <li><span class="code">.txt</span>: extensión para tipos de
+                renderizado texto plano.</li>
+         </ul>
+      </div>
+      <div class="paragraph">
+         Podemos indicar una carpeta o directorio diferente con
+         <span class="code">file:carpeta</span>. Ejemplo:
+      </div>
+      <div class="code-wrapper">
+         <div class="code"><span class="variable">$qd</span> = <span class="keyword">new</span> <span class="identifier">Onedevs\QDump\QDumper</span>(<span class="literal">'ansi,file:/home/user/qdump'</span>);</div>
+      </div>
+      <div class="paragraph">
+         Según lo declarado en el ejemplo anterior toda la salida de
+         <b>QDump</b> irá a parar a la carpeta
+         <span class="code">/home/user/qdump</span>, que debe contar con los
+         permisos de escritura necesarios.
+      </div>
+   </div>
+
+   <div class="section">
+      <div class="title">
+         Método trace()
+      </div>
+      <div class="paragraph">
+         <b>QDump</b> dispone de otro método que proporciona información  útil
+         cuando estamos depurando. Es el método <b>trace()</b>.
+         <br /><br />
+         Con <b>trace()</b> podemos ver la <b>pila de llamadas hasta la llamada
+         actual a trace()</b>.<br />
+         <br />
+         Supongamos el siguiente ejemplo:
+      </div>
+      <div class="code-wrapper">
+         <div class="code"><span class="variable">$qd</span> = <span class="keyword">new</span> <span class="identifier">Onedevs\QDump\QDumper</span>();<br /><br /><span class="keyword">function</span> <span class="identifier">f_a</span>() { <span class="call">f_b()</span>; }<br /><span class="keyword">function</span> <span class="identifier">f_b</span>() { <span class="call">f_c()</span>; }<br /><span class="keyword">function</span> <span class="identifier">f_c</span>() { <span class="call">$GLOBALS['qd']->trace()</span>; }<br /><br /><span class="call">f_a()</span>;</div>
+      </div>
+      <div class="paragraph">
+         En el ejemplo anterior llamamos a la función
+         <span class="code">f_a()</span>. Ésta llama a
+         <span class="code">f_b()</span>, que a su vez llama a
+         <span class="code">f_c()</span>. <span class="code">f_c()</span>
+         contiene una llamada al método <b>trace()</b> de <b>QDump</b>, que se
+         encarga de volcar lo siguiente:
+      </div>
+      <div class="qdump-pre-capture-wrapper">
+         <pre class="qdump qdump-pre-capture">1) <span class="qdump qdump-type">trace</span>
+   1 <span class="qdump qdump-fileline">/home/user/web/index.php(11)</span>
+     <span class="qdump qdump-method">f_a</span>()
+   2 <span class="qdump qdump-fileline">/home/user/web/index.php(7)</span>
+     <span class="qdump qdump-method">f_b</span>()
+   3 <span class="qdump qdump-fileline">/home/user/web/index.php(8)</span>
+     <span class="qdump qdump-method">f_c</span>()
+   4 <span class="qdump qdump-fileline">/home/user/web/index.php(9)</span>
+     <span class="qdump qdump-namespace">Onedevs\QDump\</span><span class="qdump qdump-class">QDumper</span>-><span class="qdump qdump-modifier">public</span> <span class="qdump qdump-modifier">function</span> <span class="qdump qdump-method">trace</span>()</pre>
+      </div>
+      <div class="paragraph">
+         En la salida anterior podemos ver la pila de llamadas actual, así como
+         las localizaciones en el código en donde se produjeron esas llamadas.
+      </div>
+   </div>
+
+   <div class="section">
+      <div class="title">
+         Opción verbose
+      </div>
+      <div class="paragraph">
+         <b>QDump</b> cuenta con una opción para hacer la salida de
+         <b>dump()</b> o <b>trace()</b> más detallada: la opción
+         <span class="code">verbose</span>.<br />
+         <br />
+         Ejemplo:
+      </div>
+      <div class="code-wrapper">
+         <div class="code"><span class="keyword">namespace</span> <span class="identifier">Name\Space</span>;
+
+<span class="keyword">include</span> <span class="literal">'vendor/autoload.php'</span>;
+
+<span class="variable">$qd</span> = <span class="keyword">new</span> <span class="identifier">\Onedevs\QDump\QDumper</span>(<span class="literal">'verbose'</span>);
+
+<span class="keyword">class</span> <span class="identifier">A</span> {
+   <span class="keyword">public</span> <span class="keyword">int</span> <span class="variable">$prop_a</span>;
+}
+
+<span class="keyword">class</span> <span class="identifier">B</span> <span class="keyword">extends</span> <span class="identifier">A</span> {
+   <span class="keyword">public</span> <span class="keyword">function</span> <span class="identifier">method_b</span>() { }
+}
+
+<span class="keyword">class</span> <span class="identifier">C</span> <span class="keyword">extends</span> <span class="identifier">B</span> {
+   <span class="keyword">public</span> <span class="keyword">const</span> <span class="identifier">CONST_C</span> = <span class="literal">'C'</span>;
+}
+
+<span class="variable">$o</span> = <span class="keyword">new</span> <span class="identifier">C</span>;
+
+<span class="call">$qd->dump(</span><span class="variable">$o</span><span class="call">)</span>;</div>
+      </div>
+      <div class="paragraph">
+         La salida de <b>dump()</b> estará antecedida en este caso por una
+         cabecera con información del contexto en el que se ejecuta la petición
+         PHP:
+      </div>
+      <div class="qdump-pre-capture-wrapper">
+         <pre class="qdump qdump-pre-header">PHP 8.1.0 apache2handler (Ubuntu 20.04.3 LTS)
+HTTP request: ::1 -> GET http://test.localhost/
+</pre>
+
+         <pre class="qdump qdump-pre-capture">1) <span class="qdump qdump-fileline">/home/user/web/index.php(23)</span> <span class="qdump qdump-time">0.001717 s</span>
+   <span class="qdump qdump-type">object</span> #8
+   1 <span class="qdump qdump-namespace">Name\Space\</span><span class="qdump qdump-class">A</span> <span class="qdump qdump-fileline">/home/user/web/index.php(9)</span>
+   2 <span class="qdump qdump-namespace">Name\Space\</span><span class="qdump qdump-class">B</span> <span class="qdump qdump-fileline">/home/user/web/index.php(13)</span>
+   3 <span class="qdump qdump-namespace">Name\Space\</span><span class="qdump qdump-class">C</span> <span class="qdump qdump-fileline">/home/user/web/index.php(17)</span>
+   3::<span class="qdump qdump-modifier">public</span> <span class="qdump qdump-modifier">const</span> <span class="qdump qdump-name">CONST_C</span> = <span class="qdump qdump-type">string(1)</span> <span class="qdump qdump-scalar">"C"</span>
+   2-><span class="qdump qdump-modifier">public</span> <span class="qdump qdump-modifier">function</span> <span class="qdump qdump-method">method_b</span>()
+   1-><span class="qdump qdump-modifier">public</span> <span class="qdump qdump-type">int</span> <span class="qdump qdump-name">$prop_a</span> <span class="qdump qdump-uninitialized">(uninitialized)</span></pre>         
+      </div>
+      <div class="paragraph">
+         Lo primero que se muestra es la versión de PHP ejecutándose: la
+         <span class="code">8.1.0</span>. A continuación se muestra la interfaz
+         SAPI (en el ejemplo <span class="code">apache2handler</span>). El final
+         de la primera línea muestra el sistema operativo en el que se está
+         ejecutando el módulo PHP.<br />
+         <br />
+         La siguiente línea muestra información sobre la petición HTTP: se
+         muestra la IP que realizó la petición (en el ejemplo
+         <span class="code">::1</span>), el tipo de petición
+         (<span class="code">GET</span>) y la dirección solicitada.<br />
+         <br />
+         Lo siguiente que se muestra es el volcado normal de <b>dump()</b> para
+         un objeto, pero con información adicional: la primera línea muestra
+         el archivo y el número de línea en el que está la llamada a dump():
+         <span class="code">/home/user/web/index.php(23)</span>. Lo siguiente
+         que se muestra es el número de segundos que se tardó en llegar a la
+         llamada <b>dump()</b>.<br />
+         <br />
+         Después se muestra la salida normal correspondiente al volcado del
+         objeto <span class="code">$o</span>, con la particularidad de que a la
+         derecha de cada clase se muestra la localización de la clase en el
+         sistema de ficheros (archivo y línea).
+      </div>
+   </div>
+
+   <div class="section">
+      <div class="title">
+         Pruebas
+      </div>
+      <div class="paragraph">
+         <b>QDump</b> ha sido probado en PHP 7.4 y 8.1.0 sobre plataforma Linux.
+         No ha sido testado en Windows ni Mac.
+      </div>
+   </div>
+
+   <div class="section">
+      <div class="title">
+         Garantía y licencia
+      </div>
+      <div class="paragraph">
+         <b>QDump</b> se distribuye sin ninguna garantía y bajo la licencia GPL
+         3.
+      </div>
+   </div>
+
+</body>
+</html>
