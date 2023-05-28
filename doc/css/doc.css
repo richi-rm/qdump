@@ -77,7 +77,6 @@ body > .title {
    padding: 10px;
    font-family: monospace;
    color: white;
-   white-space: pre;
 }
 
 .code > .command {

@@ -7,7 +7,7 @@
    <meta name="description" content="QDump library">
    <meta name="author" content="Ricardo Ruiz Martínez">
    <link rel="icon" href="favicon.png">
-   <link rel="stylesheet" href="css/styles.css">
+   <link rel="stylesheet" href="css/doc.css">
    <link rel="stylesheet" href="css/qdump.css">
 </head>
 <body>
@@ -52,8 +52,8 @@
          objetos.
       </div>
       <div class="paragraph">
-         <b>QDump</b> provee dos métodos principales para depurar: <b>dump()</b> y
-         <b>trace()</b>.
+         <b>QDump</b> provee dos métodos principales para depurar: <b>dump()</b>
+         y <b>trace()</b>.
       </div>
    </div>
 
@@ -79,14 +79,18 @@
       </div>
       <div class="paragraph">
          <b>QDump</b> es una librería PHP alojada en <a class="link"
-         href="https://github.com/onedevs-tech/qdump"
+         href="https://github.com/richi-rm/qdump"
          target="_blank">github.com</a> y registrada en <a class="link"
          href="https://packagist.org/packages/onedevs/qdump"
          target="_blank">packagist.org</a>. Puedes instalarla en cualquier
          proyecto usando composer, con el siguiente comando:
       </div>
       <div class="code-wrapper">
-         <div class="code">$ <span class="command">composer</span> <span class="command">require</span> <span class="parameter">onedevs/qdump</span></div>
+         <div class="code">
+            <span class="command">composer</span>
+            <span class="command">require</span>
+            <span class="parameter">onedevs/qdump</span>
+         </div>
       </div>
    </div>
 
@@ -96,11 +100,17 @@
       </div>
       <div class="paragraph">
          Si no usas composer puedes descargar la librería directamente desde
-         <a class="link" href="https://github.com/onedevs-tech/qdump"
-         target="_blank">github.com</a>:
+         <a class="link" href="https://github.com/richi-rm/qdump" target="_blank">
+            GitHub
+         </a>
+         :
       </div>
       <div class="code-wrapper">
-         <div class="code"><a class="link" href="https://github.com/onedevs-tech/qdump" target="_blank">https://github.com/onedevs-tech/qdump</a></div>
+         <div class="code">
+            <a class="link" href="https://github.com/richi-rm/qdump" target="_blank">
+               https://github.com/richi-rm/qdump
+            </a>
+         </div>
       </div>
       <div class="paragraph">
          Luego, en tu proyecto, tendrás que incluir el fichero
@@ -108,7 +118,10 @@
          usarla:
       </div>
       <div class="code-wrapper">
-         <div class="code"><span class="keyword">include</span> <span class="literal">'qdump/include.php';</span></div>
+         <div class="code">
+            <span class="keyword">include</span>
+            <span class="literal">'qdump/include.php';</span>
+         </div>
       </div>
    </div>
 
@@ -125,13 +138,29 @@
          <span class="code">$qd->trace()</span> las situarás donde necesites.
       </div>
       <div class="code-wrapper">
-         <div class="code"><span class="variable">$qd</span> = <span class="keyword">new</span> <span class="identifier">Onedevs\QDump\QDumper()</span>;<br />...<br /><span class="call">$qd->dump(</span>&lt;variable o expresión PHP&gt;<span class="call">)</span>;<br /><br /><span class="call">$qd->trace()</span>;</div>
+         <div class="code">
+            <span class="variable">$qd</span>
+            =
+            <span class="keyword">new</span>
+            <span class="identifier">\Onedevs\QDump\QDumper()</span>;<br />
+            <br />
+            ...<br />
+            <br />
+            <span class="call">$qd->dump(</span>
+            &lt;variable o expresión PHP&gt;
+            <span class="call">)</span>;<br />
+            <span class="call">$qd->trace()</span>;
+         </div>
       </div>
       <div class="paragraph">
          <ul>
-            <li><b>dump()</b> vuelca el valor de variables o expresiones en un
-                formato legible.</li>
-            <li><b>trace()</b> vuelca la pila de llamadas actual.</li>
+            <li>
+               <b>dump()</b> vuelca el valor de variables o expresiones en un
+               formato legible.
+            </li>
+            <li>
+               <b>trace()</b> vuelca la pila de llamadas actual.
+            </li>
          </ul>
          
       </div>
@@ -162,7 +191,20 @@
          ficheros).
       </div>
       <div class="code-wrapper">
-         <div class="code"><span class="variable">$qd</span> = <span class="keyword">new</span> <span class="identifier">Onedevs\QDump\QDumper(</span><span class="literal">'file'</span><span class="identifier">)</span>;<br />...<br /><span class="call">$qd->dump(</span>&lt;variable o expresión PHP&gt;<span class="call">)</span>;</div>
+         <div class="code">
+            <span class="variable">$qd</span>
+            =
+            <span class="keyword">new</span>
+            <span class="identifier">\Onedevs\QDump\QDumper(</span>
+            <span class="literal">'file'</span>
+            <span class="identifier">)</span>;<br />
+            <br />
+            ...<br />
+            <br />
+            <span class="call">$qd->dump(</span>
+            &lt;variable o expresión PHP&gt;
+            <span class="call">)</span>;
+         </div>
       </div>
       <div class="paragraph">
          La salida por defecto es <span class="code">stdout</span>.
@@ -174,7 +216,22 @@
          <span class="code">$output</span>, del siguiente modo:
       </div>
       <div class="code-wrapper">
-         <div class="code"><span class="variable">$qd</span> = <span class="keyword">new</span> <span class="identifier">Onedevs\QDump\QDumper(</span><span class="literal">'no-dump'</span><span class="identifier">)</span>;<br />...<br /><span class="variable">$output</span> = <span class="call">$qd->dump(</span>&lt;variable o expresión PHP&gt;<span class="call">)</span>;</div>
+         <div class="code">
+            <span class="variable">$qd</span>
+            =
+            <span class="keyword">new</span>
+            <span class="identifier">\Onedevs\QDump\QDumper(</span>
+            <span class="literal">'no-dump'</span>
+            <span class="identifier">)</span>;<br />
+            <br />
+            ...<br />
+            <br />
+            <span class="variable">$output</span>
+            =
+            <span class="call">$qd->dump(</span>
+            &lt;variable o expresión PHP&gt;
+            <span class="call">)</span>;
+         </div>
       </div>
    </div>
 
@@ -187,20 +244,32 @@
          <span class="code">$a</span> del siguiente código:
       </div>
       <div class="code-wrapper">
-         <div class="code"><span class="variable">$a</span> = <span class="literal">7</span>;</div>
+         <div class="code">
+            <span class="variable">$a</span>
+            =
+            <span class="literal">7</span>;
+         </div>
       </div>
       <div class="paragraph">
          Escribiremos debajo lo siguiente:
       </div>
       <div class="code-wrapper">
-         <div class="code"><span class="variable">$a</span> = <span class="literal">7</span>;<br /><br /><span class="call">$qd->dump(</span><span class="variable">$a</span><span class="call">)</span>;</div>
+         <div class="code">
+            <span class="variable">$a</span>
+            =
+            <span class="literal">7</span>;<br />
+            <br />
+            <span class="call">$qd->dump(</span>
+            <span class="variable">$a</span>
+            <span class="call">)</span>;
+         </div>
       </div>
       <div class="paragraph">
          La salida (en pantalla o consola) de <b>QDump</b>, si el tipo de salida
          es <span class="code">stdout</span>, será:
       </div>
       <div class="qdump-pre-capture-wrapper">
-         <pre class="qdump qdump-pre-capture">1) <span class="qdump qdump-type">int</span> <span class="qdump qdump-scalar">7</span></pre>
+         <pre class="qdump qdump-pre-capture">1)<span class="qdump qdump-type">int</span> <span class="qdump qdump-scalar">7</span></pre>
       </div>
       <div class="paragraph">
          En la anterior salida se muestra que <span class="code">$a</span> es
@@ -212,7 +281,19 @@
          <b>dump()</b> admite más de un parámetro. Ejemplo:
       </div>
       <div class="code-wrapper">
-         <div class="code"><span class="variable">$a</span> = <span class="literal">7</span>;<br /><span class="variable">$b</span> = <span class="literal">'foo'</span>;<br /><br /><span class="call">$qd->dump(</span><span class="variable">$a</span>, <span class="variable">$b</span><span class="call">)</span>;</div>
+         <div class="code">
+            <span class="variable">$a</span>
+            =
+            <span class="literal">7</span>;<br />
+            <span class="variable">$b</span>
+            =
+            <span class="literal">'foo'</span>;<br />
+            <br />
+            <span class="call">$qd->dump(</span>
+            <span class="variable">$a</span>,
+            <span class="variable">$b</span>
+            <span class="call">)</span>;
+         </div>
       </div>
       <div class="paragraph">
          La salida de <b>QDump</b> correspondiente al ejemplo anterior será:
@@ -222,8 +303,8 @@
          <pre class="qdump qdump-pre-capture">2) <span class="qdump qdump-type">string(3)</span> <span class="qdump qdump-scalar">"foo"</span></pre>
       </div>
       <div class="paragraph">
-         El número que antecede a la variable o expresión volcada es el orden
-         de captura: 1), 2), etc.
+         El número que antecede a la variable o expresión volcada es el orden de
+         captura: 1), 2), etc.
       </div>
    </div>
 
@@ -239,7 +320,22 @@
          parámetro <span class="code">max-string-length</span>. Ejemplo:
       </div>
       <div class="code-wrapper">
-         <div class="code"><span class="variable">$qd</span> = <span class="keyword">new</span> <span class="identifier">Onedevs\QDump\QDumper(</span><span class="literal">'max-string-length:10'</span><span class="identifier">)</span>;<br /><br /><span class="variable">$a</span> = <span class="literal">'éstas son algunas palabras de ejemplo'</span>;<br /><br /><span class="call">$qd->dump(</span><span class="variable">$a</span><span class="call">)</span>;</div>
+         <div class="code">
+            <span class="variable">$qd</span>
+            =
+            <span class="keyword">new</span>
+            <span class="identifier">\Onedevs\QDump\QDumper(</span>
+            <span class="literal">'max-string-length:10'</span>
+            <span class="identifier">)</span>;<br />
+            <br />
+            <span class="variable">$a</span>
+            =
+            <span class="literal">'éstas son algunas palabras de ejemplo'</span>;<br />
+            <br />
+            <span class="call">$qd->dump(</span>
+            <span class="variable">$a</span>
+            <span class="call">)</span>;
+         </div>
       </div>
       <div class="paragraph">
          La salida de dump() para el ejemplo anterior será:
@@ -252,7 +348,22 @@
          un parámetro <span class="code">max-string-length</span> negativo:
       </div>
       <div class="code-wrapper">
-         <div class="code"><span class="variable">$qd</span> = <span class="keyword">new</span> <span class="identifier">Onedevs\QDump\QDumper(</span><span class="literal">'max-string-length:-3'</span><span class="identifier">)</span>;<br /><br /><span class="variable">$a</span> = <span class="literal">'éstas son algunas palabras de ejemplo'</span>;<br /><br /><span class="call">$qd->dump(</span><span class="variable">$a</span><span class="call">)</span>;</div>
+         <div class="code">
+            <span class="variable">$qd</span>
+            =
+            <span class="keyword">new</span>
+            <span class="identifier">\Onedevs\QDump\QDumper(</span>
+            <span class="literal">'max-string-length:-3'</span>
+            <span class="identifier">)</span>;<br />
+            <br />
+            <span class="variable">$a</span>
+            =
+            <span class="literal">'éstas son algunas palabras de ejemplo'</span>;<br />
+            <br />
+            <span class="call">$qd->dump(</span>
+            <span class="variable">$a</span>
+            <span class="call">)</span>;
+         </div>
       </div>
       <div class="paragraph">
          La salida del ejemplo anterior es:
@@ -291,7 +402,22 @@
          Ejemplo:
       </div>
       <div class="code-wrapper">
-         <div class="code"><span class="variable">$qd</span> = <span class="keyword">new</span> <span class="identifier">Onedevs\QDump\QDumper(</span><span class="literal">'ascii'</span><span class="identifier">)</span>;<br /><br /><span class="variable">$a</span> = <span class="literal">'éstas son algunas palabras de ejemplo'</span>;<br /><br /><span class="call">$qd->dump(</span><span class="variable">$a</span><span class="call">)</span>;</div>
+         <div class="code">
+            <span class="variable">$qd</span>
+            =
+            <span class="keyword">new</span>
+            <span class="identifier">\Onedevs\QDump\QDumper(</span>
+            <span class="literal">'ascii'</span>
+            <span class="identifier">)</span>;<br />
+            <br />
+            <span class="variable">$a</span>
+            =
+            <span class="literal">'éstas son algunas palabras de ejemplo'</span>;<br />
+            <br />
+            <span class="call">$qd->dump(</span>
+            <span class="variable">$a</span>
+            <span class="call">)</span>;
+         </div>
       </div>
       <div class="paragraph">
          En la salida del ejemplo anterior se puede ver cómo los dos bytes
@@ -307,7 +433,22 @@
          <b>json</b> podemos hacer lo siguiente:
       </div>
       <div class="code-wrapper">
-         <div class="code"><span class="variable">$qd</span> = <span class="keyword">new</span> <span class="identifier">Onedevs\QDump\QDumper(</span><span class="literal">'json'</span><span class="identifier">)</span>;<br /><br /><span class="variable">$a</span> = <span class="literal">'éstas son algunas palabras de ejemplo'</span>;<br /><br /><span class="call">$qd->dump(</span><span class="variable">$a</span><span class="call">)</span>;</div>
+         <div class="code">
+            <span class="variable">$qd</span>
+            =
+            <span class="keyword">new</span>
+            <span class="identifier">\Onedevs\QDump\QDumper(</span>
+            <span class="literal">'json'</span>
+            <span class="identifier">)</span>;<br />
+            <br />
+            <span class="variable">$a</span>
+            =
+            <span class="literal">'éstas son algunas palabras de ejemplo'</span>;<br />
+            <br />
+            <span class="call">$qd->dump(</span>
+            <span class="variable">$a</span>
+            <span class="call">)</span>;
+         </div>
       </div>
       <div class="paragraph">
          La salida del ejemplo anterior sería:
@@ -329,19 +470,28 @@
          objeto <b>QDumper</b> la opción <span class="code">bytes</span> más una
          de las siguientes opciones:
          <ul>
-            <li><span class="code">bits</span>: vuelca las cadenas como
-                secuencias de bytes representados por sus <b>bits</b>.</li>
-            <li><span class="code">decimal</span>: vuelca las cadenas como
-                secuencias de bytes representados en <b>notación decimal</b>.
-                </li>
-            <li><span class="code">hexlc</span>: vuelca las cadenas como
-                secuencias de bytes representados en <b>notación hexadecimal con
-                las letras en minúsculas</b>.</li>
-            <li><span class="code">hexuc</span>: vuelca las cadenas como
-                secuencias de bytes representados en <b>notación hexadecimal con
-                las letras en mayúsculas</b>.</li>
-            <li><span class="code">octal</span>: vuelca las cadenas como
-                secuencias de bytes representados en <b>notación octal</b>.</li>
+            <li>
+               <span class="code">bits</span>: vuelca las cadenas como
+               secuencias de bytes representados por sus <b>bits</b>.
+             </li>
+            <li>
+               <span class="code">decimal</span>: vuelca las cadenas como
+               secuencias de bytes representados en <b>notación decimal</b>.
+            </li>
+            <li>
+               <span class="code">hexlc</span>: vuelca las cadenas como
+               secuencias de bytes representados en <b>notación hexadecimal con
+               las letras en minúsculas</b>.
+            </li>
+            <li>
+               <span class="code">hexuc</span>: vuelca las cadenas como
+               secuencias de bytes representados en <b>notación hexadecimal con
+               las letras en mayúsculas</b>.
+            </li>
+            <li>
+               <span class="code">octal</span>: vuelca las cadenas como
+               secuencias de bytes representados en <b>notación octal</b>.
+            </li>
          </ul>
       </div>
       <div class="paragraph">
@@ -349,7 +499,22 @@
          representada por caracteres hexadecimales con las letras en minúsculas:
       </div>
       <div class="code-wrapper">
-         <div class="code"><span class="variable">$qd</span> = <span class="keyword">new</span> <span class="identifier">Onedevs\QDump\QDumper(</span><span class="literal">'bytes,hexlc'</span><span class="identifier">)</span>;<br /><br /><span class="variable">$string</span> = <span class="literal">'esto es una prueba'</span>;<br /><br /><span class="call">$qd->dump(</span><span class="variable">$string</span><span class="call">)</span>;</div>
+         <div class="code">
+            <span class="variable">$qd</span>
+            =
+            <span class="keyword">new</span>
+            <span class="identifier">\Onedevs\QDump\QDumper(</span>
+            <span class="literal">'bytes,hexlc'</span>
+            <span class="identifier">)</span>;<br />
+            <br />
+            <span class="variable">$string</span>
+            =
+            <span class="literal">'esto es una prueba'</span>;<br />
+            <br />
+            <span class="call">$qd->dump(</span>
+            <span class="variable">$string</span>
+            <span class="call">)</span>;
+         </div>
       </div>
    </div>
 
@@ -365,7 +530,23 @@
          Supongamos el siguiente ejemplo:
       </div>
       <div class="code-wrapper">
-         <div class="code"><span class="variable">$a</span> = [<span class="literal">'foo'</span> => <span class="literal">'bar'</span>, <span class="literal">'baz'</span> => [<span class="literal">'qux'</span> => <span class="literal">'quux'</span>]];<br /><br /><span class="call">$qd->dump(</span><span class="variable">$a</span><span class="call">)</span>;</div>
+         <div class="code">
+            <span class="variable">$a</span>
+            = [
+            <span class="literal">'foo'</span>
+            =>
+            <span class="literal">'bar'</span>,
+            <span class="literal">'baz'</span>
+            => [
+            <span class="literal">'qux'</span>
+            =>
+            <span class="literal">'quux'</span>
+            ]];<br />
+            <br />
+            <span class="call">$qd->dump(</span>
+            <span class="variable">$a</span>
+            <span class="call">)</span>;
+         </div>
       </div>
       <div class="paragraph">
          La salida sería:
@@ -380,8 +561,7 @@
          Nótese que el array mostrado está ordenado por sus claves. Si no
          queremos ordenar los arrays lo indicamos con la opción
          <span class="code">no-sort</span> en el constructor del objeto
-         <b>QDumper</b>.
-         <br />
+         <b>QDumper</b>.<br />
          <br />
          Si no hubiésemos indicado <span class="code">expand-arrays</span> en el
          constructor la salida correspondiente al ejemplo anterior hubiese sido:
@@ -410,23 +590,56 @@
          Consideremos el siguiente ejemplo:
       </div>
       <div class="code-wrapper">
-         <div class="code"><span class="keyword">namespace</span> <span class="identifier">Name\Space</span>;
-
-<span class="keyword">class</span> <span class="identifier">A</span> {
-   <span class="keyword">public</span> <span class="keyword">int</span> <span class="variable">$prop_a</span>;
-}
-
-<span class="keyword">class</span> <span class="identifier">B</span> <span class="keyword">extends</span> <span class="identifier">A</span> {
-   <span class="keyword">public</span> <span class="keyword">function</span> <span class="identifier">method_b</span>() { }
-}
-
-<span class="keyword">class</span> <span class="identifier">C</span> <span class="keyword">extends</span> <span class="identifier">B</span> {
-   <span class="keyword">public</span> <span class="keyword">const</span> <span class="identifier">CONST_C</span> = <span class="literal">'C'</span>;
-}
-
-<span class="variable">$o</span> = <span class="keyword">new</span> <span class="identifier">C</span>;
-
-<span class="call">$qd->dump(</span><span class="variable">$o</span><span class="call">)</span>;</div>
+         <div class="code">
+            <span class="keyword">namespace</span>
+            <span class="identifier">Name\Space</span>;<br />
+            <br />
+            <span class="keyword">class</span>
+            <span class="identifier">A</span>
+            {<br />
+            &nbsp;&nbsp;
+            <span class="keyword">public</span>
+            <span class="keyword">int</span>
+            <span class="variable">$prop_a</span>;<br />
+            }<br />
+            <br />
+            <span class="keyword">class</span>
+            <span class="identifier">B</span>
+            <span class="keyword">extends</span>
+            <span class="identifier">A</span>
+            {<br />
+            &nbsp;&nbsp;
+            <span class="keyword">public</span>
+            <span class="keyword">function</span>
+            <span class="identifier">method_b</span>()<br />
+            &nbsp;&nbsp;
+            {<br />
+            &nbsp;&nbsp;
+            }<br />
+            }<br />
+            <br />
+            <span class="keyword">class</span>
+            <span class="identifier">C</span>
+            <span class="keyword">extends</span>
+            <span class="identifier">B</span>
+            {<br />
+            &nbsp;&nbsp;
+            <span class="keyword">public</span>
+            <span class="keyword">const</span>
+            <span class="identifier">CONST_C</span>
+            =
+            <span class="literal">'C'</span>;<br />
+            }<br />
+            <br />
+            <span class="variable">$o</span>
+            =
+            <span class="keyword">new</span>
+            <span class="identifier">C</span>;<br />
+            <br />
+            <span class="call">$qd->dump(</span>
+            <span class="variable">$o</span>
+            <span class="call">)</span>;
+         </div>
       </div>
       <div class="paragraph">
          La salida sería la siguiente:
@@ -501,18 +714,40 @@
          Ejemplo:
       </div>
       <div class="code-wrapper">
-         <div class="code"><span class="variable">$qd</span> = <span class="keyword">new</span> <span class="identifier">Onedevs\QDump\QDumper</span>(<span class="literal">'expand-arrays'</span>);
-
-<span class="variable">$a</span> = [1, &<span class="variable">$a</span>];
-
-<span class="keyword">class</span> <span class="identifier">C</span> {
-   <span class="keyword">public</span> <span class="variable">$prop</span>;
-}
-
-<span class="variable">$o</span> = <span class="keyword">new</span> <span class="identifier">C</span>;
-<span class="variable">$o->prop</span> = <span class="variable">$o</span>;
-
-<span class="call">$qd->dump(</span><span class="variable">$a</span>, <span class="variable">$o</span><span class="call">)</span>;</div>
+         <div class="code">
+            <span class="variable">$qd</span>
+            =
+            <span class="keyword">new</span>
+            <span class="identifier">\Onedevs\QDump\QDumper</span>(
+            <span class="literal">'expand-arrays'
+            </span>
+            );<br />
+            <br />
+            <span class="variable">$a</span>
+            =
+            [1, &<span class="variable">$a</span>];<br />
+            <br />
+            <span class="keyword">class</span>
+            <span class="identifier">C</span>
+            {<br />
+            &nbsp;&nbsp;
+               <span class="keyword">public</span>
+               <span class="variable">$prop</span>;<br />
+            }<br />
+            <br />
+            <span class="variable">$o</span>
+            =
+            <span class="keyword">new</span>
+            <span class="identifier">C</span>;<br />
+            <span class="variable">$o->prop</span>
+            =
+            <span class="variable">$o</span>;<br />
+            <br />
+            <span class="call">$qd->dump(</span>
+            <span class="variable">$a</span>,
+            <span class="variable">$o</span>
+            <span class="call">)</span>;
+         </div>
       </div>
       <div class="paragraph">
          La salida del ejemplo anterior corresponde a un volcado de un array
@@ -551,7 +786,30 @@
          Ejemplo:
       </div>
       <div class="code-wrapper">
-         <div class="code"><span class="variable">$qd</span> = <span class="keyword">new</span> <span class="identifier">Onedevs\QDump\QDumper</span>(<span class="literal">'expand-arrays,max-depth:1'</span>);<br /><br /><span class="variable">$a</span> = [<span class="literal">'foo'</span> => <span class="literal">'bar'</span>, <span class="literal">'baz'</span> => [<span class="literal">'qux'</span> => <span class="literal">'quux'</span>]];<br /><br /><span class="call">$qd->dump(</span><span class="variable">$a</span><span class="call">)</span>;</div>
+         <div class="code">
+            <span class="variable">$qd</span>
+            =
+            <span class="keyword">new</span>
+            <span class="identifier">\Onedevs\QDump\QDumper</span>(
+            <span class="literal">'expand-arrays,max-depth:1'</span>
+            );<br />
+            <br />
+            <span class="variable">$a</span>
+            = [
+            <span class="literal">'foo'</span>
+            =>
+            <span class="literal">'bar'</span>,
+            <span class="literal">'baz'</span>
+            => [
+            <span class="literal">'qux'</span>
+            =>
+            <span class="literal">'quux'</span>
+            ]];<br />
+            <br />
+            <span class="call">$qd->dump(</span>
+            <span class="variable">$a</span>
+            <span class="call">)</span>;
+         </div>
       </div>
       <div class="paragraph">
          En el ejemplo anterior hemos fijado la profundidad máxima a 1. Esto
@@ -604,7 +862,14 @@
          correspondiente en el constructor del objeto <b>QDumper</b>:
       </div>
       <div class="code-wrapper">
-         <div class="code"><span class="variable">$qd</span> = <span class="keyword">new</span> <span class="identifier">Onedevs\QDump\QDumper</span>(<span class="literal">'ansi'</span>);</div>
+         <div class="code">
+            <span class="variable">$qd</span>
+            =
+            <span class="keyword">new</span>
+            <span class="identifier">\Onedevs\QDump\QDumper</span>(
+            <span class="literal">'ansi'</span>
+            );
+         </div>
       </div>
    </div>
 
@@ -623,7 +888,14 @@
          salida se vuelque a un fichero:
       </div>
       <div class="code-wrapper">
-         <div class="code"><span class="variable">$qd</span> = <span class="keyword">new</span> <span class="identifier">Onedevs\QDump\QDumper</span>(<span class="literal">'ansi,file'</span>);</div>
+         <div class="code">
+            <span class="variable">$qd</span>
+            =
+            <span class="keyword">new</span>
+            <span class="identifier">\Onedevs\QDump\QDumper</span>(
+            <span class="literal">'ansi,file'</span>
+            );
+         </div>
       </div>
       <div class="paragraph">
          Según lo declarado en el ejemplo anterior, cualquier volcado con
@@ -662,7 +934,14 @@
          <span class="code">file:carpeta</span>. Ejemplo:
       </div>
       <div class="code-wrapper">
-         <div class="code"><span class="variable">$qd</span> = <span class="keyword">new</span> <span class="identifier">Onedevs\QDump\QDumper</span>(<span class="literal">'ansi,file:/home/user/qdump'</span>);</div>
+         <div class="code">
+            <span class="variable">$qd</span>
+            =
+            <span class="keyword">new</span>
+            <span class="identifier">\Onedevs\QDump\QDumper</span>(
+            <span class="literal">'ansi,file:/home/user/qdump'</span>
+            );
+         </div>
       </div>
       <div class="paragraph">
          Según lo declarado en el ejemplo anterior toda la salida de
@@ -686,7 +965,24 @@
          Supongamos el siguiente ejemplo:
       </div>
       <div class="code-wrapper">
-         <div class="code"><span class="variable">$qd</span> = <span class="keyword">new</span> <span class="identifier">Onedevs\QDump\QDumper</span>();<br /><br /><span class="keyword">function</span> <span class="identifier">f_a</span>() { <span class="call">f_b()</span>; }<br /><span class="keyword">function</span> <span class="identifier">f_b</span>() { <span class="call">f_c()</span>; }<br /><span class="keyword">function</span> <span class="identifier">f_c</span>() { <span class="call">$GLOBALS['qd']->trace()</span>; }<br /><br /><span class="call">f_a()</span>;</div>
+         <div class="code">
+            <span class="variable">$qd</span>
+            =
+            <span class="keyword">new</span>
+            <span class="identifier">\Onedevs\QDump\QDumper</span>();<br />
+            <br />
+            <span class="keyword">function</span>
+            <span class="identifier">f_a</span>() {
+            <span class="call">f_b()</span>; }<br />
+            <span class="keyword">function</span>
+            <span class="identifier">f_b</span>() {
+            <span class="call">f_c()</span>; }<br />
+            <span class="keyword">function</span>
+            <span class="identifier">f_c</span>() {
+            <span class="call">$GLOBALS['qd']->trace()</span>; }<br />
+            <br />
+            <span class="call">f_a()</span>;
+         </div>
       </div>
       <div class="paragraph">
          En el ejemplo anterior llamamos a la función
@@ -725,27 +1021,63 @@
          Ejemplo:
       </div>
       <div class="code-wrapper">
-         <div class="code"><span class="keyword">namespace</span> <span class="identifier">Name\Space</span>;
-
-<span class="keyword">include</span> <span class="literal">'vendor/autoload.php'</span>;
-
-<span class="variable">$qd</span> = <span class="keyword">new</span> <span class="identifier">\Onedevs\QDump\QDumper</span>(<span class="literal">'verbose'</span>);
-
-<span class="keyword">class</span> <span class="identifier">A</span> {
-   <span class="keyword">public</span> <span class="keyword">int</span> <span class="variable">$prop_a</span>;
-}
-
-<span class="keyword">class</span> <span class="identifier">B</span> <span class="keyword">extends</span> <span class="identifier">A</span> {
-   <span class="keyword">public</span> <span class="keyword">function</span> <span class="identifier">method_b</span>() { }
-}
-
-<span class="keyword">class</span> <span class="identifier">C</span> <span class="keyword">extends</span> <span class="identifier">B</span> {
-   <span class="keyword">public</span> <span class="keyword">const</span> <span class="identifier">CONST_C</span> = <span class="literal">'C'</span>;
-}
-
-<span class="variable">$o</span> = <span class="keyword">new</span> <span class="identifier">C</span>;
-
-<span class="call">$qd->dump(</span><span class="variable">$o</span><span class="call">)</span>;</div>
+         <div class="code">
+            <span class="keyword">namespace</span>
+            <span class="identifier">Name\Space</span>;<br />
+            <br />
+            <span class="keyword">include</span>
+            <span class="literal">'vendor/autoload.php'</span>;<br />
+            <br />
+            <span class="variable">$qd</span>
+            =
+            <span class="keyword">new</span>
+            <span class="identifier">\Onedevs\QDump\QDumper</span>(
+            <span class="literal">'verbose'</span>
+            );<br />
+            <br />
+            <span class="keyword">class</span>
+            <span class="identifier">A</span> {<br />
+            &nbsp;&nbsp;
+            <span class="keyword">public</span>
+            <span class="keyword">int</span>
+            <span class="variable">$prop_a</span>;<br />
+            }<br />
+            <br />
+            <span class="keyword">class</span>
+            <span class="identifier">B</span>
+            <span class="keyword">extends</span>
+            <span class="identifier">A</span> {<br />
+            &nbsp;&nbsp;
+            <span class="keyword">public</span>
+            <span class="keyword">function</span>
+            <span class="identifier">method_b</span>()<br />
+            &nbsp;&nbsp;
+            {<br />
+            &nbsp;&nbsp;
+            }<br />
+            }<br />
+            <br />
+            <span class="keyword">class</span>
+            <span class="identifier">C</span>
+            <span class="keyword">extends</span>
+            <span class="identifier">B</span> {<br />
+            &nbsp;&nbsp;
+            <span class="keyword">public</span>
+            <span class="keyword">const</span>
+            <span class="identifier">CONST_C</span>
+            =
+            <span class="literal">'C'</span>;<br />
+            }<br />
+            <br />
+            <span class="variable">$o</span>
+            =
+            <span class="keyword">new</span>
+            <span class="identifier">C</span>;<br />
+            <br />
+            <span class="call">$qd->dump(</span>
+            <span class="variable">$o</span>
+            <span class="call">)</span>;
+         </div>
       </div>
       <div class="paragraph">
          La salida de <b>dump()</b> estará antecedida en este caso por una
@@ -809,6 +1141,27 @@ HTTP request: ::1 -> GET http://test.localhost/
       <div class="paragraph">
          <b>QDump</b> se distribuye sin ninguna garantía y bajo la licencia GPL
          3.
+      </div>
+   </div>
+
+   <div class="section">
+      <div class="title">
+         Autor
+      </div>
+      <div class="paragraph">
+         <b>QDump</b> ha sido desarrollado por
+         <a
+            class="link"
+            href="https://www.linkedin.com/in/ricardo-ruiz-mart%C3%ADnez-b686a1178/"
+            target="_blank">
+            Ricardo Ruiz Martínez
+         </a>
+         [<a
+            class="link"
+            href="mailto:richiruizmartinez@gmail.com">
+            richiruizmartinez@gmail.com
+         </a>]
+         en su tiempo libre.
       </div>
    </div>
 
