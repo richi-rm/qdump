@@ -2,4 +2,10 @@
 
 *Improved var_dump()* for PHP projects.
 
-The documentation is in the doc/ folder. At the moment it is only in Spanish.
+Install:
+
+```
+composer require onedevs/qdump
+```
+
+The documentation is in the doc/ folder of the project. At the moment it is only in Spanish.
