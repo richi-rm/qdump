@@ -1,7 +1,7 @@
 {
    "name": "onedevs/qdump",
    "description": "Improved var_dump()",
-   "version": "v0.8.3",
+   "version": "v0.8.6",
    "type": "library",
    "keywords": ["debug", "debugging", "dump", "print_r", "qdump", "var_dump", "var_export"],
    "homepage": "https://doc.onedevs.tech/qdump",
