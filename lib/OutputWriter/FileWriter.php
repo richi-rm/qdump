@@ -1,10 +1,10 @@
 <?php
 
 
-namespace Onedevs\QDump\OutputWriter;
+namespace RichiRM\QDump\OutputWriter;
 
 
-use Onedevs\QDump\Context;
+use RichiRM\QDump\Context;
 
 
 class FileWriter implements OutputWriterInterface {

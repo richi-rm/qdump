@@ -4,10 +4,10 @@ INSTALL
 
 You can install QDump into your project using composer:
 
-composer require onedevs/qdump:dev-main
+composer require richirm/qdump
 
 Or, if you don't use composer, you can download it from
-https://github.com/onedevs-tech/qdump and include the
+https://github.com/richi-rm/qdump and include the
 following file:
 
 include 'qdump/include.php'
@@ -19,7 +19,7 @@ USAGE of dump()
 
 First of all, you must instantiate a QDumper object:
 
-$qd = new Onedevs\QDump\QDumper();
+$qd = new RichiRM\QDump\QDumper();
 
 QDump brings you two main methods: dump() and trace().
 

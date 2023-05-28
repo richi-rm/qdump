@@ -1,10 +1,10 @@
 {
-   "name": "onedevs/qdump",
+   "name": "richirm/qdump",
    "description": "Improved var_dump()",
-   "version": "v0.8.7",
+   "version": "v0.9.0",
    "type": "library",
    "keywords": ["debug", "debugging", "dump", "print_r", "qdump", "var_dump", "var_export"],
-   "homepage": "https://doc.onedevs.tech/qdump",
+   "homepage": "https://github.com/richi-rm/qdump",
    "license": "GPL-3.0-or-later",
    "authors": [
       {
@@ -14,7 +14,7 @@
    ],
    "autoload": {
       "psr-4": {
-         "Onedevs\\QDump\\": "lib/"
+         "RichiRM\\QDump\\": "lib/"
       }
    },   
    "require": {

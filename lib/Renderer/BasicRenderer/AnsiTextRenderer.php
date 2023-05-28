@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Onedevs\QDump\Renderer\BasicRenderer;
+namespace RichiRM\QDump\Renderer\BasicRenderer;
 
 
 class AnsiTextRenderer extends BasicRenderer {

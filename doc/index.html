@@ -22,7 +22,8 @@
          por:
          <a class="link" href="https://www.linkedin.com/in/ricardo-ruiz-mart%C3%ADnez-b686a1178/" target="_blank">Ricardo Ruiz Martínez</a>
          -
-         <a class="link" href="mailto:richiruizmartinez@gmail.com">richiruizmartinez@gmail.com</a>
+         <a class="link" href="mailto:richiruizmartinez@gmail.com">richiruizmartinez@gmail.com</a><br />
+         <a class="link" href="https://github.com/richi-rm/qdump" target="_blank">https://github.com/richi-rm/qdump</a>
    </div>
    <br />
    <div class="last-update">
@@ -59,37 +60,21 @@
 
    <div class="section">
       <div class="title">
-         Comentarios, bugs y sugerencias
-      </div>
-      <div class="paragraph">
-         Si te animas a probar la librería espero que te ayude en tus sesiones
-         de depuración.<br />
-         <br />
-         Siéntete libre de enviar a
-         <a class="link" href="mailto:richiruizmartinez@gmail.com">
-            richiruizmartinez@gmail.com
-         </a>
-         cualquier comentario, bug que encuentres o sugerencia.
-      </div>
-   </div>
-
-   <div class="section">
-      <div class="title">
          Instalación con composer
       </div>
       <div class="paragraph">
          <b>QDump</b> es una librería PHP alojada en <a class="link"
          href="https://github.com/richi-rm/qdump"
-         target="_blank">github.com</a> y registrada en <a class="link"
-         href="https://packagist.org/packages/onedevs/qdump"
+         target="_blank">GitHub</a> y registrada en <a class="link"
+         href="https://packagist.org/packages/richirm/qdump"
          target="_blank">packagist.org</a>. Puedes instalarla en cualquier
-         proyecto usando composer, con el siguiente comando:
+         proyecto usando <b>composer</b>, con el siguiente comando:
       </div>
       <div class="code-wrapper">
          <div class="code">
             <span class="command">composer</span>
             <span class="command">require</span>
-            <span class="parameter">onedevs/qdump</span>
+            <span class="parameter">richirm/qdump</span>
          </div>
       </div>
    </div>
@@ -142,7 +127,7 @@
             <span class="variable">$qd</span>
             =
             <span class="keyword">new</span>
-            <span class="identifier">\Onedevs\QDump\QDumper()</span>;<br />
+            <span class="identifier">\RichiRM\QDump\QDumper()</span>;<br />
             <br />
             ...<br />
             <br />
@@ -195,7 +180,7 @@
             <span class="variable">$qd</span>
             =
             <span class="keyword">new</span>
-            <span class="identifier">\Onedevs\QDump\QDumper(</span>
+            <span class="identifier">\RichiRM\QDump\QDumper(</span>
             <span class="literal">'file'</span>
             <span class="identifier">)</span>;<br />
             <br />
@@ -220,7 +205,7 @@
             <span class="variable">$qd</span>
             =
             <span class="keyword">new</span>
-            <span class="identifier">\Onedevs\QDump\QDumper(</span>
+            <span class="identifier">\RichiRM\QDump\QDumper(</span>
             <span class="literal">'no-dump'</span>
             <span class="identifier">)</span>;<br />
             <br />
@@ -324,7 +309,7 @@
             <span class="variable">$qd</span>
             =
             <span class="keyword">new</span>
-            <span class="identifier">\Onedevs\QDump\QDumper(</span>
+            <span class="identifier">\RichiRM\QDump\QDumper(</span>
             <span class="literal">'max-string-length:10'</span>
             <span class="identifier">)</span>;<br />
             <br />
@@ -352,7 +337,7 @@
             <span class="variable">$qd</span>
             =
             <span class="keyword">new</span>
-            <span class="identifier">\Onedevs\QDump\QDumper(</span>
+            <span class="identifier">\RichiRM\QDump\QDumper(</span>
             <span class="literal">'max-string-length:-3'</span>
             <span class="identifier">)</span>;<br />
             <br />
@@ -406,7 +391,7 @@
             <span class="variable">$qd</span>
             =
             <span class="keyword">new</span>
-            <span class="identifier">\Onedevs\QDump\QDumper(</span>
+            <span class="identifier">\RichiRM\QDump\QDumper(</span>
             <span class="literal">'ascii'</span>
             <span class="identifier">)</span>;<br />
             <br />
@@ -437,7 +422,7 @@
             <span class="variable">$qd</span>
             =
             <span class="keyword">new</span>
-            <span class="identifier">\Onedevs\QDump\QDumper(</span>
+            <span class="identifier">\RichiRM\QDump\QDumper(</span>
             <span class="literal">'json'</span>
             <span class="identifier">)</span>;<br />
             <br />
@@ -503,7 +488,7 @@
             <span class="variable">$qd</span>
             =
             <span class="keyword">new</span>
-            <span class="identifier">\Onedevs\QDump\QDumper(</span>
+            <span class="identifier">\RichiRM\QDump\QDumper(</span>
             <span class="literal">'bytes,hexlc'</span>
             <span class="identifier">)</span>;<br />
             <br />
@@ -718,7 +703,7 @@
             <span class="variable">$qd</span>
             =
             <span class="keyword">new</span>
-            <span class="identifier">\Onedevs\QDump\QDumper</span>(
+            <span class="identifier">\RichiRM\QDump\QDumper</span>(
             <span class="literal">'expand-arrays'
             </span>
             );<br />
@@ -790,7 +775,7 @@
             <span class="variable">$qd</span>
             =
             <span class="keyword">new</span>
-            <span class="identifier">\Onedevs\QDump\QDumper</span>(
+            <span class="identifier">\RichiRM\QDump\QDumper</span>(
             <span class="literal">'expand-arrays,max-depth:1'</span>
             );<br />
             <br />
@@ -866,7 +851,7 @@
             <span class="variable">$qd</span>
             =
             <span class="keyword">new</span>
-            <span class="identifier">\Onedevs\QDump\QDumper</span>(
+            <span class="identifier">\RichiRM\QDump\QDumper</span>(
             <span class="literal">'ansi'</span>
             );
          </div>
@@ -892,7 +877,7 @@
             <span class="variable">$qd</span>
             =
             <span class="keyword">new</span>
-            <span class="identifier">\Onedevs\QDump\QDumper</span>(
+            <span class="identifier">\RichiRM\QDump\QDumper</span>(
             <span class="literal">'ansi,file'</span>
             );
          </div>
@@ -938,7 +923,7 @@
             <span class="variable">$qd</span>
             =
             <span class="keyword">new</span>
-            <span class="identifier">\Onedevs\QDump\QDumper</span>(
+            <span class="identifier">\RichiRM\QDump\QDumper</span>(
             <span class="literal">'ansi,file:/home/user/qdump'</span>
             );
          </div>
@@ -969,7 +954,7 @@
             <span class="variable">$qd</span>
             =
             <span class="keyword">new</span>
-            <span class="identifier">\Onedevs\QDump\QDumper</span>();<br />
+            <span class="identifier">\RichiRM\QDump\QDumper</span>();<br />
             <br />
             <span class="keyword">function</span>
             <span class="identifier">f_a</span>() {
@@ -1001,7 +986,7 @@
    3 <span class="qdump qdump-fileline">/home/user/web/index.php(8)</span>
      <span class="qdump qdump-method">f_c</span>()
    4 <span class="qdump qdump-fileline">/home/user/web/index.php(9)</span>
-     <span class="qdump qdump-namespace">Onedevs\QDump\</span><span class="qdump qdump-class">QDumper</span>-><span class="qdump qdump-modifier">public</span> <span class="qdump qdump-modifier">function</span> <span class="qdump qdump-method">trace</span>()</pre>
+     <span class="qdump qdump-namespace">RichiRM\QDump\</span><span class="qdump qdump-class">QDumper</span>-><span class="qdump qdump-modifier">public</span> <span class="qdump qdump-modifier">function</span> <span class="qdump qdump-method">trace</span>()</pre>
       </div>
       <div class="paragraph">
          En la salida anterior podemos ver la pila de llamadas actual, así como
@@ -1031,7 +1016,7 @@
             <span class="variable">$qd</span>
             =
             <span class="keyword">new</span>
-            <span class="identifier">\Onedevs\QDump\QDumper</span>(
+            <span class="identifier">\RichiRM\QDump\QDumper</span>(
             <span class="literal">'verbose'</span>
             );<br />
             <br />
@@ -1146,10 +1131,10 @@ HTTP request: ::1 -> GET http://test.localhost/
 
    <div class="section">
       <div class="title">
-         Autor
+         Comentarios, bugs y sugerencias
       </div>
       <div class="paragraph">
-         <b>QDump</b> ha sido desarrollado por
+         <b>QDump</b> ha sido desarrollada por
          <a
             class="link"
             href="https://www.linkedin.com/in/ricardo-ruiz-mart%C3%ADnez-b686a1178/"
@@ -1161,7 +1146,14 @@ HTTP request: ::1 -> GET http://test.localhost/
             href="mailto:richiruizmartinez@gmail.com">
             richiruizmartinez@gmail.com
          </a>]
-         en su tiempo libre.
+         en su tiempo libre.<br />
+         <br />
+         Envíame a
+         <a class="link" href="mailto:richiruizmartinez@gmail.com">
+            richiruizmartinez@gmail.com
+         </a>
+         cualquier comentario, bug que encuentres o sugerencia.
+
       </div>
    </div>
 

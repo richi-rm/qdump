@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Onedevs\QDump\OutputWriter;
+namespace RichiRM\QDump\OutputWriter;
 
 
 class StdoutWriter implements OutputWriterInterface {

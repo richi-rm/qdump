@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Onedevs\QDump;
+namespace RichiRM\QDump;
 
 
 class Core {
@@ -10,11 +10,11 @@ class Core {
     * String formatters.
     */
    const STRING_FORMATTERS = [
-      'ascii'      => 'Onedevs\QDump\StringFormatter\AsciiToUTF8Formatter',
-      'bytes'      => 'Onedevs\QDump\StringFormatter\ByteSequenceFormatter',
-      'iso-8859-1' => 'Onedevs\QDump\StringFormatter\ISO88591ToUTF8Formatter',
-      'json'       => 'Onedevs\QDump\StringFormatter\JsonFormatter',
-      'utf-8'      => 'Onedevs\QDump\StringFormatter\UTF8Formatter'
+      'ascii'      => 'RichiRM\QDump\StringFormatter\AsciiToUTF8Formatter',
+      'bytes'      => 'RichiRM\QDump\StringFormatter\ByteSequenceFormatter',
+      'iso-8859-1' => 'RichiRM\QDump\StringFormatter\ISO88591ToUTF8Formatter',
+      'json'       => 'RichiRM\QDump\StringFormatter\JsonFormatter',
+      'utf-8'      => 'RichiRM\QDump\StringFormatter\UTF8Formatter'
    ];
 
 

@@ -5,12 +5,12 @@
 Install:
 
 ```
-composer require --dev onedevs/qdump
+composer require --dev richirm/qdump
 ```
 
 Usage:
 ```
-$qd = new \Onedevs\QDump\QDumper();
+$qd = new \RichiRM\QDump\QDumper();
 $qd->dump($var);
 $qd->trace();
 ```

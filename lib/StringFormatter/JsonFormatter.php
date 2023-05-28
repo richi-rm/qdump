@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Onedevs\QDump\StringFormatter;
+namespace RichiRM\QDump\StringFormatter;
 
 
 class JsonFormatter extends AbstractStringFormatter {

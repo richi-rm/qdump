@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Onedevs\QDump;
+namespace RichiRM\QDump;
 
 
 class Context {

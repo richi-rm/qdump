@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Onedevs\QDump\StringFormatter;
+namespace RichiRM\QDump\StringFormatter;
 
 
 abstract class AbstractStringFormatter {

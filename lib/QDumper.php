@@ -1,10 +1,10 @@
 <?php
 
 
-namespace Onedevs\QDump;
+namespace RichiRM\QDump;
 
 
-use Onedevs\QDump\Renderer\BasicRenderer\HtmlRenderer;
+use RichiRM\QDump\Renderer\BasicRenderer\HtmlRenderer;
 
 
 class QDumper {
@@ -45,9 +45,9 @@ class QDumper {
     * Output identifiers and corresponding handler classes.
     */
    protected const OUTPUT_WRITERS = [
-      'file'    => 'Onedevs\QDump\OutputWriter\FileWriter',
-      'no-dump' => 'Onedevs\QDump\OutputWriter\NullWriter',
-      'stdout'  => 'Onedevs\QDump\OutputWriter\StdoutWriter'
+      'file'    => 'RichiRM\QDump\OutputWriter\FileWriter',
+      'no-dump' => 'RichiRM\QDump\OutputWriter\NullWriter',
+      'stdout'  => 'RichiRM\QDump\OutputWriter\StdoutWriter'
    ];
 
 
@@ -55,10 +55,10 @@ class QDumper {
     * Render identifiers and corresponding handler classes.
     */
    protected const RENDERERS = [
-      'ansi'             => 'Onedevs\QDump\Renderer\BasicRenderer\AnsiTextRenderer',
-      'html'             => 'Onedevs\QDump\Renderer\BasicRenderer\HtmlRenderer',
-      'html-comment'     => 'Onedevs\QDump\Renderer\BasicRenderer\HtmlCommentRenderer',
-      'plain-text'       => 'Onedevs\QDump\Renderer\BasicRenderer\PlainTextRenderer'
+      'ansi'             => 'RichiRM\QDump\Renderer\BasicRenderer\AnsiTextRenderer',
+      'html'             => 'RichiRM\QDump\Renderer\BasicRenderer\HtmlRenderer',
+      'html-comment'     => 'RichiRM\QDump\Renderer\BasicRenderer\HtmlCommentRenderer',
+      'plain-text'       => 'RichiRM\QDump\Renderer\BasicRenderer\PlainTextRenderer'
    ];
 
 

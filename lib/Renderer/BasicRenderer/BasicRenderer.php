@@ -1,11 +1,11 @@
 <?php
 
 
-namespace Onedevs\QDump\Renderer\BasicRenderer;
+namespace RichiRM\QDump\Renderer\BasicRenderer;
 
 
-use Onedevs\QDump\Renderer\BasicRenderer\HtmlCommentRenderer;
-use Onedevs\QDump\Renderer\BasicRenderer\HtmlRenderer;
+use RichiRM\QDump\Renderer\BasicRenderer\HtmlCommentRenderer;
+use RichiRM\QDump\Renderer\BasicRenderer\HtmlRenderer;
 
 
 class BasicRenderer {
