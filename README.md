@@ -7,7 +7,7 @@ composer require --dev richirm/qdump
 ```
 Or, if you don't use composer, you can download it from https://github.com/richi-rm/qdump and include the following line in your **index.php**:
 ```
-include 'qdump/include.php'
+include 'qdump/include.php';
 ```
 ## Usage of dump()
 First of all, you must instantiate a **QDumper** object:
