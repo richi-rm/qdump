@@ -1,7 +1,6 @@
 {
    "name": "richirm/qdump",
    "description": "Improved var_dump()",
-   "version": "v0.9.4",
    "type": "library",
    "keywords": ["debug", "debugging", "dump", "print_r", "qdump", "var_dump", "var_export"],
    "homepage": "https://github.com/richi-rm/qdump",
