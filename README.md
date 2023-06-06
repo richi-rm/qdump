@@ -1,5 +1,7 @@
 # QDump
 *Improved var_dump() for PHP projects.*
+## Requirements
+The **php-mbstring** extension must be installed for **QDump** to work.
 ## Install
 You can install **QDump** into your project using **composer**:
 ```
@@ -14,8 +16,11 @@ First of all, you must instantiate a **QDumper** object:
 ```
 $qd = new \RichiRM\QDump\QDumper();
 ```
+or
+```
+$qd = new \RichiRM\QDump\QDumper('verbose');
+```
 QDump brings you two main methods: **dump()** and **trace()**
-
 To dump (to standard output or to a file, see **Documentation**) any expression or variable use the **dump()** method:
 ```
 $foo = 'bar';
@@ -28,7 +33,6 @@ $baz = 'qux';
 $qd->dump($foo, $baz);
 ```
 ## Usage of trace()
-
 You can view the call stack calling the **trace()** method:
 ```
 $qd->trace();
