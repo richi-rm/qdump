@@ -5,6 +5,7 @@ The **php-mbstring** extension must be installed for **QDump** to work.
 ## Install
 You can install **QDump** into your project using **composer**:
 ```
+cd your_project_directory
 composer require --dev richirm/qdump
 ```
 Or, if you don't use composer, you can download it from https://github.com/richi-rm/qdump and include the following line in your **index.php**:
@@ -14,6 +15,8 @@ include 'qdump/include.php';
 ## Usage of dump()
 First of all, you must instantiate a **QDumper** object:
 ```
+require 'vendor/autoload.php';
+
 $qd = new \RichiRM\QDump\QDumper();
 ```
 or
